@@ -10,10 +10,10 @@ class AppLocalizationsPt extends AppLocalizations {
   AppLocalizationsPt([String locale = 'pt']) : super(locale);
 
   @override
-  String get automataName => 'Autômata';
+  String get automataName => 'Autômato';
 
   @override
-  String get automataCards => 'Cartas do Autômata';
+  String get automataCards => 'Cartas do Autômato';
 
   @override
   String get reshuffleDeck =>
@@ -107,7 +107,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get language => 'Idioma';
 
   @override
-  String get prepareAutomata => 'Prepare o Autômata';
+  String get prepareAutomata => 'Prepare o Autômato';
 
   @override
   String get unofficialSetup => 'Autômato não oficial • preparação inicial';
@@ -128,11 +128,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get unusedPieces =>
-      'O Autômata não usa provisões, tabuleiro individual, tábuas, amuleto ou poções.';
+      'O Autômato não usa provisões, tabuleiro individual, tábuas, amuleto ou poções.';
 
   @override
   String get startingShrine =>
-      'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para o Autômata.';
+      'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para o Autômato.';
 
   @override
   String get restartSetup => 'Reiniciar';
@@ -146,7 +146,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get automataDice => 'Dados do Autômata';
+  String get automataDice => 'Dados do Autômato';
 
   @override
   String get rollingDice => 'Rolando os 13 dados…';
@@ -181,15 +181,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cardCompetitionTarget =>
-      'O santuário mais próximo com um dado menor que o dado mais forte do Autômata.';
+      'O santuário mais próximo com um dado menor que o dado mais forte do Autômato.';
 
   @override
   String get cardConnectDolmensTarget =>
-      'Se o Autômata já estiver conectado a um dolmen e faltarem menos de 5 santuários para chegar ao dolmen da mesma cor, esse é o alvo. Caso contrário, solicite outra carta.';
+      'Se o Autômato já estiver conectado a um dolmen e faltarem menos de 5 santuários para chegar ao dolmen da mesma cor, esse é o alvo. Caso contrário, solicite outra carta.';
 
   @override
   String get cardSurroundFireTarget =>
-      'Uma fogueira que precise de apenas mais um santuário do Autômata e que possa ser alcançada por até 6 provisões. Caso contrário, solicite outra carta.';
+      'Uma fogueira que precise de apenas mais um santuário do Autômato e que possa ser alcançada por até 6 provisões. Caso contrário, solicite outra carta.';
 
   @override
   String get cardStandingStoneTarget =>
@@ -267,7 +267,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get playerConnectedDolmens => 'Já conectado';
 
   @override
-  String get chooseAutomaForm => 'Forma do Autômata';
+  String get chooseAutomaForm => 'Forma do Autômato';
 
   @override
   String get druidForm => 'Forma Druida';
@@ -368,7 +368,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sickleLimitHelp => 'A foice chegou a 13. Escolha o amuleto.';
 
   @override
-  String get setupColorTitle => 'Selecione a cor do Autômata';
+  String get setupColorTitle => 'Selecione a cor do Autômato';
 
   @override
   String get bearFormDifficulty => 'A Forma Urso é a mais difícil.';

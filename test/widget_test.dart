@@ -109,7 +109,7 @@ void main() {
     await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Prepare o Autômata'), findsOneWidget);
+    expect(find.text('Prepare o Autômato'), findsOneWidget);
     expect(find.byType(DieFace), findsNothing);
     expect(
       tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
@@ -153,7 +153,7 @@ void main() {
     );
     await tester.tap(restart);
     await tester.pumpAndSettle();
-    expect(find.text('Selecione a cor do Autômata'), findsOneWidget);
+    expect(find.text('Selecione a cor do Autômato'), findsOneWidget);
     expect(find.byType(DieFace), findsNothing);
   });
 
@@ -208,11 +208,11 @@ void main() {
     expect(find.byKey(const Key('dice-strip')), findsOneWidget);
     expect(tester.widget<DieFace>(find.byType(DieFace).first).size, 36);
     expect(find.text('Dados disponíveis: 13'), findsOneWidget);
-    expect(find.text('Autômata'), findsOneWidget);
+    expect(find.text('Autômato'), findsOneWidget);
     expect(find.byType(BackButton), findsNothing);
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
-    expect(find.text('Autômata'), findsOneWidget);
+    expect(find.text('Autômato'), findsOneWidget);
     await tester.tap(find.byTooltip('Pedras'));
     await tester.pumpAndSettle();
     final stoneButtons = tester.widgetList<IconButton>(
@@ -288,13 +288,13 @@ void main() {
       hasLength(1),
     );
     expect(find.text('Resumo da partida'), findsNothing);
-    expect(find.text('Autômata'), findsOneWidget);
+    expect(find.text('Autômato'), findsOneWidget);
     await tester.tap(find.text('Ver resumo'));
     await tester.pumpAndSettle();
     expect(find.text('13/13'), findsOneWidget);
     await tester.tap(find.text('Reiniciar'));
     await tester.pumpAndSettle();
-    expect(find.text('Selecione a cor do Autômata'), findsOneWidget);
+    expect(find.text('Selecione a cor do Autômato'), findsOneWidget);
     expect(find.byTooltip('Voltar'), findsNothing);
   });
 
