@@ -1,0 +1,36 @@
+name: the_druids_of_edora
+description: "Companion app for the solo Automata in The Druids of Edora."
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  material_ui: ^1.1.0
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  generate: true
+
+  uses-material-design: true
+
+  assets:
+    - assets/potions/
+    - assets/dolmens/
+    - assets/tablets/
+    - assets/actions/
+    - assets/icons/
