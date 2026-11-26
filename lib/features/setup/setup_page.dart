@@ -1,14 +1,13 @@
-import '../../l10n/app_localizations.dart';
-
 import 'dart:async';
 import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
 
-import 'automata_color.dart';
-import '../cards/cards_page.dart';
-import 'widgets/die_face.dart';
+import '../../l10n/app_localizations.dart';
 import '../cards/automa_card.dart';
+import '../cards/cards_page.dart';
+import 'automata_color.dart';
+import 'widgets/die_face.dart';
 import 'widgets/setup_instruction.dart';
 
 class SetupPage extends StatefulWidget {
@@ -28,44 +27,16 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   AutomataColor? selectedColor;
   AutomaForm? selectedForm;
+  int? playerCount;
   List<int> dice = const [];
   Timer? rollTimer;
   bool isRolling = false;
-
-  List<int> rollDice() =>
-      List.generate(13, (_) => widget.random.nextInt(6) + 1);
-
-  void startRoll() {
-    setState(() {
-      dice = rollDice();
-      isRolling = true;
-    });
-    rollTimer = Timer.periodic(const Duration(milliseconds: 80), (timer) {
-      setState(() {
-        dice = rollDice();
-        if (timer.tick == 12) {
-          timer.cancel();
-          dice.sort();
-          isRolling = false;
-        }
-      });
-    });
-  }
 
   @override
   void dispose() {
     rollTimer?.cancel();
     super.dispose();
   }
-
-  AppLocalizations get l10n => AppLocalizations.of(context)!;
-
-  String colorName(AutomataColor color) => switch (color) {
-    AutomataColor.purple => l10n.purple,
-    AutomataColor.yellow => l10n.yellow,
-    AutomataColor.mint => l10n.mint,
-    AutomataColor.red => l10n.red,
-  };
 
   @override
   void initState() {
@@ -75,85 +46,11 @@ class _SetupPageState extends State<SetupPage> {
     });
   }
 
-  Widget languageMenu(AppLocalizations strings) => PopupMenuButton<Locale>(
-    tooltip: strings.language,
-    icon: const Icon(Icons.language),
-    onSelected: widget.onLocaleChanged,
-    itemBuilder: (_) => const [
-      PopupMenuItem(value: Locale('pt', 'BR'), child: Text('Português (BR)')),
-      PopupMenuItem(value: Locale('en'), child: Text('English')),
-    ],
-  );
-
-  Future<void> chooseSetup() async {
-    final color = await showDialog<AutomataColor>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        final strings = AppLocalizations.of(context)!;
-        return PopScope(
-          canPop: false,
-          child: AlertDialog(
-            title: Row(
-              children: [
-                Expanded(child: Text(strings.setupColorTitle)),
-                languageMenu(strings),
-              ],
-            ),
-            content: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final option in AutomataColor.values)
-                  ActionChip(
-                    avatar: CircleAvatar(backgroundColor: option.value),
-                    label: Text(colorName(option)),
-                    onPressed: () => Navigator.pop(context, option),
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-    if (!mounted || color == null) return;
-
-    final form = await showDialog<AutomaForm>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        final strings = AppLocalizations.of(context)!;
-        return PopScope(
-          canPop: false,
-          child: AlertDialog(
-            title: Text(strings.chooseAutomaForm),
-            content: Text(strings.bearFormDifficulty),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, AutomaForm.druid),
-                child: Text(strings.druidForm),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, AutomaForm.bear),
-                child: Text(strings.bearForm),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-    if (!mounted || form == null) return;
-
-    setState(() {
-      selectedColor = color;
-      selectedForm = form;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final color = selectedColor;
     final form = selectedForm;
+    final players = playerCount;
     return Scaffold(
       appBar: AppBar(
         title: const Text('The Druids of Edora'),
@@ -169,7 +66,7 @@ class _SetupPageState extends State<SetupPage> {
             ),
             const SizedBox(height: 8),
             Text(l10n.unofficialSetup),
-            if (color != null && form != null) ...[
+            if (color != null && form != null && players != null) ...[
               const SizedBox(height: 16),
               Wrap(
                 spacing: 8,
@@ -184,6 +81,7 @@ class _SetupPageState extends State<SetupPage> {
                       form == AutomaForm.druid ? l10n.druidForm : l10n.bearForm,
                     ),
                   ),
+                  Chip(label: Text(l10n.setupPlayersSummary(players))),
                 ],
               ),
               if (dice.isNotEmpty) ...[
@@ -251,7 +149,8 @@ class _SetupPageState extends State<SetupPage> {
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(20, 12, 20, 16),
         child: FilledButton.icon(
-          onPressed: color == null || form == null || isRolling
+          onPressed:
+              color == null || form == null || players == null || isRolling
               ? null
               : dice.isEmpty
               ? startRoll
@@ -260,6 +159,7 @@ class _SetupPageState extends State<SetupPage> {
                     builder: (_) => CardsPage(
                       color: color,
                       form: form,
+                      playerCount: players,
                       dice: List.unmodifiable(dice),
                       random: widget.random,
                     ),
@@ -275,5 +175,134 @@ class _SetupPageState extends State<SetupPage> {
         ),
       ),
     );
+  }
+
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
+
+  String colorName(AutomataColor color) => switch (color) {
+    AutomataColor.purple => l10n.purple,
+    AutomataColor.yellow => l10n.yellow,
+    AutomataColor.mint => l10n.mint,
+    AutomataColor.red => l10n.red,
+  };
+
+  List<int> rollDice() =>
+      List.generate(13, (_) => widget.random.nextInt(6) + 1);
+
+  void startRoll() {
+    setState(() {
+      dice = rollDice();
+      isRolling = true;
+    });
+    rollTimer = Timer.periodic(const Duration(milliseconds: 80), (timer) {
+      setState(() {
+        dice = rollDice();
+        if (timer.tick == 12) {
+          timer.cancel();
+          dice.sort();
+          isRolling = false;
+        }
+      });
+    });
+  }
+
+  Widget languageMenu(AppLocalizations strings) => PopupMenuButton<Locale>(
+    tooltip: strings.language,
+    icon: const Icon(Icons.language),
+    onSelected: widget.onLocaleChanged,
+    itemBuilder: (_) => const [
+      PopupMenuItem(value: Locale('pt', 'BR'), child: Text('Português (BR)')),
+      PopupMenuItem(value: Locale('en'), child: Text('English')),
+    ],
+  );
+
+  Future<void> chooseSetup() async {
+    final color = await showDialog<AutomataColor>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        final strings = AppLocalizations.of(context)!;
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Row(
+              children: [
+                Expanded(child: Text(strings.setupColorTitle)),
+                languageMenu(strings),
+              ],
+            ),
+            content: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final option in AutomataColor.values)
+                  ActionChip(
+                    avatar: CircleAvatar(backgroundColor: option.value),
+                    label: Text(colorName(option)),
+                    onPressed: () => Navigator.pop(context, option),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (!mounted || color == null) return;
+
+    final form = await showDialog<AutomaForm>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        final strings = AppLocalizations.of(context)!;
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Text(strings.chooseAutomaForm),
+            content: Text(strings.bearFormDifficulty),
+            actionsAlignment: .spaceBetween,
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, AutomaForm.druid),
+                child: Text(strings.druidForm),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, AutomaForm.bear),
+                child: Text(strings.bearForm),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    if (!mounted || form == null) return;
+
+    final players = await showDialog<int>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          title: Text(AppLocalizations.of(context)!.setupPlayersTitle),
+          content: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (var count = 2; count <= 4; count++)
+                ActionChip(
+                  label: Text('$count'),
+                  onPressed: () => Navigator.pop(context, count),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (!mounted || players == null) return;
+
+    setState(() {
+      selectedColor = color;
+      selectedForm = form;
+      playerCount = players;
+    });
   }
 }

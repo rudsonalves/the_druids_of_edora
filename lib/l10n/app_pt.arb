@@ -88,7 +88,7 @@
   "potionOption": "Poção de custo {cost}, variante {variant}",
   "chooseStandingStone": "Erguer pedra ereta",
   "chooseRunestone": "Erguer pedra rúnica",
-  "stonesAvailable": "Peças disponíveis: {count}",
+  "stonesAvailable": "{count}/6",
   "tabletInventory": "Tábuas",
   "potionInventory": "Poções",
   "stoneInventory": "Pedras",
@@ -107,5 +107,13 @@
   "bearFormDifficulty": "A Forma Urso é a mais difícil.",
   "chooseProvisions": "Provisões",
   "advanceKnowledge": "Avançar conhecimento",
-  "knowledgeProgress": "Conhecimento: {value}/{max}"
+  "knowledgeProgress": "Conhecimento: {value}/{max}",
+  "setupPlayersTitle": "Número de jogadores",
+  "setupPlayersSummary": "{count, plural, one{1 jogador} other{{count} jogadores}}",
+  "auxiliaryPlacement": "Use esta carta para definir onde colocar o dado e escolher a ação.",
+  "noAuxiliaryAction": "Nenhuma ação disponível",
+  "executeShrineAction": "Executar ação",
+  "shrineActionTitle": "Ações do santuário",
+  "shrineActionHelp": "Localize o santuário indicado e marque até {limit} ações disponíveis nele.",
+  "drawShrineAction": "Sortear ação"
 }

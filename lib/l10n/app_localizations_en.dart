@@ -312,7 +312,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String stonesAvailable(int count) {
-    return 'Pieces available: $count';
+    return '$count/6';
   }
 
   @override
@@ -378,4 +378,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String knowledgeProgress(int value, int max) {
     return 'Knowledge: $value/$max';
   }
+
+  @override
+  String get setupPlayersTitle => 'Number of players';
+
+  @override
+  String setupPlayersSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players',
+      one: '1 player',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get auxiliaryPlacement =>
+      'Use this card to find where to place the die and choose the action.';
+
+  @override
+  String get noAuxiliaryAction => 'No action available';
+
+  @override
+  String get executeShrineAction => 'Execute action';
+
+  @override
+  String get shrineActionTitle => 'Shrine actions';
+
+  @override
+  String shrineActionHelp(int limit) {
+    return 'Find the indicated shrine and mark up to $limit actions available there.';
+  }
+
+  @override
+  String get drawShrineAction => 'Draw action';
 }

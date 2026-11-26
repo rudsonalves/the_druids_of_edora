@@ -635,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @stonesAvailable.
   ///
   /// In en, this message translates to:
-  /// **'Pieces available: {count}'**
+  /// **'{count}/6'**
   String stonesAvailable(int count);
 
   /// No description provided for @tabletInventory.
@@ -751,6 +751,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Knowledge: {value}/{max}'**
   String knowledgeProgress(int value, int max);
+
+  /// No description provided for @setupPlayersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of players'**
+  String get setupPlayersTitle;
+
+  /// No description provided for @setupPlayersSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 player} other{{count} players}}'**
+  String setupPlayersSummary(int count);
+
+  /// No description provided for @auxiliaryPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this card to find where to place the die and choose the action.'**
+  String get auxiliaryPlacement;
+
+  /// No description provided for @noAuxiliaryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'No action available'**
+  String get noAuxiliaryAction;
+
+  /// No description provided for @executeShrineAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Execute action'**
+  String get executeShrineAction;
+
+  /// No description provided for @shrineActionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shrine actions'**
+  String get shrineActionTitle;
+
+  /// No description provided for @shrineActionHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the indicated shrine and mark up to {limit} actions available there.'**
+  String shrineActionHelp(int limit);
+
+  /// No description provided for @drawShrineAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw action'**
+  String get drawShrineAction;
 }
 
 class _AppLocalizationsDelegate

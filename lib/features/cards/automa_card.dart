@@ -9,7 +9,12 @@ enum AutomaCard {
   standingStone,
   sickleAmulet,
   tabletMistletoe,
-  knowledgeProvision,
+  knowledgeProvision;
+
+  bool get usesShrineAction => switch (this) {
+    competition || connectDolmens || surroundFire => true,
+    _ => false,
+  };
 }
 
 enum AutomaForm {
@@ -54,12 +59,7 @@ class AutomaDeck {
 
   AutomaCard draw({bool hasAvailablePairs = true}) {
     if (needsShuffle(hasAvailablePairs: hasAvailablePairs)) {
-      final nextCycle = List<AutomaCard>.of(_cards);
-      for (final deferred in _remaining) {
-        nextCycle.remove(deferred);
-      }
-      nextCycle.shuffle(random);
-      _remaining.insertAll(0, nextCycle);
+      _refill();
     }
     final index = _remaining.lastIndexWhere(
       (card) =>
@@ -70,5 +70,14 @@ class AutomaDeck {
     draws++;
     if (card == AutomaCard.connectDolmens) _dolmenDraws++;
     return card;
+  }
+
+  void _refill() {
+    final nextCycle = List<AutomaCard>.of(_cards);
+    for (final deferred in _remaining) {
+      nextCycle.remove(deferred);
+    }
+    nextCycle.shuffle(random);
+    _remaining.insertAll(0, nextCycle);
   }
 }

@@ -70,7 +70,7 @@ class ActionSupply {
     }
   }
 
-  List<int> draw(SupplyAction action, int turn, Random random) {
+  List<int> availableItems(SupplyAction action, int turn) {
     final firstCost = ((turn.clamp(1, 13) - 1) ~/ 4).clamp(0, 2) * 2 + 1;
     return [
       for (final item in itemIds(action))
@@ -78,8 +78,11 @@ class ActionSupply {
             (action != SupplyAction.potion ||
                 (item ~/ 10 >= firstCost && item ~/ 10 <= firstCost + 1)))
           item,
-    ]..shuffle(random);
+    ];
   }
+
+  List<int> draw(SupplyAction action, int turn, Random random) =>
+      availableItems(action, turn)..shuffle(random);
 
   void consumeThrough(SupplyAction action, List<int> queue, int selectedIndex) {
     for (final item in queue.take(selectedIndex + 1)) {

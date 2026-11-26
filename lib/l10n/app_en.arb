@@ -132,7 +132,7 @@
   },
   "chooseStandingStone": "Erect a standing stone",
   "chooseRunestone": "Erect a runestone",
-  "stonesAvailable": "Pieces available: {count}",
+  "stonesAvailable": "{count}/6",
   "@stonesAvailable": {
     "placeholders": {
       "count": {
@@ -179,6 +179,28 @@
         "type": "int"
       },
       "max": {
+        "type": "int"
+      }
+    }
+  },
+  "setupPlayersTitle": "Number of players",
+  "setupPlayersSummary": "{count, plural, one{1 player} other{{count} players}}",
+  "@setupPlayersSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "auxiliaryPlacement": "Use this card to find where to place the die and choose the action.",
+  "noAuxiliaryAction": "No action available",
+  "executeShrineAction": "Execute action",
+  "shrineActionTitle": "Shrine actions",
+  "shrineActionHelp": "Find the indicated shrine and mark up to {limit} actions available there.",
+  "drawShrineAction": "Draw action",
+  "@shrineActionHelp": {
+    "placeholders": {
+      "limit": {
         "type": "int"
       }
     }

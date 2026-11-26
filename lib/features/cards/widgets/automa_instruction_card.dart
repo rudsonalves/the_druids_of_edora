@@ -9,6 +9,7 @@ import '../automa_card_localization.dart';
 import '../sickle_amulet.dart';
 import 'dolmen_setup_dialog.dart';
 import 'supply_dialog.dart';
+import 'shrine_action_dialog.dart';
 
 class AutomaInstructionCard extends StatelessWidget {
   const AutomaInstructionCard({
@@ -30,6 +31,8 @@ class AutomaInstructionCard extends StatelessWidget {
     this.onKnowledge,
     this.onProvisions,
     this.knowledgeChoice,
+    this.onShrineAction,
+    this.dieActions = const {},
   });
 
   final AutomaCard card;
@@ -50,6 +53,8 @@ class AutomaInstructionCard extends StatelessWidget {
   final VoidCallback? onKnowledge;
   final VoidCallback? onProvisions;
   final KnowledgeProvisionChoice? knowledgeChoice;
+  final VoidCallback? onShrineAction;
+  final Map<int, ShrineActionOutcome> dieActions;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +77,42 @@ class AutomaInstructionCard extends StatelessWidget {
       _ => const <String>[],
     };
     final theme = Theme.of(context);
+    final actionSection = _CardSection(
+      title: l10n.actionLabel,
+      body: card.action(l10n),
+      child: onShrineAction != null
+          ? IconButton.outlined(
+              tooltip: l10n.executeShrineAction,
+              onPressed: onShrineAction,
+              icon: Image.asset(
+                'assets/actions/any-action.png',
+                width: 48,
+                height: 48,
+                excludeFromSemantics: true,
+              ),
+            )
+          : card == AutomaCard.sickleAmulet
+          ? _buildSickleAmulet(l10n)
+          : card == AutomaCard.knowledgeProvision
+          ? _buildKnowledgeProvision(l10n)
+          : supplyActions.isNotEmpty
+          ? _buildSupplyActions(l10n, supplyActions, actionIcons)
+          : actionIcons.isEmpty
+          ? null
+          : Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final icon in actionIcons)
+                  Image.asset(
+                    'assets/actions/$icon.png',
+                    width: 48,
+                    height: 48,
+                    excludeFromSemantics: true,
+                  ),
+              ],
+            ),
+    );
     return Card(
       color: const Color(0xFF214537),
       shape: RoundedRectangleBorder(
@@ -189,44 +230,79 @@ class AutomaInstructionCard extends StatelessWidget {
                           index < selectedDice.length;
                           index++
                         )
-                          DieFace(
-                            key: Key('selected-die-$index'),
-                            value: selectedDice[index],
-                            color: dieColor,
-                            index: index + 1,
-                            size: 48,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 4,
+                            children: [
+                              DieFace(
+                                key: Key('selected-die-$index'),
+                                value: selectedDice[index],
+                                color: dieColor,
+                                index: index + 1,
+                                size: 48,
+                              ),
+                              if (dieActions[index] case final outcome?)
+                                _buildShrineOutcome(l10n, outcome),
+                            ],
                           ),
                       ],
                     ),
             ),
-            _CardSection(
-              title: l10n.actionLabel,
-              body: card.action(l10n),
-              child: card == AutomaCard.sickleAmulet
-                  ? _buildSickleAmulet(l10n)
-                  : card == AutomaCard.knowledgeProvision
-                  ? _buildKnowledgeProvision(l10n)
-                  : supplyActions.isNotEmpty
-                  ? _buildSupplyActions(l10n, supplyActions, actionIcons)
-                  : actionIcons.isEmpty
-                  ? null
-                  : Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        for (final icon in actionIcons)
-                          Image.asset(
-                            'assets/actions/$icon.png',
-                            width: 48,
-                            height: 48,
-                            excludeFromSemantics: true,
-                          ),
-                      ],
-                    ),
-            ),
+            actionSection,
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildShrineOutcome(
+    AppLocalizations l10n,
+    ShrineActionOutcome outcome,
+  ) {
+    final action = outcome.action;
+    final value = outcome.value;
+    final item = outcome.item;
+    final detail = value == null
+        ? null
+        : switch (action) {
+            ShrineAction.knowledge => l10n.knowledgeProgress(
+              value,
+              maxKnowledge,
+            ),
+            ShrineAction.sickle => l10n.sickleProgress(value),
+            ShrineAction.amulet => SickleAmulet.slotName(value),
+            ShrineAction.standingStone ||
+            ShrineAction.runestone => l10n.stonesAvailable(value),
+            _ => null,
+          };
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 4,
+          children: [
+            Image.asset(
+              'assets/actions/${action.icon}.png',
+              width: 32,
+              height: 32,
+              semanticLabel: action.label(l10n),
+            ),
+            if (item != null &&
+                (action == ShrineAction.tablet ||
+                    action == ShrineAction.potion))
+              Image.asset(
+                supplyAsset(action.supply!, item),
+                height: 32,
+                semanticLabel: action == ShrineAction.tablet
+                    ? l10n.tabletOption(item)
+                    : l10n.potionOption(item ~/ 10, item % 10),
+              ),
+          ],
+        ),
+        if (detail != null) Text(detail),
+      ],
     );
   }
 

@@ -21,6 +21,68 @@ class SequenceRandom implements Random {
 }
 
 void main() {
+  Future<void> resolveAction(WidgetTester tester) async {
+    final execute = find.byWidgetPredicate(
+      (widget) => widget is IconButton && widget.tooltip == 'Executar ação',
+    );
+    if (execute.evaluate().isNotEmpty) {
+      await Scrollable.ensureVisible(tester.element(execute), alignment: 0.5);
+      await tester.pumpAndSettle();
+      await tester.tap(execute);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('marque até 2 ações'), findsOneWidget);
+      expect(
+        tester
+            .widget<FilledButton>(
+              find.widgetWithText(FilledButton, 'Sortear ação'),
+            )
+            .onPressed,
+        isNull,
+      );
+      await tester.tap(find.byTooltip('Provisões'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Sortear ação'));
+      await tester.pumpAndSettle();
+      return;
+    }
+
+    final next = find.widgetWithText(FilledButton, 'Próxima carta');
+    if (next.evaluate().isEmpty ||
+        tester.widget<FilledButton>(next).onPressed != null) {
+      final finish = find.widgetWithText(FilledButton, 'Encerrar partida');
+      if (finish.evaluate().isEmpty ||
+          tester.widget<FilledButton>(finish).onPressed != null) {
+        return;
+      }
+    }
+    final card = tester.widget<AutomaInstructionCard>(
+      find.byType(AutomaInstructionCard),
+    );
+    final tooltip = switch (card.card.name) {
+      'knowledgeProvision' => 'Provisões',
+      'sickleAmulet' => 'Avançar a foice',
+      'standingStone' => 'Erguer pedra ereta',
+      'tabletMistletoe' => 'Escolher tábua',
+      _ => throw StateError('Unexpected pending card'),
+    };
+    final option = find.byWidgetPredicate(
+      (widget) => widget is IconButton && widget.tooltip == tooltip,
+    );
+    await Scrollable.ensureVisible(tester.element(option), alignment: 0.5);
+    await tester.pumpAndSettle();
+    await tester.tap(option);
+    await tester.pumpAndSettle();
+    if (find.text('Confirmar').evaluate().isNotEmpty) {
+      final firstTablet = find.byType(ListTile);
+      if (firstTablet.evaluate().isNotEmpty) {
+        await tester.tap(firstTablet.first);
+        await tester.pumpAndSettle();
+      }
+      await tester.tap(find.text('Confirmar'));
+      await tester.pumpAndSettle();
+    }
+  }
+
   Future<void> completeDolmenDialog(WidgetTester tester, int count) async {
     if (find.byType(DolmenSetupDialog).evaluate().isEmpty) return;
     final pairs = find.byWidgetPredicate(
@@ -56,7 +118,11 @@ void main() {
     expect(find.text('A Forma Urso é a mais difícil.'), findsOneWidget);
     await tester.tap(find.text('Forma Druida'));
     await tester.pumpAndSettle();
+    expect(find.text('Número de jogadores'), findsOneWidget);
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
     expect(find.text('Forma Druida'), findsOneWidget);
+    expect(find.text('2 jogadores'), findsOneWidget);
     await tester.tap(find.text('Rolar dados'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 250));
@@ -90,6 +156,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Druid form'));
     await tester.pumpAndSettle();
+    expect(find.text('Number of players'), findsOneWidget);
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Roll dice'));
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
@@ -100,7 +169,7 @@ void main() {
     expect(find.text('Available dice: 13'), findsOneWidget);
     await tester.tap(find.text('Draw card'));
     await tester.pumpAndSettle();
-    expect(find.byType(AutomaInstructionCard), findsOneWidget);
+    expect(find.byType(AutomaInstructionCard), findsWidgets);
   });
 
   testWidgets('draws ten cards and keeps the dice in a bottom row', (
@@ -111,6 +180,9 @@ void main() {
     await tester.tap(find.text('Roxo'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Forma Druida'));
+    await tester.pumpAndSettle();
+    expect(find.text('Número de jogadores'), findsOneWidget);
+    await tester.tap(find.text('2'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Rolar dados'));
     await tester.pump();
@@ -143,6 +215,7 @@ void main() {
     await tester.tap(find.text('Sortear carta'));
     await tester.pumpAndSettle();
     await completeDolmenDialog(tester, 1);
+    await resolveAction(tester);
     expect(find.byType(AutomaInstructionCard), findsOneWidget);
     expect(find.byKey(const Key('selected-die-0')), findsOneWidget);
     expect(find.text('Dados disponíveis: 12'), findsOneWidget);
@@ -150,18 +223,21 @@ void main() {
       await tester.tap(find.text('Próxima carta'));
       await tester.pumpAndSettle();
       await completeDolmenDialog(tester, 1);
+      await resolveAction(tester);
     }
     expect(find.text('Dados disponíveis: 3'), findsOneWidget);
 
     await tester.tap(find.text('Próxima carta'));
     await tester.pumpAndSettle();
     await completeDolmenDialog(tester, 1);
+    await resolveAction(tester);
     expect(find.text('Dados disponíveis: 2'), findsOneWidget);
 
     for (var number = 12; number <= 13; number++) {
       await tester.tap(find.text('Próxima carta'));
       await tester.pumpAndSettle();
       await completeDolmenDialog(tester, 1);
+      await resolveAction(tester);
     }
     expect(find.text('Dados disponíveis: 0'), findsOneWidget);
     expect(find.text('Todos os dados foram usados.'), findsOneWidget);
@@ -180,6 +256,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Forma Druida'));
     await tester.pumpAndSettle();
+    expect(find.text('Número de jogadores'), findsOneWidget);
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Rolar dados'));
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
@@ -188,6 +267,7 @@ void main() {
 
     await tester.tap(find.text('Sortear carta'));
     await tester.pumpAndSettle();
+    await resolveAction(tester);
     for (
       var attempt = 1;
       find.byType(DolmenSetupDialog).evaluate().isEmpty && attempt < 10;
@@ -195,6 +275,7 @@ void main() {
     ) {
       await tester.tap(find.text('Próxima carta'));
       await tester.pumpAndSettle();
+      await resolveAction(tester);
     }
 
     expect(find.byType(DolmenSetupDialog), findsOneWidget);
@@ -204,12 +285,24 @@ void main() {
     expect(dolmenCard.card.name, 'connectDolmens');
     final cardKey = dolmenCard.key;
     await completeDolmenDialog(tester, 2);
+    expect(find.byTooltip('Executar ação'), findsOneWidget);
+    final advance = find.byWidgetPredicate(
+      (widget) => widget is FilledButton && widget.onPressed == null,
+    );
+    expect(advance, findsOneWidget);
+    await resolveAction(tester);
 
     expect(find.text('1/2'), findsOneWidget);
     expect(find.text('Colocar dado'), findsOneWidget);
     expect(find.byKey(const Key('selected-die-0')), findsOneWidget);
     await tester.tap(find.text('Colocar dado'));
     await tester.pumpAndSettle();
+    expect(find.byTooltip('Executar ação'), findsOneWidget);
+    final lastAdvance = find.byWidgetPredicate(
+      (widget) => widget is FilledButton && widget.onPressed == null,
+    );
+    expect(lastAdvance, findsOneWidget);
+    await resolveAction(tester);
 
     expect(find.text('2/2'), findsOneWidget);
     expect(find.byKey(const Key('selected-die-1')), findsOneWidget);
@@ -223,6 +316,7 @@ void main() {
 
     await tester.tap(find.text('Próxima carta'));
     await tester.pumpAndSettle();
+    await resolveAction(tester);
     expect(
       tester
           .widget<AutomaInstructionCard>(find.byType(AutomaInstructionCard))

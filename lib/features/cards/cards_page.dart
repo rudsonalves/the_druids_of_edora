@@ -14,6 +14,7 @@ import 'widgets/amulet_dialog.dart';
 import 'widgets/automa_instruction_card.dart';
 import 'widgets/dolmen_setup_dialog.dart';
 import 'widgets/supply_dialog.dart';
+import 'widgets/shrine_action_dialog.dart';
 import 'widgets/supply_inventory_dialog.dart';
 
 class CardsPage extends StatefulWidget {
@@ -21,12 +22,14 @@ class CardsPage extends StatefulWidget {
     super.key,
     required this.color,
     required this.form,
+    required this.playerCount,
     required this.dice,
     required this.random,
   });
 
   final AutomataColor color;
   final AutomaForm form;
+  final int playerCount;
   final List<int> dice;
   final Random random;
 
@@ -39,6 +42,12 @@ class _CardsPageState extends State<CardsPage> {
   final ScrollController scrollController = ScrollController();
   late final List<int> availableDice = List.of(widget.dice)..sort();
   AutomaCard? currentCard;
+  AutomaCard? executingShrineCard;
+  ShrineAction? shrineAction;
+  bool actionUnavailable = false;
+  final dieActions = <int, ShrineActionOutcome>{};
+  bool pendingShrineAction = false;
+  AutomaCard? get actionCard => executingShrineCard ?? currentCard;
   final supply = ActionSupply();
   final sickleAmulet = SickleAmulet();
   bool usedSickle = false;
@@ -59,6 +68,34 @@ class _CardsPageState extends State<CardsPage> {
   bool get connectionActive {
     final setup = dolmenSetup;
     return setup != null && !connectedPairs.contains(setup.pair);
+  }
+
+  bool get awaitingCardAction {
+    if (executingShrineCard != null) return true;
+    if (actionUnavailable) return false;
+    return switch (currentCard) {
+      AutomaCard.competition ||
+      AutomaCard.connectDolmens ||
+      AutomaCard.surroundFire => pendingShrineAction,
+      AutomaCard.tabletMistletoe ||
+      AutomaCard.standingStone => supplySelection == null,
+      AutomaCard.sickleAmulet => !usedSickle && placedGem == null,
+      AutomaCard.knowledgeProvision => knowledgeChoice == null,
+      _ => false,
+    };
+  }
+
+  bool get hasAvailableCardAction {
+    final turn = widget.dice.length - availableDice.length;
+    return switch (currentCard) {
+      AutomaCard.tabletMistletoe =>
+        supply.availableItems(SupplyAction.tablet, turn).isNotEmpty ||
+            supply.availableItems(SupplyAction.potion, turn).isNotEmpty,
+      AutomaCard.standingStone =>
+        supply.stoneCount(SupplyAction.standingStone) > 0 ||
+            supply.stoneCount(SupplyAction.runestone) > 0,
+      _ => true,
+    };
   }
 
   @override
@@ -115,6 +152,10 @@ class _CardsPageState extends State<CardsPage> {
                   child: AutomaInstructionCard(
                     key: ValueKey('${card.name}-${deck.draws}'),
                     card: card,
+                    onShrineAction: pendingShrineAction
+                        ? resolveShrineAction
+                        : null,
+                    dieActions: Map.unmodifiable(dieActions),
                     onSupplyAction: chooseSupply,
                     sickle: sickleAmulet.sickle,
                     usedSickle: usedSickle,
@@ -159,7 +200,9 @@ class _CardsPageState extends State<CardsPage> {
                 children: [
                   Expanded(
                     child: FilledButton(
-                      onPressed: availableDice.isEmpty
+                      onPressed: awaitingCardAction
+                          ? null
+                          : availableDice.isEmpty
                           ? () =>
                                 Navigator.of(context)
                                     .pushNamedAndRemoveUntil('/', (_) => false)
@@ -183,7 +226,9 @@ class _CardsPageState extends State<CardsPage> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: finishPlayerConnection,
+                        onPressed: awaitingCardAction
+                            ? null
+                            : finishPlayerConnection,
                         child: Text(
                           l10n.playerConnectedDolmens,
                           textAlign: TextAlign.center,
@@ -193,6 +238,11 @@ class _CardsPageState extends State<CardsPage> {
                   ],
                 ],
               ),
+              if (awaitingCardAction && !hasAvailableCardAction)
+                TextButton(
+                  onPressed: () => setState(() => actionUnavailable = true),
+                  child: Text(l10n.noAuxiliaryAction),
+                ),
               const SizedBox(height: 8),
               Text(
                 l10n.availableDice(availableDice.length),
@@ -258,7 +308,7 @@ class _CardsPageState extends State<CardsPage> {
   }
 
   Future<void> drawCard() async {
-    if (availableDice.isEmpty) return;
+    if (availableDice.isEmpty || awaitingCardAction) return;
     if (scrollController.hasClients) scrollController.jumpTo(0);
 
     if (currentCard == AutomaCard.connectDolmens) {
@@ -275,12 +325,15 @@ class _CardsPageState extends State<CardsPage> {
     final nextCard = deck.draw(hasAvailablePairs: availablePairs.isNotEmpty);
     setState(() {
       currentCard = nextCard;
+      actionUnavailable = false;
+      shrineAction = null;
       supplyQueues.clear();
       supplySelection = null;
       usedSickle = false;
       knowledgeChoice = null;
       placedGem = null;
       selectedDice.clear();
+      dieActions.clear();
       dolmenSetup = null;
       placedDolmenDice = 0;
     });
@@ -293,7 +346,7 @@ class _CardsPageState extends State<CardsPage> {
   }
 
   void chooseKnowledgeProvision(KnowledgeProvisionChoice choice) {
-    if (currentCard != AutomaCard.knowledgeProvision ||
+    if (actionCard != AutomaCard.knowledgeProvision ||
         knowledgeChoice != null ||
         (choice == KnowledgeProvisionChoice.knowledge &&
             knowledge >= AutomaInstructionCard.maxKnowledge)) {
@@ -319,7 +372,7 @@ class _CardsPageState extends State<CardsPage> {
       context: context,
       builder: (_) => AmuletDialog(progress: sickleAmulet),
     );
-    if (!mounted || currentCard != AutomaCard.sickleAmulet || slot == null) {
+    if (!mounted || actionCard != AutomaCard.sickleAmulet || slot == null) {
       return;
     }
     if (slot == -1) {
@@ -336,7 +389,7 @@ class _CardsPageState extends State<CardsPage> {
     final expectedCard = action.isStone
         ? AutomaCard.standingStone
         : AutomaCard.tabletMistletoe;
-    if (currentCard != expectedCard || supplySelection != null) {
+    if (actionCard != expectedCard || supplySelection != null) {
       return;
     }
     final turn = widget.dice.length - availableDice.length;
@@ -375,7 +428,7 @@ class _CardsPageState extends State<CardsPage> {
   }
 
   Future<void> finishPlayerConnection() async {
-    if (!connectionActive) return;
+    if (!connectionActive || awaitingCardAction) return;
     setState(() => connectedPairs.add(dolmenSetup!.pair));
     await drawCard();
   }
@@ -389,6 +442,15 @@ class _CardsPageState extends State<CardsPage> {
       );
       availableDice.remove(selectedDie);
       selectedDice.add(selectedDie);
+      pendingShrineAction = card.usesShrineAction;
+      if (pendingShrineAction) {
+        shrineAction = null;
+        supplyQueues.clear();
+        supplySelection = null;
+        usedSickle = false;
+        knowledgeChoice = null;
+        placedGem = null;
+      }
       if (card == AutomaCard.connectDolmens) {
         final setup = dolmenSetup!;
         placedDolmenDice++;
@@ -397,5 +459,79 @@ class _CardsPageState extends State<CardsPage> {
         }
       }
     });
+  }
+
+  bool canExecuteShrineAction(ShrineAction action) {
+    final resource = action.supply;
+    if (resource != null) {
+      final turn = widget.dice.length - availableDice.length;
+      return supply.availableItems(resource, turn).isNotEmpty;
+    }
+    return switch (action) {
+      ShrineAction.knowledge => knowledge < AutomaInstructionCard.maxKnowledge,
+      ShrineAction.sickle => !sickleAmulet.atLimit,
+      _ => true,
+    };
+  }
+
+  Future<void> resolveShrineAction() async {
+    if (!pendingShrineAction || executingShrineCard != null) return;
+    final dieIndex = selectedDice.length - 1;
+
+    if (shrineAction == null) {
+      final result = await showDialog<ShrineActionResult>(
+        context: context,
+        builder: (_) => ShrineActionDialog(
+          limit: widget.playerCount,
+          random: widget.random,
+          canExecute: canExecuteShrineAction,
+        ),
+      );
+      if (!mounted || result == null) return;
+      setState(() {
+        shrineAction = result.action;
+        if (result.action == null) pendingShrineAction = false;
+      });
+    }
+
+    final action = shrineAction;
+    if (action == null) return;
+    setState(() => executingShrineCard = action.card);
+    try {
+      switch (action) {
+        case ShrineAction.provisions:
+          chooseKnowledgeProvision(KnowledgeProvisionChoice.provisions);
+        case ShrineAction.knowledge:
+          chooseKnowledgeProvision(KnowledgeProvisionChoice.knowledge);
+        case ShrineAction.sickle:
+          advanceSickle();
+        case ShrineAction.amulet:
+          await chooseAmulet();
+          if (!mounted || (!usedSickle && placedGem == null)) return;
+        default:
+          await chooseSupply(action.supply!);
+          if (!mounted || supplySelection == null) return;
+      }
+      setState(() {
+        final resolved = usedSickle ? ShrineAction.sickle : action;
+        final selection = supplySelection;
+        dieActions[dieIndex] = ShrineActionOutcome(
+          action: resolved,
+          item: selection?.item,
+          value: switch (resolved) {
+            ShrineAction.knowledge => knowledge,
+            ShrineAction.sickle => sickleAmulet.sickle,
+            ShrineAction.amulet => placedGem,
+            ShrineAction.standingStone ||
+            ShrineAction.runestone => supply.stoneCount(resolved.supply!),
+            _ => null,
+          },
+        );
+        pendingShrineAction = false;
+        shrineAction = null;
+      });
+    } finally {
+      if (mounted) setState(() => executingShrineCard = null);
+    }
   }
 }

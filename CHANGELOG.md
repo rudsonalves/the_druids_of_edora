@@ -1,5 +1,43 @@
 # Changelog
 
+## 2026/11/26 - ajustes/cartas-02
+
+This change adds a shrine action flow to the card screen. Players can identify available actions at a shrine, draw one, complete it, and see its outcome beside the selected die. Setup now records the player count used to limit shrine action choices.
+
+1. **`lib/features/setup/setup_page.dart`**
+
+   * Added a required choice of two to four players, displayed it in the setup summary, and passed it to the card screen.
+   * Reorganized setup helpers and adjusted the automa form dialog button alignment.
+
+2. **`lib/features/cards/cards_page.dart` and `widgets/shrine_action_dialog.dart`**
+
+   * Added a dialog for marking available shrine actions up to the player count and randomly selecting one.
+   * Added availability checks, action execution, and per-die outcome tracking.
+   * Prevented card advancement and player connection completion while an action is pending, with an option to mark an unavailable action.
+
+3. **`lib/features/cards/action_supply.dart`, `automa_card.dart`, and `widgets/automa_instruction_card.dart`**
+
+   * Exposed unshuffled available supply items for action checks while retaining shuffled draws.
+   * Identified cards that use shrine actions and extracted deck refill logic.
+   * Added the shrine action control and displayed resolved action details beside selected dice.
+
+4. **`lib/l10n` and `assets/actions/any-action.png`**
+
+   * Added English and Portuguese text for player setup and shrine actions, along with the generic action image.
+   * Changed the available stone count display to a fraction out of six.
+
+5. **Android and iOS app icons**
+
+   * Updated launcher icon images across Android densities and iOS icon sizes.
+
+6. **`test/widget_test.dart`**
+
+   * Updated setup tests to select a player count and card tests to resolve pending actions.
+   * Added checks that advancement stays disabled until shrine actions are resolved.
+
+### Conclusion
+
+The card flow now supports shrine actions with choices limited by player count and records their results beside the dice. The change also updates setup, localized text, app imagery, and widget coverage.
 ## 2026/11/26 - ajustes/cartas-01
 
 This change expands Malfurion’s card actions with supply tracking, sickle and amulet progress, and knowledge progress. It also moves dice rolling into setup and updates the game flow, localization, and tests.
