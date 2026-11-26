@@ -10,8 +10,29 @@ enum AutomaCard {
   knowledgeProvision,
 }
 
+enum AutomaForm {
+  druid,
+  bear;
+
+  List<AutomaCard> get extraCards => switch (this) {
+    druid => [
+      AutomaCard.surroundFire,
+      AutomaCard.sickleAmulet,
+      AutomaCard.tabletMistletoe,
+    ],
+    bear => [
+      AutomaCard.competition,
+      AutomaCard.standingStone,
+      AutomaCard.knowledgeProvision,
+    ],
+  };
+}
+
 class AutomaDeck {
-  AutomaDeck(this.random);
+  AutomaDeck(this.random, {required AutomaForm form})
+    : _cards = [...AutomaCard.values, ...form.extraCards];
+
+  final List<AutomaCard> _cards;
 
   final Random random;
   final List<AutomaCard> _remaining = [];
@@ -31,9 +52,11 @@ class AutomaDeck {
 
   AutomaCard draw({bool hasAvailablePairs = true}) {
     if (needsShuffle(hasAvailablePairs: hasAvailablePairs)) {
-      final nextCycle =
-          AutomaCard.values.where((card) => !_remaining.contains(card)).toList()
-            ..shuffle(random);
+      final nextCycle = List<AutomaCard>.of(_cards);
+      for (final deferred in _remaining) {
+        nextCycle.remove(deferred);
+      }
+      nextCycle.shuffle(random);
       _remaining.insertAll(0, nextCycle);
     }
     final index = _remaining.lastIndexWhere(

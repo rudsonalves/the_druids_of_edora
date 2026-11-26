@@ -69,6 +69,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Aguardando a definição do par e da quantidade de dados.';
 
   @override
+  String get movementMaximum => 'Máx.';
+
+  @override
   String get movementLabel => 'Movimento';
 
   @override
@@ -260,4 +263,17 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get playerConnectedDolmens => 'Já conectado';
+
+  @override
+  String get chooseAutomaForm => 'Forma de Malfurion';
+
+  @override
+  String get druidForm => 'Forma Druida';
+
+  @override
+  String get bearForm => 'Forma Urso';
+
+  @override
+  String get automaFormHint =>
+      'A forma determina quais ações aparecem mais vezes no baralho de 10 cartas.';
 }

@@ -24,6 +24,7 @@
   "chosenDolmens": "Dolmens",
   "connectingDolmens": "Connecting the two dolmens",
   "waitingForDolmens": "Waiting for the pair and die count to be set.",
+  "movementMaximum": "max.",
   "movementLabel": "Movement",
   "dieLabel": "Die",
   "actionLabel": "Action",
@@ -100,5 +101,9 @@
   "dolmenGreen": "Green",
   "dolmenBrown": "Brown",
   "dolmenBlack": "Black",
-  "playerConnectedDolmens": "Connected"
+  "playerConnectedDolmens": "Connected",
+  "chooseAutomaForm": "Malfurion’s form",
+  "druidForm": "Druid form",
+  "bearForm": "Bear form",
+  "automaFormHint": "The form determines which actions appear more often in the 10-card deck."
 }

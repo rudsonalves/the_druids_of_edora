@@ -6,6 +6,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'automata_color.dart';
 import '../dice/dice_page.dart';
+import '../cards/automa_card.dart';
 import 'widgets/setup_instruction.dart';
 
 class SetupPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class SetupPage extends StatefulWidget {
 
 class _SetupPageState extends State<SetupPage> {
   AutomataColor? selectedColor;
+  AutomaForm selectedForm = AutomaForm.druid;
 
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
@@ -99,6 +101,30 @@ class _SetupPageState extends State<SetupPage> {
             SetupInstruction(number: 2, text: l10n.setupPieces),
             SetupInstruction(number: 3, text: l10n.unusedPieces),
             SetupInstruction(number: 4, text: l10n.startingShrine),
+            const SizedBox(height: 20),
+            Text(
+              l10n.chooseAutomaForm,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(l10n.automaFormHint),
+            Wrap(
+              spacing: 8,
+              children: [
+                ChoiceChip(
+                  label: Text(l10n.druidForm),
+                  selected: selectedForm == AutomaForm.druid,
+                  onSelected: (_) =>
+                      setState(() => selectedForm = AutomaForm.druid),
+                ),
+                ChoiceChip(
+                  label: Text(l10n.bearForm),
+                  selected: selectedForm == AutomaForm.bear,
+                  onSelected: (_) =>
+                      setState(() => selectedForm = AutomaForm.bear),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -109,8 +135,11 @@ class _SetupPageState extends State<SetupPage> {
               ? null
               : () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) =>
-                        DicePage(color: color, random: widget.random),
+                    builder: (_) => DicePage(
+                      color: color,
+                      form: selectedForm,
+                      random: widget.random,
+                    ),
                   ),
                 ),
           icon: const Icon(Icons.arrow_forward),

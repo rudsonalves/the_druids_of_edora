@@ -5,14 +5,21 @@ import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
 
+import '../cards/automa_card.dart';
 import '../cards/cards_page.dart';
 import '../setup/automata_color.dart';
 import '../setup/widgets/die_face.dart';
 
 class DicePage extends StatefulWidget {
-  const DicePage({super.key, required this.color, required this.random});
+  const DicePage({
+    super.key,
+    required this.color,
+    required this.form,
+    required this.random,
+  });
 
   final AutomataColor color;
+  final AutomaForm form;
   final Random random;
 
   @override
@@ -110,6 +117,7 @@ class _DicePageState extends State<DicePage> {
                   MaterialPageRoute<void>(
                     builder: (_) => CardsPage(
                       color: widget.color,
+                      form: widget.form,
                       dice: List.unmodifiable(dice),
                       random: widget.random,
                     ),

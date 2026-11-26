@@ -15,11 +15,13 @@ class CardsPage extends StatefulWidget {
   const CardsPage({
     super.key,
     required this.color,
+    required this.form,
     required this.dice,
     required this.random,
   });
 
   final AutomataColor color;
+  final AutomaForm form;
   final List<int> dice;
   final Random random;
 
@@ -28,7 +30,7 @@ class CardsPage extends StatefulWidget {
 }
 
 class _CardsPageState extends State<CardsPage> {
-  late final AutomaDeck deck = AutomaDeck(widget.random);
+  late final AutomaDeck deck = AutomaDeck(widget.random, form: widget.form);
   final ScrollController scrollController = ScrollController();
   late final List<int> availableDice = List.of(widget.dice)..sort();
   AutomaCard? currentCard;

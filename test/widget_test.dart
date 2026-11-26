@@ -95,7 +95,7 @@ void main() {
     expect(find.byType(AutomaInstructionCard), findsOneWidget);
   });
 
-  testWidgets('draws seven cards and keeps the dice in a bottom row', (
+  testWidgets('draws ten cards and keeps the dice in a bottom row', (
     tester,
   ) async {
     await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
@@ -118,19 +118,19 @@ void main() {
     expect(find.byType(AutomaInstructionCard), findsOneWidget);
     expect(find.byKey(const Key('selected-die-0')), findsOneWidget);
     expect(find.text('Dados disponíveis: 12'), findsOneWidget);
-    for (var number = 2; number <= 7; number++) {
+    for (var number = 2; number <= 10; number++) {
       await tester.tap(find.text('Próxima carta'));
       await tester.pumpAndSettle();
       await completeDolmenDialog(tester, 1);
     }
-    expect(find.text('Dados disponíveis: 6'), findsOneWidget);
+    expect(find.text('Dados disponíveis: 3'), findsOneWidget);
 
     await tester.tap(find.text('Próxima carta'));
     await tester.pumpAndSettle();
     await completeDolmenDialog(tester, 1);
-    expect(find.text('Dados disponíveis: 5'), findsOneWidget);
+    expect(find.text('Dados disponíveis: 2'), findsOneWidget);
 
-    for (var number = 9; number <= 13; number++) {
+    for (var number = 12; number <= 13; number++) {
       await tester.tap(find.text('Próxima carta'));
       await tester.pumpAndSettle();
       await completeDolmenDialog(tester, 1);
@@ -159,7 +159,7 @@ void main() {
     await tester.pumpAndSettle();
     for (
       var attempt = 1;
-      find.byType(DolmenSetupDialog).evaluate().isEmpty && attempt < 7;
+      find.byType(DolmenSetupDialog).evaluate().isEmpty && attempt < 10;
       attempt++
     ) {
       await tester.tap(find.text('Próxima carta'));

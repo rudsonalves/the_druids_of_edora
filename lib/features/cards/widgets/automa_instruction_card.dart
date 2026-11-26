@@ -26,6 +26,20 @@ class AutomaInstructionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final distance = card.movementDistance;
+    final actionIcons = switch (card) {
+      AutomaCard.standingStone => ['erect-standing-stone', 'erect-runestone'],
+      AutomaCard.tabletMistletoe => [
+        'take-stone-tablet',
+        'take-and-use-mistletoe',
+      ],
+      AutomaCard.knowledgeProvision => [
+        'move-knowledge-marker-forward',
+        'take-provision-or-die',
+      ],
+      AutomaCard.sickleAmulet => ['move-sickle-forward', 'add-gem-to-amulet'],
+      _ => const <String>[],
+    };
     final theme = Theme.of(context);
     return Card(
       color: const Color(0xFF214537),
@@ -89,7 +103,46 @@ class AutomaInstructionCard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            _CardSection(title: l10n.movementLabel, body: card.movement(l10n)),
+            _CardSection(
+              title: l10n.movementLabel,
+              body: card.movement(l10n),
+              showBody: distance == null,
+              child: distance == null
+                  ? null
+                  : Tooltip(
+                      message: card.movement(l10n),
+                      child: ExcludeSemantics(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          spacing: 6,
+                          children: [
+                            if (l10n.localeName.startsWith('pt'))
+                              Text(l10n.movementMaximum),
+                            Stack(
+                              alignment: const Alignment(0, 0.35),
+                              children: [
+                                Image.asset(
+                                  'assets/icons/bag.png',
+                                  width: 48,
+                                  height: 48,
+                                ),
+                                Text(
+                                  '$distance',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (!l10n.localeName.startsWith('pt'))
+                              Text(l10n.movementMaximum),
+                          ],
+                        ),
+                      ),
+                    ),
+            ),
             _CardSection(
               title: l10n.dieLabel,
               showBody: false,
@@ -115,7 +168,25 @@ class AutomaInstructionCard extends StatelessWidget {
                       ],
                     ),
             ),
-            _CardSection(title: l10n.actionLabel, body: card.action(l10n)),
+            _CardSection(
+              title: l10n.actionLabel,
+              body: card.action(l10n),
+              child: actionIcons.isEmpty
+                  ? null
+                  : Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final icon in actionIcons)
+                          Image.asset(
+                            'assets/actions/$icon.png',
+                            width: 48,
+                            height: 48,
+                            excludeFromSemantics: true,
+                          ),
+                      ],
+                    ),
+            ),
             if (card.tieBreak(l10n) case final String tieBreak)
               _CardSection(title: l10n.tieBreakLabel, body: tieBreak),
           ],

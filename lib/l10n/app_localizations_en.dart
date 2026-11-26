@@ -69,6 +69,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Waiting for the pair and die count to be set.';
 
   @override
+  String get movementMaximum => 'max.';
+
+  @override
   String get movementLabel => 'Movement';
 
   @override
@@ -261,4 +264,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playerConnectedDolmens => 'Connected';
+
+  @override
+  String get chooseAutomaForm => 'Malfurion’s form';
+
+  @override
+  String get druidForm => 'Druid form';
+
+  @override
+  String get bearForm => 'Bear form';
+
+  @override
+  String get automaFormHint =>
+      'The form determines which actions appear more often in the 10-card deck.';
 }

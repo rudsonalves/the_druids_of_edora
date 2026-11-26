@@ -22,10 +22,15 @@ extension AutomaCardLocalization on AutomaCard {
     AutomaCard.knowledgeProvision => l10n.cardKnowledgeProvisionTarget,
   };
 
-  String movement(AppLocalizations l10n) => switch (this) {
-    AutomaCard.connectDolmens => l10n.cardConnectDolmensMovement,
-    AutomaCard.competition ||
-    AutomaCard.surroundFire => l10n.cardCompetitionMovement,
+  int? get movementDistance => switch (this) {
+    AutomaCard.connectDolmens => null,
+    AutomaCard.competition || AutomaCard.surroundFire => 6,
+    _ => 5,
+  };
+
+  String movement(AppLocalizations l10n) => switch (movementDistance) {
+    null => l10n.cardConnectDolmensMovement,
+    6 => l10n.cardCompetitionMovement,
     _ => l10n.cardDefaultMovement,
   };
 

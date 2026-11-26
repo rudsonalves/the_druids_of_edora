@@ -17,6 +17,7 @@
   "chosenDolmens": "Dolmens",
   "connectingDolmens": "Conectando os dois dolmens",
   "waitingForDolmens": "Aguardando a definição do par e da quantidade de dados.",
+  "movementMaximum": "Máx.",
   "movementLabel": "Movimento",
   "dieLabel": "Dado",
   "actionLabel": "Ação",
@@ -73,5 +74,9 @@
   "dolmenGreen": "Verde",
   "dolmenBrown": "Marrom",
   "dolmenBlack": "Preto",
-  "playerConnectedDolmens": "Já conectado"
+  "playerConnectedDolmens": "Já conectado",
+  "chooseAutomaForm": "Forma de Malfurion",
+  "druidForm": "Forma Druida",
+  "bearForm": "Forma Urso",
+  "automaFormHint": "A forma determina quais ações aparecem mais vezes no baralho de 10 cartas."
 }

@@ -206,6 +206,12 @@ abstract class AppLocalizations {
   /// **'Waiting for the pair and die count to be set.'**
   String get waitingForDolmens;
 
+  /// No description provided for @movementMaximum.
+  ///
+  /// In en, this message translates to:
+  /// **'max.'**
+  String get movementMaximum;
+
   /// No description provided for @movementLabel.
   ///
   /// In en, this message translates to:
@@ -547,6 +553,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connected'**
   String get playerConnectedDolmens;
+
+  /// No description provided for @chooseAutomaForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Malfurion’s form'**
+  String get chooseAutomaForm;
+
+  /// No description provided for @druidForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Druid form'**
+  String get druidForm;
+
+  /// No description provided for @bearForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear form'**
+  String get bearForm;
+
+  /// No description provided for @automaFormHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The form determines which actions appear more often in the 10-card deck.'**
+  String get automaFormHint;
 }
 
 class _AppLocalizationsDelegate
