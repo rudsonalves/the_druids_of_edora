@@ -132,6 +132,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.';
 
   @override
+  String get restartSetup => 'Restart';
+
+  @override
   String get rollDice => 'Roll dice';
 
   @override
@@ -413,4 +416,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drawShrineAction => 'Draw action';
+
+  @override
+  String setupPlayersShort(int count) {
+    return '$count pl.';
+  }
 }

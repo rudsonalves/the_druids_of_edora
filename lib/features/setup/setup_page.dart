@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../cards/automa_card.dart';
 import '../cards/cards_page.dart';
 import 'automata_color.dart';
+import 'widgets/automa_form_badge.dart';
 import 'widgets/die_face.dart';
 import 'widgets/setup_instruction.dart';
 
@@ -53,7 +54,7 @@ class _SetupPageState extends State<SetupPage> {
     final players = playerCount;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('The Druids of Edora'),
+        title: const Text('Druids of Edora'),
         actions: [if (form != null) languageMenu(l10n)],
       ),
       body: SafeArea(
@@ -68,20 +69,31 @@ class _SetupPageState extends State<SetupPage> {
             Text(l10n.unofficialSetup),
             if (color != null && form != null && players != null) ...[
               const SizedBox(height: 16),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
+              Row(
+                spacing: 12,
                 children: [
-                  Chip(
-                    avatar: CircleAvatar(backgroundColor: color.value),
-                    label: Text(colorName(color)),
-                  ),
-                  Chip(
-                    label: Text(
-                      form == AutomaForm.druid ? l10n.druidForm : l10n.bearForm,
+                  Tooltip(
+                    message: colorName(color),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: color.value,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                  Chip(label: Text(l10n.setupPlayersSummary(players))),
+                  Tooltip(
+                    message: form == AutomaForm.druid
+                        ? l10n.druidForm
+                        : l10n.bearForm,
+                    child: AutomaFormBadge(form: form),
+                  ),
+                  Semantics(
+                    label: l10n.setupPlayersSummary(players),
+                    excludeSemantics: true,
+                    child: Text(l10n.setupPlayersShort(players)),
+                  ),
                 ],
               ),
               if (dice.isNotEmpty) ...[
@@ -148,30 +160,48 @@ class _SetupPageState extends State<SetupPage> {
       ),
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-        child: FilledButton.icon(
-          onPressed:
-              color == null || form == null || players == null || isRolling
-              ? null
-              : dice.isEmpty
-              ? startRoll
-              : () => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute<void>(
-                    builder: (_) => CardsPage(
-                      color: color,
-                      form: form,
-                      playerCount: players,
-                      dice: List.unmodifiable(dice),
-                      random: widget.random,
-                    ),
-                  ),
-                  (_) => false,
+        child: Row(
+          spacing: 8,
+          children: [
+            Expanded(
+              child: FilledButton.icon(
+                onPressed:
+                    color == null ||
+                        form == null ||
+                        players == null ||
+                        isRolling
+                    ? null
+                    : dice.isEmpty
+                    ? startRoll
+                    : () => Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute<void>(
+                          builder: (_) => CardsPage(
+                            color: color,
+                            form: form,
+                            playerCount: players,
+                            dice: List.unmodifiable(dice),
+                            random: widget.random,
+                          ),
+                        ),
+                        (_) => false,
+                      ),
+                icon: Icon(
+                  dice.isEmpty || isRolling
+                      ? Icons.casino
+                      : Icons.arrow_forward,
                 ),
-          icon: Icon(
-            dice.isEmpty || isRolling ? Icons.casino : Icons.arrow_forward,
-          ),
-          label: Text(
-            dice.isEmpty || isRolling ? l10n.rollDice : l10n.continueToCards,
-          ),
+                label: Text(
+                  dice.isEmpty || isRolling
+                      ? l10n.rollDice
+                      : l10n.continueToCards,
+                ),
+              ),
+            ),
+            OutlinedButton(
+              onPressed: players == null ? null : restartSetup,
+              child: Text(l10n.restartSetup),
+            ),
+          ],
         ),
       ),
     );
@@ -215,6 +245,18 @@ class _SetupPageState extends State<SetupPage> {
       PopupMenuItem(value: Locale('en'), child: Text('English')),
     ],
   );
+
+  Future<void> restartSetup() async {
+    rollTimer?.cancel();
+    setState(() {
+      selectedColor = null;
+      selectedForm = null;
+      playerCount = null;
+      dice = const [];
+      isRolling = false;
+    });
+    await chooseSetup();
+  }
 
   Future<void> chooseSetup() async {
     final color = await showDialog<AutomataColor>(

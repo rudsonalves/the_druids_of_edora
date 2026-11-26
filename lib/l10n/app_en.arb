@@ -53,6 +53,7 @@
   "setupPieces": "Take all 13 dice, the druid pawn, knowledge marker, 6 standing stones, and 6 runestones in the chosen color.",
   "unusedPieces": "Malfurion uses no provisions, player board, tablets, amulet, or potions.",
   "startingShrine": "You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.",
+  "restartSetup": "Restart",
   "rollDice": "Roll dice",
   "dieSemantics": "Die {index}: {value}",
   "@dieSemantics": {
@@ -204,5 +205,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "setupPlayersShort": "{count} pl.",
+  "@setupPlayersShort": {"placeholders": {"count": {"type": "int"}}}
 }

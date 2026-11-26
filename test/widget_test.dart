@@ -121,8 +121,8 @@ void main() {
     expect(find.text('Número de jogadores'), findsOneWidget);
     await tester.tap(find.text('2'));
     await tester.pumpAndSettle();
-    expect(find.text('Forma Druida'), findsOneWidget);
-    expect(find.text('2 jogadores'), findsOneWidget);
+    expect(find.byTooltip('Forma Druida'), findsOneWidget);
+    expect(find.text('2 jgs'), findsOneWidget);
     await tester.tap(find.text('Rolar dados'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 250));
@@ -141,6 +141,17 @@ void main() {
     expect(values, hasLength(13));
     expect(values, orderedEquals([...values]..sort()));
     expect(values.every((value) => value >= 1 && value <= 6), isTrue);
+
+    final start = find.text('Iniciar a partida');
+    final restart = find.text('Reiniciar');
+    expect(
+      tester.getCenter(start).dy,
+      closeTo(tester.getCenter(restart).dy, 1),
+    );
+    await tester.tap(restart);
+    await tester.pumpAndSettle();
+    expect(find.text('Selecione a cor de Malfurion'), findsOneWidget);
+    expect(find.byType(DieFace), findsNothing);
   });
 
   testWidgets('supports English from setup through the cards', (tester) async {

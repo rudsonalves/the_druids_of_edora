@@ -132,6 +132,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para Malfurion.';
 
   @override
+  String get restartSetup => 'Reiniciar';
+
+  @override
   String get rollDice => 'Rolar dados';
 
   @override
@@ -413,4 +416,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get drawShrineAction => 'Sortear ação';
+
+  @override
+  String setupPlayersShort(int count) {
+    return '$count jgs';
+  }
 }

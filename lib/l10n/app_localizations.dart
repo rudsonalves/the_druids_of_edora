@@ -320,6 +320,12 @@ abstract class AppLocalizations {
   /// **'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.'**
   String get startingShrine;
 
+  /// No description provided for @restartSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get restartSetup;
+
   /// No description provided for @rollDice.
   ///
   /// In en, this message translates to:
@@ -799,6 +805,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draw action'**
   String get drawShrineAction;
+
+  /// No description provided for @setupPlayersShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pl.'**
+  String setupPlayersShort(int count);
 }
 
 class _AppLocalizationsDelegate

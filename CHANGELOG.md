@@ -1,5 +1,35 @@
 # Changelog
 
+## 2026/11/26 - ajustes/cartas-03
+
+This change updates the app’s displayed name and refines the setup screen. It adds a restart action, replaces the setup chips with a compact summary, and updates localization and widget coverage for the new UI.
+
+1. **AndroidManifest.xml, Info.plist, and lib/app/edora_app.dart**
+
+   * Changed the Android label, iOS display name, and Flutter app title to “Druids of Edora”.
+
+2. **lib/features/setup**
+
+   * Updated the app bar title and replaced the color, form, and player chips with a color swatch, form badge, and abbreviated player count.
+   * Added tooltips for the color and form, plus an accessibility label for the player count.
+   * Added a restart button that cancels an active roll, clears the setup selections and dice, and reopens setup selection.
+
+3. **lib/features/setup/widgets/automa_form_badge.dart**
+
+   * Added a painted badge with distinct druid and bear designs.
+
+4. **lib/l10n**
+
+   * Added English and Portuguese strings for the restart action and abbreviated player count, including generated localization methods.
+
+5. **test/widget_test.dart**
+
+   * Updated setup assertions for the tooltip and abbreviated player count.
+   * Added checks for the restart button’s placement and for clearing dice when setup restarts.
+
+### Conclusion
+
+The setup screen now presents selections more compactly and lets users restart the flow. The app name is consistent across Flutter, Android, and iOS.
 ## 2026/11/26 - ajustes/cartas-02
 
 This change adds a shrine action flow to the card screen. Players can identify available actions at a shrine, draw one, complete it, and see its outcome beside the selected die. Setup now records the player count used to limit shrine action choices.

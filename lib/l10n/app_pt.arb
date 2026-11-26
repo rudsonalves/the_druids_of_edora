@@ -36,6 +36,7 @@
   "setupPieces": "Separe os 13 dados, o druida, o marcador de conhecimento, 6 pedras eretas e 6 pedras rúnicas da cor escolhida.",
   "unusedPieces": "Malfurion não usa provisões, tabuleiro individual, tábuas, amuleto ou poções.",
   "startingShrine": "Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para Malfurion.",
+  "restartSetup": "Reiniciar",
   "rollDice": "Rolar dados",
   "dieSemantics": "Dado {index}: {value}",
   "malfurionDice": "Dados do Malfurion",
@@ -115,5 +116,6 @@
   "executeShrineAction": "Executar ação",
   "shrineActionTitle": "Ações do santuário",
   "shrineActionHelp": "Localize o santuário indicado e marque até {limit} ações disponíveis nele.",
-  "drawShrineAction": "Sortear ação"
+  "drawShrineAction": "Sortear ação",
+  "setupPlayersShort": "{count} jgs"
 }

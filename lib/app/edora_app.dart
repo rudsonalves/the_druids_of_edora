@@ -20,7 +20,7 @@ class _EdoraAppState extends State<EdoraApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'The Druids of Edora',
+      title: 'Druids of Edora',
       debugShowCheckedModeBanner: false,
       locale: selectedLocale ?? const Locale('pt', 'BR'),
       supportedLocales: AppLocalizations.supportedLocales,
