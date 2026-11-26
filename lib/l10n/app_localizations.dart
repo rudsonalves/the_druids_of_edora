@@ -320,11 +320,11 @@ abstract class AppLocalizations {
   /// **'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.'**
   String get startingShrine;
 
-  /// No description provided for @continueToDice.
+  /// No description provided for @rollDice.
   ///
   /// In en, this message translates to:
-  /// **'Continue to dice'**
-  String get continueToDice;
+  /// **'Roll dice'**
+  String get rollDice;
 
   /// No description provided for @dieSemantics.
   ///
@@ -359,7 +359,7 @@ abstract class AppLocalizations {
   /// No description provided for @continueToCards.
   ///
   /// In en, this message translates to:
-  /// **'Continue to cards'**
+  /// **'Start game'**
   String get continueToCards;
 
   /// No description provided for @cardCompetitionTitle.
@@ -476,23 +476,17 @@ abstract class AppLocalizations {
   /// **'Most frequent value; on a tie, randomly choose among tied values.'**
   String get cardDefaultDie;
 
-  /// No description provided for @cardStandingStoneAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Standing stone or runestone at the target shrine.'**
-  String get cardStandingStoneAction;
-
   /// No description provided for @cardSickleAmuletAction.
   ///
   /// In en, this message translates to:
   /// **'Sickle or amulet at the target shrine.'**
   String get cardSickleAmuletAction;
 
-  /// No description provided for @cardTabletMistletoeAction.
+  /// No description provided for @chooseShrineAction.
   ///
   /// In en, this message translates to:
-  /// **'Tablet or mistletoe at the target shrine.'**
-  String get cardTabletMistletoeAction;
+  /// **'Choose the least expensive path. Then prefer an empty shrine. If more than one option remains, the player chooses.'**
+  String get chooseShrineAction;
 
   /// No description provided for @cardKnowledgeProvisionAction.
   ///
@@ -577,6 +571,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The form determines which actions appear more often in the 10-card deck.'**
   String get automaFormHint;
+
+  /// No description provided for @chooseSupplyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Select one of the actions:'**
+  String get chooseSupplyAction;
+
+  /// No description provided for @chooseTablet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a tablet'**
+  String get chooseTablet;
+
+  /// No description provided for @choosePotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a potion'**
+  String get choosePotion;
+
+  /// No description provided for @noSupplyAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No items available for this action.'**
+  String get noSupplyAvailable;
+
+  /// No description provided for @tabletQueueHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the first available tablet in the displayed order. Confirming removes one copy of the selected tablet and one copy of each earlier tablet. Each tablet starts with two copies.'**
+  String get tabletQueueHelp;
+
+  /// No description provided for @potionQueueHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the first available potion in the displayed order. Confirming removes the selected potion and all earlier ones from future draws.'**
+  String get potionQueueHelp;
+
+  /// No description provided for @tabletOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Tablet {id}'**
+  String tabletOption(int id);
+
+  /// No description provided for @potionOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost {cost} potion, variant {variant}'**
+  String potionOption(int cost, int variant);
+
+  /// No description provided for @chooseStandingStone.
+  ///
+  /// In en, this message translates to:
+  /// **'Erect a standing stone'**
+  String get chooseStandingStone;
+
+  /// No description provided for @chooseRunestone.
+  ///
+  /// In en, this message translates to:
+  /// **'Erect a runestone'**
+  String get chooseRunestone;
+
+  /// No description provided for @stonesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces available: {count}'**
+  String stonesAvailable(int count);
+
+  /// No description provided for @tabletInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Tablets'**
+  String get tabletInventory;
+
+  /// No description provided for @potionInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Potions'**
+  String get potionInventory;
+
+  /// No description provided for @stoneInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Stones'**
+  String get stoneInventory;
+
+  /// No description provided for @potionCostHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Mistletoe cost {cost}'**
+  String potionCostHeading(int cost);
+
+  /// No description provided for @removeInventoryPiece.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove one piece'**
+  String get removeInventoryPiece;
+
+  /// No description provided for @restoreInventoryPiece.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore one piece'**
+  String get restoreInventoryPiece;
+
+  /// No description provided for @closeInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeInventory;
+
+  /// No description provided for @finishGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish game'**
+  String get finishGame;
+
+  /// No description provided for @advanceSickle.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance the sickle'**
+  String get advanceSickle;
+
+  /// No description provided for @chooseAmulet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an amulet slot'**
+  String get chooseAmulet;
+
+  /// No description provided for @amuletSlotHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an empty slot in the position you can reach.'**
+  String get amuletSlotHelp;
+
+  /// No description provided for @amuletUseSickle.
+  ///
+  /// In en, this message translates to:
+  /// **'Position II is full: use the sickle'**
+  String get amuletUseSickle;
+
+  /// No description provided for @sickleProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Sickle: {value}/13'**
+  String sickleProgress(int value);
+
+  /// No description provided for @sickleLimitHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The sickle has reached 13. Choose the amulet.'**
+  String get sickleLimitHelp;
+
+  /// No description provided for @setupColorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Malfurion’s color'**
+  String get setupColorTitle;
+
+  /// No description provided for @bearFormDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear form is the more difficult option.'**
+  String get bearFormDifficulty;
+
+  /// No description provided for @chooseProvisions.
+  ///
+  /// In en, this message translates to:
+  /// **'Provisions'**
+  String get chooseProvisions;
+
+  /// No description provided for @advanceKnowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance knowledge'**
+  String get advanceKnowledge;
+
+  /// No description provided for @knowledgeProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge: {value}/{max}'**
+  String knowledgeProgress(int value, int max);
 }
 
 class _AppLocalizationsDelegate

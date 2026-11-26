@@ -132,7 +132,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para Malfurion.';
 
   @override
-  String get continueToDice => 'Continuar para os dados';
+  String get rollDice => 'Rolar dados';
 
   @override
   String dieSemantics(int index, int value) {
@@ -153,7 +153,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Estes dados serão usados automaticamente pelas cartas durante a partida.';
 
   @override
-  String get continueToCards => 'Continuar para as cartas';
+  String get continueToCards => 'Iniciar a partida';
 
   @override
   String get cardCompetitionTitle => 'Competição';
@@ -222,14 +222,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Valor mais frequente; em caso de empate, sorteie entre os valores empatados.';
 
   @override
-  String get cardStandingStoneAction =>
-      'Pedra ereta ou pedra rúnica do santuário alvo.';
-
-  @override
   String get cardSickleAmuletAction => 'Foice ou amuleto do santuário alvo.';
 
   @override
-  String get cardTabletMistletoeAction => 'Tábua ou visco do santuário alvo.';
+  String get chooseShrineAction =>
+      'Escolha o caminho menos caro. Depois, dê preferência a um santuário vazio. Se ainda houver mais de uma opção, o jogador escolhe.';
 
   @override
   String get cardKnowledgeProvisionAction =>
@@ -276,4 +273,109 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get automaFormHint =>
       'A forma determina quais ações aparecem mais vezes no baralho de 10 cartas.';
+
+  @override
+  String get chooseSupplyAction => 'Selecione uma das ações:';
+
+  @override
+  String get chooseTablet => 'Escolher tábua';
+
+  @override
+  String get choosePotion => 'Escolher poção';
+
+  @override
+  String get noSupplyAvailable => 'Nenhum item disponível para esta ação.';
+
+  @override
+  String get tabletQueueHelp =>
+      'Selecione a primeira tábua disponível na ordem exibida. Ao confirmar, descontamos uma cópia da tábua escolhida e uma de cada tábua anterior. Cada tábua começa com duas cópias.';
+
+  @override
+  String get potionQueueHelp =>
+      'Selecione a primeira poção disponível na ordem exibida. Ao confirmar, a poção escolhida e todas as anteriores saem dos próximos sorteios.';
+
+  @override
+  String tabletOption(int id) {
+    return 'Tábua $id';
+  }
+
+  @override
+  String potionOption(int cost, int variant) {
+    return 'Poção de custo $cost, variante $variant';
+  }
+
+  @override
+  String get chooseStandingStone => 'Erguer pedra ereta';
+
+  @override
+  String get chooseRunestone => 'Erguer pedra rúnica';
+
+  @override
+  String stonesAvailable(int count) {
+    return 'Peças disponíveis: $count';
+  }
+
+  @override
+  String get tabletInventory => 'Tábuas';
+
+  @override
+  String get potionInventory => 'Poções';
+
+  @override
+  String get stoneInventory => 'Pedras';
+
+  @override
+  String potionCostHeading(int cost) {
+    return 'Custo de visgo $cost';
+  }
+
+  @override
+  String get removeInventoryPiece => 'Descontar uma peça';
+
+  @override
+  String get restoreInventoryPiece => 'Restaurar uma peça';
+
+  @override
+  String get closeInventory => 'Fechar';
+
+  @override
+  String get finishGame => 'Encerrar partida';
+
+  @override
+  String get advanceSickle => 'Avançar a foice';
+
+  @override
+  String get chooseAmulet => 'Escolher espaço do amuleto';
+
+  @override
+  String get amuletSlotHelp =>
+      'Selecione um espaço livre na posição ao alcance.';
+
+  @override
+  String get amuletUseSickle => 'Posição II ocupada: usar a foice';
+
+  @override
+  String sickleProgress(int value) {
+    return 'Foice: $value/13';
+  }
+
+  @override
+  String get sickleLimitHelp => 'A foice chegou a 13. Escolha o amuleto.';
+
+  @override
+  String get setupColorTitle => 'Selecione a cor de Malfurion';
+
+  @override
+  String get bearFormDifficulty => 'A Forma Urso é a mais difícil.';
+
+  @override
+  String get chooseProvisions => 'Provisões';
+
+  @override
+  String get advanceKnowledge => 'Avançar conhecimento';
+
+  @override
+  String knowledgeProgress(int value, int max) {
+    return 'Conhecimento: $value/$max';
+  }
 }

@@ -1,11 +1,13 @@
 import '../../l10n/app_localizations.dart';
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
 
 import 'automata_color.dart';
-import '../dice/dice_page.dart';
+import '../cards/cards_page.dart';
+import 'widgets/die_face.dart';
 import '../cards/automa_card.dart';
 import 'widgets/setup_instruction.dart';
 
@@ -25,7 +27,36 @@ class SetupPage extends StatefulWidget {
 
 class _SetupPageState extends State<SetupPage> {
   AutomataColor? selectedColor;
-  AutomaForm selectedForm = AutomaForm.druid;
+  AutomaForm? selectedForm;
+  List<int> dice = const [];
+  Timer? rollTimer;
+  bool isRolling = false;
+
+  List<int> rollDice() =>
+      List.generate(13, (_) => widget.random.nextInt(6) + 1);
+
+  void startRoll() {
+    setState(() {
+      dice = rollDice();
+      isRolling = true;
+    });
+    rollTimer = Timer.periodic(const Duration(milliseconds: 80), (timer) {
+      setState(() {
+        dice = rollDice();
+        if (timer.tick == 12) {
+          timer.cancel();
+          dice.sort();
+          isRolling = false;
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    rollTimer?.cancel();
+    super.dispose();
+  }
 
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
@@ -37,25 +68,96 @@ class _SetupPageState extends State<SetupPage> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) chooseSetup();
+    });
+  }
+
+  Widget languageMenu(AppLocalizations strings) => PopupMenuButton<Locale>(
+    tooltip: strings.language,
+    icon: const Icon(Icons.language),
+    onSelected: widget.onLocaleChanged,
+    itemBuilder: (_) => const [
+      PopupMenuItem(value: Locale('pt', 'BR'), child: Text('Português (BR)')),
+      PopupMenuItem(value: Locale('en'), child: Text('English')),
+    ],
+  );
+
+  Future<void> chooseSetup() async {
+    final color = await showDialog<AutomataColor>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        final strings = AppLocalizations.of(context)!;
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Row(
+              children: [
+                Expanded(child: Text(strings.setupColorTitle)),
+                languageMenu(strings),
+              ],
+            ),
+            content: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final option in AutomataColor.values)
+                  ActionChip(
+                    avatar: CircleAvatar(backgroundColor: option.value),
+                    label: Text(colorName(option)),
+                    onPressed: () => Navigator.pop(context, option),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (!mounted || color == null) return;
+
+    final form = await showDialog<AutomaForm>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        final strings = AppLocalizations.of(context)!;
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Text(strings.chooseAutomaForm),
+            content: Text(strings.bearFormDifficulty),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, AutomaForm.druid),
+                child: Text(strings.druidForm),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, AutomaForm.bear),
+                child: Text(strings.bearForm),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    if (!mounted || form == null) return;
+
+    setState(() {
+      selectedColor = color;
+      selectedForm = form;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final color = selectedColor;
+    final form = selectedForm;
     return Scaffold(
       appBar: AppBar(
         title: const Text('The Druids of Edora'),
-        actions: [
-          PopupMenuButton<Locale>(
-            tooltip: l10n.language,
-            icon: const Icon(Icons.language),
-            onSelected: widget.onLocaleChanged,
-            itemBuilder: (context) => const [
-              PopupMenuItem(
-                value: Locale('pt', 'BR'),
-                child: Text('Português (BR)'),
-              ),
-              PopupMenuItem(value: Locale('en'), child: Text('English')),
-            ],
-          ),
-        ],
+        actions: [if (form != null) languageMenu(l10n)],
       ),
       body: SafeArea(
         child: ListView(
@@ -67,83 +169,109 @@ class _SetupPageState extends State<SetupPage> {
             ),
             const SizedBox(height: 8),
             Text(l10n.unofficialSetup),
-            const SizedBox(height: 24),
-            Text(
-              l10n.chooseColor,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                for (final option in AutomataColor.values)
-                  ChoiceChip(
-                    label: Text(colorName(option)),
-                    avatar: CircleAvatar(
-                      backgroundColor: option.value,
-                      radius: 10,
-                    ),
-                    selected: color == option,
-                    onSelected: (_) => setState(() {
-                      selectedColor = option;
-                    }),
+            if (color != null && form != null) ...[
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  Chip(
+                    avatar: CircleAvatar(backgroundColor: color.value),
+                    label: Text(colorName(color)),
                   ),
-              ],
-            ),
-            const SizedBox(height: 28),
-            Text(
-              l10n.prepareComponents,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 12),
-            SetupInstruction(number: 1, text: l10n.playerCount),
-            SetupInstruction(number: 2, text: l10n.setupPieces),
-            SetupInstruction(number: 3, text: l10n.unusedPieces),
-            SetupInstruction(number: 4, text: l10n.startingShrine),
-            const SizedBox(height: 20),
-            Text(
-              l10n.chooseAutomaForm,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(l10n.automaFormHint),
-            Wrap(
-              spacing: 8,
-              children: [
-                ChoiceChip(
-                  label: Text(l10n.druidForm),
-                  selected: selectedForm == AutomaForm.druid,
-                  onSelected: (_) =>
-                      setState(() => selectedForm = AutomaForm.druid),
+                  Chip(
+                    label: Text(
+                      form == AutomaForm.druid ? l10n.druidForm : l10n.bearForm,
+                    ),
+                  ),
+                ],
+              ),
+              if (dice.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Text(isRolling ? l10n.rollingDice : l10n.sortedDice),
+                const SizedBox(height: 8),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    const spacing = 4.0;
+                    const columns = 7;
+                    final size = min(
+                      42.0,
+                      (constraints.maxWidth - spacing * (columns - 1)) /
+                          columns,
+                    );
+                    return Column(
+                      key: const Key('dice-grid'),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: spacing,
+                      children: [
+                        for (
+                          var start = 0;
+                          start < dice.length;
+                          start += columns
+                        )
+                          Row(
+                            spacing: spacing,
+                            children: [
+                              for (
+                                var index = start;
+                                index < min(start + columns, dice.length);
+                                index++
+                              )
+                                DieFace(
+                                  value: dice[index],
+                                  color: color.value,
+                                  index: index + 1,
+                                  size: size,
+                                ),
+                            ],
+                          ),
+                      ],
+                    );
+                  },
                 ),
-                ChoiceChip(
-                  label: Text(l10n.bearForm),
-                  selected: selectedForm == AutomaForm.bear,
-                  onSelected: (_) =>
-                      setState(() => selectedForm = AutomaForm.bear),
-                ),
+                if (!isRolling) ...[
+                  const SizedBox(height: 8),
+                  Text(l10n.automaticDice),
+                ],
               ],
-            ),
+              const SizedBox(height: 24),
+              Text(
+                l10n.prepareComponents,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 12),
+              SetupInstruction(number: 1, text: l10n.playerCount),
+              SetupInstruction(number: 2, text: l10n.setupPieces),
+              SetupInstruction(number: 3, text: l10n.unusedPieces),
+              SetupInstruction(number: 4, text: l10n.startingShrine),
+            ],
           ],
         ),
       ),
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(20, 12, 20, 16),
         child: FilledButton.icon(
-          onPressed: color == null
+          onPressed: color == null || form == null || isRolling
               ? null
-              : () => Navigator.of(context).push(
+              : dice.isEmpty
+              ? startRoll
+              : () => Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute<void>(
-                    builder: (_) => DicePage(
+                    builder: (_) => CardsPage(
                       color: color,
-                      form: selectedForm,
+                      form: form,
+                      dice: List.unmodifiable(dice),
                       random: widget.random,
                     ),
                   ),
+                  (_) => false,
                 ),
-          icon: const Icon(Icons.arrow_forward),
-          label: Text(l10n.continueToDice),
+          icon: Icon(
+            dice.isEmpty || isRolling ? Icons.casino : Icons.arrow_forward,
+          ),
+          label: Text(
+            dice.isEmpty || isRolling ? l10n.rollDice : l10n.continueToCards,
+          ),
         ),
       ),
     );

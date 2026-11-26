@@ -53,7 +53,7 @@
   "setupPieces": "Take all 13 dice, the druid pawn, knowledge marker, 6 standing stones, and 6 runestones in the chosen color.",
   "unusedPieces": "Malfurion uses no provisions, player board, tablets, amulet, or potions.",
   "startingShrine": "You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.",
-  "continueToDice": "Continue to dice",
+  "rollDice": "Roll dice",
   "dieSemantics": "Die {index}: {value}",
   "@dieSemantics": {
     "placeholders": {
@@ -69,7 +69,7 @@
   "rollingDice": "Rolling 13 dice…",
   "sortedDice": "13 dice sorted from lowest to highest.",
   "automaticDice": "These dice will be used automatically by the cards during the game.",
-  "continueToCards": "Continue to cards",
+  "continueToCards": "Start game",
   "cardCompetitionTitle": "Competition",
   "cardSurroundFireTitle": "Surround a fire",
   "cardStandingStoneTitle": "Standing stone or runestone",
@@ -89,9 +89,8 @@
   "cardCompetitionDie": "Strongest die.",
   "cardKnowledgeProvisionDie": "Weakest die.",
   "cardDefaultDie": "Most frequent value; on a tie, randomly choose among tied values.",
-  "cardStandingStoneAction": "Standing stone or runestone at the target shrine.",
   "cardSickleAmuletAction": "Sickle or amulet at the target shrine.",
-  "cardTabletMistletoeAction": "Tablet or mistletoe at the target shrine.",
+  "chooseShrineAction": "Choose the least expensive path. Then prefer an empty shrine. If more than one option remains, the player chooses.",
   "cardKnowledgeProvisionAction": "Knowledge or provisions at the target shrine.",
   "cardDefaultAction": "Count action spaces clockwise from the top left by the chosen die value.",
   "cardStandingStoneTieBreak": "Target tie: cheapest path, then empty shrine, then player’s choice.",
@@ -105,5 +104,83 @@
   "chooseAutomaForm": "Malfurion’s form",
   "druidForm": "Druid form",
   "bearForm": "Bear form",
-  "automaFormHint": "The form determines which actions appear more often in the 10-card deck."
+  "automaFormHint": "The form determines which actions appear more often in the 10-card deck.",
+  "chooseSupplyAction": "Select one of the actions:",
+  "chooseTablet": "Choose a tablet",
+  "choosePotion": "Choose a potion",
+  "noSupplyAvailable": "No items available for this action.",
+  "tabletQueueHelp": "Select the first available tablet in the displayed order. Confirming removes one copy of the selected tablet and one copy of each earlier tablet. Each tablet starts with two copies.",
+  "potionQueueHelp": "Select the first available potion in the displayed order. Confirming removes the selected potion and all earlier ones from future draws.",
+  "tabletOption": "Tablet {id}",
+  "potionOption": "Cost {cost} potion, variant {variant}",
+  "@tabletOption": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "@potionOption": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      },
+      "variant": {
+        "type": "int"
+      }
+    }
+  },
+  "chooseStandingStone": "Erect a standing stone",
+  "chooseRunestone": "Erect a runestone",
+  "stonesAvailable": "Pieces available: {count}",
+  "@stonesAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabletInventory": "Tablets",
+  "potionInventory": "Potions",
+  "stoneInventory": "Stones",
+  "potionCostHeading": "Mistletoe cost {cost}",
+  "removeInventoryPiece": "Remove one piece",
+  "restoreInventoryPiece": "Restore one piece",
+  "closeInventory": "Close",
+  "@potionCostHeading": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "finishGame": "Finish game",
+  "advanceSickle": "Advance the sickle",
+  "chooseAmulet": "Choose an amulet slot",
+  "amuletSlotHelp": "Select an empty slot in the position you can reach.",
+  "amuletUseSickle": "Position II is full: use the sickle",
+  "sickleProgress": "Sickle: {value}/13",
+  "sickleLimitHelp": "The sickle has reached 13. Choose the amulet.",
+  "@sickleProgress": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "setupColorTitle": "Choose Malfurion’s color",
+  "bearFormDifficulty": "Bear form is the more difficult option.",
+  "chooseProvisions": "Provisions",
+  "advanceKnowledge": "Advance knowledge",
+  "knowledgeProgress": "Knowledge: {value}/{max}",
+  "@knowledgeProgress": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  }
 }

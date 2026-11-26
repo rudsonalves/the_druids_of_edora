@@ -132,7 +132,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.';
 
   @override
-  String get continueToDice => 'Continue to dice';
+  String get rollDice => 'Roll dice';
 
   @override
   String dieSemantics(int index, int value) {
@@ -153,7 +153,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'These dice will be used automatically by the cards during the game.';
 
   @override
-  String get continueToCards => 'Continue to cards';
+  String get continueToCards => 'Start game';
 
   @override
   String get cardCompetitionTitle => 'Competition';
@@ -222,15 +222,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Most frequent value; on a tie, randomly choose among tied values.';
 
   @override
-  String get cardStandingStoneAction =>
-      'Standing stone or runestone at the target shrine.';
-
-  @override
   String get cardSickleAmuletAction => 'Sickle or amulet at the target shrine.';
 
   @override
-  String get cardTabletMistletoeAction =>
-      'Tablet or mistletoe at the target shrine.';
+  String get chooseShrineAction =>
+      'Choose the least expensive path. Then prefer an empty shrine. If more than one option remains, the player chooses.';
 
   @override
   String get cardKnowledgeProvisionAction =>
@@ -277,4 +273,109 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get automaFormHint =>
       'The form determines which actions appear more often in the 10-card deck.';
+
+  @override
+  String get chooseSupplyAction => 'Select one of the actions:';
+
+  @override
+  String get chooseTablet => 'Choose a tablet';
+
+  @override
+  String get choosePotion => 'Choose a potion';
+
+  @override
+  String get noSupplyAvailable => 'No items available for this action.';
+
+  @override
+  String get tabletQueueHelp =>
+      'Select the first available tablet in the displayed order. Confirming removes one copy of the selected tablet and one copy of each earlier tablet. Each tablet starts with two copies.';
+
+  @override
+  String get potionQueueHelp =>
+      'Select the first available potion in the displayed order. Confirming removes the selected potion and all earlier ones from future draws.';
+
+  @override
+  String tabletOption(int id) {
+    return 'Tablet $id';
+  }
+
+  @override
+  String potionOption(int cost, int variant) {
+    return 'Cost $cost potion, variant $variant';
+  }
+
+  @override
+  String get chooseStandingStone => 'Erect a standing stone';
+
+  @override
+  String get chooseRunestone => 'Erect a runestone';
+
+  @override
+  String stonesAvailable(int count) {
+    return 'Pieces available: $count';
+  }
+
+  @override
+  String get tabletInventory => 'Tablets';
+
+  @override
+  String get potionInventory => 'Potions';
+
+  @override
+  String get stoneInventory => 'Stones';
+
+  @override
+  String potionCostHeading(int cost) {
+    return 'Mistletoe cost $cost';
+  }
+
+  @override
+  String get removeInventoryPiece => 'Remove one piece';
+
+  @override
+  String get restoreInventoryPiece => 'Restore one piece';
+
+  @override
+  String get closeInventory => 'Close';
+
+  @override
+  String get finishGame => 'Finish game';
+
+  @override
+  String get advanceSickle => 'Advance the sickle';
+
+  @override
+  String get chooseAmulet => 'Choose an amulet slot';
+
+  @override
+  String get amuletSlotHelp =>
+      'Select an empty slot in the position you can reach.';
+
+  @override
+  String get amuletUseSickle => 'Position II is full: use the sickle';
+
+  @override
+  String sickleProgress(int value) {
+    return 'Sickle: $value/13';
+  }
+
+  @override
+  String get sickleLimitHelp => 'The sickle has reached 13. Choose the amulet.';
+
+  @override
+  String get setupColorTitle => 'Choose Malfurion’s color';
+
+  @override
+  String get bearFormDifficulty => 'Bear form is the more difficult option.';
+
+  @override
+  String get chooseProvisions => 'Provisions';
+
+  @override
+  String get advanceKnowledge => 'Advance knowledge';
+
+  @override
+  String knowledgeProgress(int value, int max) {
+    return 'Knowledge: $value/$max';
+  }
 }

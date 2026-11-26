@@ -1,5 +1,7 @@
 import 'dart:math';
 
+enum KnowledgeProvisionChoice { knowledge, provisions }
+
 enum AutomaCard {
   competition,
   connectDolmens,

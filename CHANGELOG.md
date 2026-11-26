@@ -1,5 +1,44 @@
 # Changelog
 
+## 2026/11/26 - ajustes/cartas-01
+
+This change expands Malfurion’s card actions with supply tracking, sickle and amulet progress, and knowledge progress. It also moves dice rolling into setup and updates the game flow, localization, and tests.
+
+1. **`lib/features/cards/action_supply.dart` and supply dialogs**
+
+   * Added stock tracking for tablets, potions, standing stones, and runestones.
+   * Added randomized item queues, turn-based potion ranges, and consumption through the selected item.
+   * Added dialogs for choosing supplies and viewing or adjusting inventory.
+
+2. **`lib/features/cards/sickle_amulet.dart` and `widgets/amulet_dialog.dart`**
+
+   * Added sickle progress and amulet slot tracking.
+   * Added a dialog for selecting an empty amulet slot, with a sickle option when the second position is full.
+
+3. **`lib/features/cards/cards_page.dart` and `widgets/automa_instruction_card.dart`**
+
+   * Connected supply, sickle, amulet, and knowledge actions to the card interface.
+   * Added inventory controls and per-card action state.
+   * Added a finish-game action after all dice are used and prevented back navigation during play.
+
+4. **`lib/features/cards/automa_card_localization.dart` and `lib/l10n/`**
+
+   * Updated action instructions and added English and Portuguese strings for setup, supplies, inventory, progress, and game completion.
+   * Updated the generated localization classes to expose the new messages.
+
+5. **`lib/features/setup/setup_page.dart` and `lib/features/dice/dice_page.dart`**
+
+   * Moved the animated 13-die roll into setup and removed the separate dice page.
+   * Added color and form selection dialogs, then routed directly from setup to the cards page.
+
+6. **`test/action_supply_test.dart` and `test/widget_test.dart`**
+
+   * Added coverage for supply counts, queues, potion turn ranges, and independent stone stocks.
+   * Updated widget tests for the revised setup and navigation flow, inventory display, and game completion.
+
+### Conclusion
+
+The game now tracks card action resources and progress within the cards flow. Setup includes dice rolling, and the updated navigation provides a defined way to finish a game.
 ## 2026/11/26 - recursos/dolmens-01
 
 This change adds draw limits and pair tracking for the “Connect 2 dolmens” card. It also replaces free-text pair entry with a visual selector and adds the assets, translations, documentation, and tests used by the new flow.

@@ -42,18 +42,10 @@ extension AutomaCardLocalization on AutomaCard {
   };
 
   String action(AppLocalizations l10n) => switch (this) {
-    AutomaCard.standingStone => l10n.cardStandingStoneAction,
-    AutomaCard.sickleAmulet => l10n.cardSickleAmuletAction,
-    AutomaCard.tabletMistletoe => l10n.cardTabletMistletoeAction,
-    AutomaCard.knowledgeProvision => l10n.cardKnowledgeProvisionAction,
-    _ => l10n.cardDefaultAction,
-  };
-
-  String? tieBreak(AppLocalizations l10n) => switch (this) {
     AutomaCard.standingStone ||
-    AutomaCard.sickleAmulet ||
     AutomaCard.tabletMistletoe ||
-    AutomaCard.knowledgeProvision => l10n.cardStandingStoneTieBreak,
-    _ => null,
+    AutomaCard.sickleAmulet ||
+    AutomaCard.knowledgeProvision => l10n.chooseShrineAction,
+    _ => l10n.cardDefaultAction,
   };
 }
