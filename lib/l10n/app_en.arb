@@ -3,7 +3,7 @@
   "reshuffleDeck": "The deck will be shuffled again on the next draw.",
   "drawCard": "Draw card",
   "setDolmens": "Set dolmens",
-  "placeNextDie": "Place next die",
+  "placeNextDie": "Place die",
   "nextCard": "Next card",
   "availableDice": "Available dice: {count}",
   "@availableDice": {
@@ -15,24 +15,22 @@
   },
   "allDiceUsed": "All dice have been used.",
   "connectDolmensTitle": "Connect 2 dolmens",
-  "dolmenInstructions": "Identify the dolmen pair and choose how many dice still need to be placed along the path.",
-  "dolmenPair": "Dolmen pair (color or name)",
+  "dolmenInstructions": "Choose the dolmen pair and how many dice still need to be placed.",
+  "dolmenPair": "Dolmen pair",
   "requiredDice": "Dice needed",
   "cancel": "Cancel",
   "confirm": "Confirm",
   "targetLabel": "Target",
-  "chosenDolmens": "Chosen dolmens",
+  "chosenDolmens": "Dolmens",
+  "connectingDolmens": "Connecting the two dolmens",
   "waitingForDolmens": "Waiting for the pair and die count to be set.",
   "movementLabel": "Movement",
   "dieLabel": "Die",
   "actionLabel": "Action",
   "tieBreakLabel": "Tie break",
-  "dolmenProgress": "{pair} • {placed}/{required}",
+  "dolmenProgress": "{placed}/{required}",
   "@dolmenProgress": {
     "placeholders": {
-      "pair": {
-        "type": "String"
-      },
       "placed": {
         "type": "int"
       },
@@ -95,5 +93,12 @@
   "cardTabletMistletoeAction": "Tablet or mistletoe at the target shrine.",
   "cardKnowledgeProvisionAction": "Knowledge or provisions at the target shrine.",
   "cardDefaultAction": "Count action spaces clockwise from the top left by the chosen die value.",
-  "cardStandingStoneTieBreak": "Target tie: cheapest path, then empty shrine, then player’s choice."
+  "cardStandingStoneTieBreak": "Target tie: cheapest path, then empty shrine, then player’s choice.",
+  "dolmenPink": "Pink",
+  "dolmenOrange": "Orange",
+  "dolmenBlue": "Blue",
+  "dolmenGreen": "Green",
+  "dolmenBrown": "Brown",
+  "dolmenBlack": "Black",
+  "playerConnectedDolmens": "Connected"
 }

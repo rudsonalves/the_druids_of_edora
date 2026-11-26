@@ -23,7 +23,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get setDolmens => 'Definir dolmens';
 
   @override
-  String get placeNextDie => 'Colocar próximo dado';
+  String get placeNextDie => 'Colocar dado';
 
   @override
   String get nextCard => 'Próxima carta';
@@ -41,10 +41,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get dolmenInstructions =>
-      'Identifique o par de dolmens e informe quantos dados ainda precisam ser colocados no caminho.';
+      'Escolha o par de dolmens e quantos dados ainda precisam ser colocados.';
 
   @override
-  String get dolmenPair => 'Par de dolmens (cor ou nome)';
+  String get dolmenPair => 'Par de dolmens';
 
   @override
   String get requiredDice => 'Dados necessários';
@@ -59,7 +59,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get targetLabel => 'Alvo';
 
   @override
-  String get chosenDolmens => 'Dolmens escolhidos';
+  String get chosenDolmens => 'Dolmens';
+
+  @override
+  String get connectingDolmens => 'Conectando os dois dolmens';
 
   @override
   String get waitingForDolmens =>
@@ -78,8 +81,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tieBreakLabel => 'Desempate';
 
   @override
-  String dolmenProgress(String pair, int placed, int required) {
-    return '$pair • $placed/$required';
+  String dolmenProgress(int placed, int required) {
+    return '$placed/$required';
   }
 
   @override
@@ -236,4 +239,25 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get cardStandingStoneTieBreak =>
       'Empate entre alvos: caminho menos caro, depois santuário vazio e, por fim, escolha do jogador.';
+
+  @override
+  String get dolmenPink => 'Rosa';
+
+  @override
+  String get dolmenOrange => 'Laranja';
+
+  @override
+  String get dolmenBlue => 'Azul';
+
+  @override
+  String get dolmenGreen => 'Verde';
+
+  @override
+  String get dolmenBrown => 'Marrom';
+
+  @override
+  String get dolmenBlack => 'Preto';
+
+  @override
+  String get playerConnectedDolmens => 'Já conectado';
 }

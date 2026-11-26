@@ -23,7 +23,15 @@ class SequenceRandom implements Random {
 void main() {
   Future<void> completeDolmenDialog(WidgetTester tester, int count) async {
     if (find.byType(DolmenSetupDialog).evaluate().isEmpty) return;
-    await tester.enterText(find.byKey(const Key('dolmen-pair')), 'Azul');
+    final pairs = find.byWidgetPredicate(
+      (widget) =>
+          widget is ChoiceChip &&
+          (widget.key as ValueKey<String>?)?.value.startsWith('dolmen-pair-') ==
+              true,
+    );
+    final blue = find.byKey(const Key('dolmen-pair-blue'));
+    await tester.tap(blue.evaluate().isEmpty ? pairs.first : blue);
+    await tester.ensureVisible(find.byKey(Key('dolmen-count-$count')));
     await tester.tap(find.byKey(Key('dolmen-count-$count')));
     await tester.pump();
     await tester.tap(find.text('Confirmar'));
@@ -166,13 +174,13 @@ void main() {
     final cardKey = dolmenCard.key;
     await completeDolmenDialog(tester, 2);
 
-    expect(find.text('Azul • 1/2'), findsOneWidget);
-    expect(find.text('Colocar próximo dado'), findsOneWidget);
+    expect(find.text('1/2'), findsOneWidget);
+    expect(find.text('Colocar dado'), findsOneWidget);
     expect(find.byKey(const Key('selected-die-0')), findsOneWidget);
-    await tester.tap(find.text('Colocar próximo dado'));
+    await tester.tap(find.text('Colocar dado'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Azul • 2/2'), findsOneWidget);
+    expect(find.text('2/2'), findsOneWidget);
     expect(find.byKey(const Key('selected-die-1')), findsOneWidget);
     expect(find.text('Próxima carta'), findsOneWidget);
     expect(

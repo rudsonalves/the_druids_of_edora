@@ -56,18 +56,39 @@ class AutomaInstructionCard extends StatelessWidget {
                 ),
               ],
             ),
-            _CardSection(title: l10n.targetLabel, body: card.target(l10n)),
-            if (card == AutomaCard.connectDolmens)
+            if (card != AutomaCard.connectDolmens)
+              _CardSection(title: l10n.targetLabel, body: card.target(l10n))
+            else if (dolmenSetup == null)
               _CardSection(
                 title: l10n.chosenDolmens,
-                body: dolmenSetup == null
-                    ? l10n.waitingForDolmens
-                    : l10n.dolmenProgress(
-                        dolmenSetup!.pair,
-                        placedDolmenDice,
-                        dolmenSetup!.requiredDice,
-                      ),
+                body: l10n.waitingForDolmens,
+              )
+            else ...[
+              if (placedDolmenDice < dolmenSetup!.requiredDice)
+                Text(
+                  l10n.connectingDolmens,
+                  style: theme.textTheme.titleMedium,
+                ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  dolmenSetup!.pair.asset,
+                  height: 64,
+                  semanticLabel: dolmenSetup!.pair.label(l10n),
+                ),
               ),
+              const SizedBox(height: 8),
+              Text(l10n.chosenDolmens, style: theme.textTheme.titleMedium),
+              Text(
+                l10n.dolmenProgress(
+                  placedDolmenDice,
+                  dolmenSetup!.requiredDice,
+                ),
+                style: theme.textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 16),
+            ],
             _CardSection(title: l10n.movementLabel, body: card.movement(l10n)),
             _CardSection(
               title: l10n.dieLabel,

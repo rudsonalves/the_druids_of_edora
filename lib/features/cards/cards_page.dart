@@ -35,6 +35,16 @@ class _CardsPageState extends State<CardsPage> {
   final List<int> selectedDice = [];
   DolmenSetup? dolmenSetup;
   int placedDolmenDice = 0;
+  final Set<DolmenPair> connectedPairs = {};
+
+  List<DolmenPair> get availablePairs => DolmenPair.values
+      .where((pair) => !connectedPairs.contains(pair))
+      .toList();
+
+  bool get connectionActive {
+    final setup = dolmenSetup;
+    return setup != null && !connectedPairs.contains(setup.pair);
+  }
 
   @override
   void dispose() {
@@ -66,7 +76,7 @@ class _CardsPageState extends State<CardsPage> {
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 220),
                 child: AutomaInstructionCard(
-                  key: ValueKey('${card.name}-${deck.drawnInCycle}'),
+                  key: ValueKey('${card.name}-${deck.draws}'),
                   card: card,
                   selectedDice: List.unmodifiable(selectedDice),
                   dieColor: widget.color.value,
@@ -75,9 +85,11 @@ class _CardsPageState extends State<CardsPage> {
                 ),
               ),
             if (card != null &&
-                deck.remaining == 0 &&
+                deck.needsShuffle(
+                  hasAvailablePairs: availablePairs.isNotEmpty,
+                ) &&
                 (card != AutomaCard.connectDolmens ||
-                    placedDolmenDice == dolmenSetup?.requiredDice)) ...[
+                    dolmenSetup != null && !connectionActive)) ...[
               const SizedBox(height: 10),
               Text(l10n.reshuffleDeck),
             ],
@@ -90,22 +102,37 @@ class _CardsPageState extends State<CardsPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: availableDice.isEmpty ? null : drawCard,
-                icon: const Icon(Icons.style),
-                label: Text(
-                  card == null
-                      ? l10n.drawCard
-                      : card == AutomaCard.connectDolmens && dolmenSetup == null
-                      ? l10n.setDolmens
-                      : card == AutomaCard.connectDolmens &&
-                            placedDolmenDice < dolmenSetup!.requiredDice
-                      ? l10n.placeNextDie
-                      : l10n.nextCard,
+            Row(
+              children: [
+                Expanded(
+                  child: FilledButton(
+                    onPressed: availableDice.isEmpty ? null : drawCard,
+                    child: Text(
+                      card == null
+                          ? l10n.drawCard
+                          : card == AutomaCard.connectDolmens &&
+                                dolmenSetup == null
+                          ? l10n.setDolmens
+                          : connectionActive
+                          ? l10n.placeNextDie
+                          : l10n.nextCard,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-              ),
+                if (connectionActive) ...[
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: finishPlayerConnection,
+                      child: Text(
+                        l10n.playerConnectedDolmens,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
             const SizedBox(height: 8),
             Text(
@@ -144,13 +171,13 @@ class _CardsPageState extends State<CardsPage> {
         await configureDolmens();
         return;
       }
-      if (placedDolmenDice < dolmenSetup!.requiredDice) {
+      if (connectionActive) {
         consumeDie(AutomaCard.connectDolmens);
         return;
       }
     }
 
-    final nextCard = deck.draw();
+    final nextCard = deck.draw(hasAvailablePairs: availablePairs.isNotEmpty);
     setState(() {
       currentCard = nextCard;
       selectedDice.clear();
@@ -168,13 +195,21 @@ class _CardsPageState extends State<CardsPage> {
   Future<void> configureDolmens() async {
     final setup = await showDialog<DolmenSetup>(
       context: context,
-      builder: (context) =>
-          DolmenSetupDialog(maxDice: availableDice.length.clamp(1, 4)),
+      builder: (context) => DolmenSetupDialog(
+        maxDice: availableDice.length.clamp(1, 4),
+        pairs: availablePairs,
+      ),
     );
     if (!mounted || setup == null) return;
 
     setState(() => dolmenSetup = setup);
     consumeDie(AutomaCard.connectDolmens);
+  }
+
+  Future<void> finishPlayerConnection() async {
+    if (!connectionActive) return;
+    setState(() => connectedPairs.add(dolmenSetup!.pair));
+    await drawCard();
   }
 
   void consumeDie(AutomaCard card) {
@@ -186,7 +221,13 @@ class _CardsPageState extends State<CardsPage> {
       );
       availableDice.remove(selectedDie);
       selectedDice.add(selectedDie);
-      if (card == AutomaCard.connectDolmens) placedDolmenDice++;
+      if (card == AutomaCard.connectDolmens) {
+        final setup = dolmenSetup!;
+        placedDolmenDice++;
+        if (placedDolmenDice == setup.requiredDice) {
+          connectedPairs.add(setup.pair);
+        }
+      }
     });
   }
 }

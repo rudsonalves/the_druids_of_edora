@@ -125,7 +125,7 @@ abstract class AppLocalizations {
   /// No description provided for @placeNextDie.
   ///
   /// In en, this message translates to:
-  /// **'Place next die'**
+  /// **'Place die'**
   String get placeNextDie;
 
   /// No description provided for @nextCard.
@@ -155,13 +155,13 @@ abstract class AppLocalizations {
   /// No description provided for @dolmenInstructions.
   ///
   /// In en, this message translates to:
-  /// **'Identify the dolmen pair and choose how many dice still need to be placed along the path.'**
+  /// **'Choose the dolmen pair and how many dice still need to be placed.'**
   String get dolmenInstructions;
 
   /// No description provided for @dolmenPair.
   ///
   /// In en, this message translates to:
-  /// **'Dolmen pair (color or name)'**
+  /// **'Dolmen pair'**
   String get dolmenPair;
 
   /// No description provided for @requiredDice.
@@ -191,8 +191,14 @@ abstract class AppLocalizations {
   /// No description provided for @chosenDolmens.
   ///
   /// In en, this message translates to:
-  /// **'Chosen dolmens'**
+  /// **'Dolmens'**
   String get chosenDolmens;
+
+  /// No description provided for @connectingDolmens.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting the two dolmens'**
+  String get connectingDolmens;
 
   /// No description provided for @waitingForDolmens.
   ///
@@ -227,8 +233,8 @@ abstract class AppLocalizations {
   /// No description provided for @dolmenProgress.
   ///
   /// In en, this message translates to:
-  /// **'{pair} • {placed}/{required}'**
-  String dolmenProgress(String pair, int placed, int required);
+  /// **'{placed}/{required}'**
+  String dolmenProgress(int placed, int required);
 
   /// No description provided for @purple.
   ///
@@ -499,6 +505,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Target tie: cheapest path, then empty shrine, then player’s choice.'**
   String get cardStandingStoneTieBreak;
+
+  /// No description provided for @dolmenPink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get dolmenPink;
+
+  /// No description provided for @dolmenOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get dolmenOrange;
+
+  /// No description provided for @dolmenBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get dolmenBlue;
+
+  /// No description provided for @dolmenGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get dolmenGreen;
+
+  /// No description provided for @dolmenBrown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get dolmenBrown;
+
+  /// No description provided for @dolmenBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get dolmenBlack;
+
+  /// No description provided for @playerConnectedDolmens.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get playerConnectedDolmens;
 }
 
 class _AppLocalizationsDelegate

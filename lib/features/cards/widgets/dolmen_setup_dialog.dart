@@ -2,15 +2,41 @@ import '../../../l10n/app_localizations.dart';
 
 import 'package:material_ui/material_ui.dart';
 
+enum DolmenPair {
+  pink,
+  orange,
+  blue,
+  green,
+  brown,
+  black;
+
+  String get asset => 'assets/dolmens/dolmen-$name.png';
+
+  String label(AppLocalizations l10n) => switch (this) {
+    pink => l10n.dolmenPink,
+    orange => l10n.dolmenOrange,
+    blue => l10n.dolmenBlue,
+    green => l10n.dolmenGreen,
+    brown => l10n.dolmenBrown,
+    black => l10n.dolmenBlack,
+  };
+}
+
 class DolmenSetup {
   const DolmenSetup({required this.pair, required this.requiredDice});
 
-  final String pair;
+  final DolmenPair pair;
   final int requiredDice;
 }
 
 class DolmenSetupDialog extends StatefulWidget {
-  const DolmenSetupDialog({super.key, required this.maxDice});
+  const DolmenSetupDialog({
+    super.key,
+    required this.maxDice,
+    required this.pairs,
+  });
+
+  final List<DolmenPair> pairs;
 
   final int maxDice;
 
@@ -19,14 +45,8 @@ class DolmenSetupDialog extends StatefulWidget {
 }
 
 class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
-  final TextEditingController pairController = TextEditingController();
+  DolmenPair? pair;
   int? requiredDice;
-
-  @override
-  void dispose() {
-    pairController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +58,23 @@ class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(l10n.cardConnectDolmensTarget),
+            const SizedBox(height: 12),
             Text(l10n.dolmenInstructions),
             const SizedBox(height: 16),
-            TextField(
-              key: const Key('dolmen-pair'),
-              controller: pairController,
-              onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(
-                labelText: l10n.dolmenPair,
-                border: const OutlineInputBorder(),
-              ),
+            Text(l10n.dolmenPair),
+            Wrap(
+              spacing: 8,
+              children: [
+                for (final option in widget.pairs)
+                  ChoiceChip(
+                    key: Key('dolmen-pair-${option.name}'),
+                    avatar: Image.asset(option.asset, width: 24),
+                    label: Text(option.label(l10n)),
+                    selected: pair == option,
+                    onSelected: (_) => setState(() => pair = option),
+                  ),
+              ],
             ),
             const SizedBox(height: 16),
             Text(l10n.requiredDice),
@@ -73,14 +100,10 @@ class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
           child: Text(l10n.cancel),
         ),
         FilledButton(
-          onPressed: pairController.text.trim().isEmpty || requiredDice == null
+          onPressed: pair == null || requiredDice == null
               ? null
-              : () => Navigator.of(context).pop(
-                  DolmenSetup(
-                    pair: pairController.text.trim(),
-                    requiredDice: requiredDice!,
-                  ),
-                ),
+              : () => Navigator.of(context)
+                    .pop(DolmenSetup(pair: pair!, requiredDice: requiredDice!)),
           child: Text(l10n.confirm),
         ),
       ],

@@ -1,5 +1,41 @@
 # Changelog
 
+## 2026/11/26 - recursos/dolmens-01
+
+This change adds draw limits and pair tracking for the “Connect 2 dolmens” card. It also replaces free-text pair entry with a visual selector and adds the assets, translations, documentation, and tests used by the new flow.
+
+1. **`lib/features/cards/automa_card.dart`**
+
+   * Added draw and dolmen occurrence counters that continue across deck reshuffles.
+   * Deferred the dolmen card after its second appearance during the first nine draws and made it ineligible when no pairs remain. Updated deck replenishment to draw from eligible cards while retaining deferred cards.
+
+2. **`lib/features/cards/`**
+
+   * Added six typed dolmen pairs with localized names and image paths, replacing the setup dialog’s text field with image-backed choices for available pairs.
+   * Tracked completed pairs on the cards page and added an action for a player-completed connection that advances to the next card without consuming another die.
+   * Updated the instruction card to show the selected pair’s image and die progress during a connection.
+
+3. **`assets/` and `pubspec.yaml`**
+
+   * Added six dolmen images and fifteen tablet images, and registered both asset folders with Flutter.
+
+4. **`lib/l10n/`**
+
+   * Added English and Portuguese color names and player-connection labels. Updated setup and die-placement wording, and changed dolmen progress to show the die count without the pair name.
+
+5. **`docs/`**
+
+   * Added a backlog describing the card draw and pair-selection rules, with acceptance criteria and an open decision about recording connections outside the card flow.
+   * Moved the internationalization backlog files to `docs/backlogs/closed/` and added dolmen and stone-tablet reference images.
+
+6. **`test/`**
+
+   * Updated deck tests for the draw counter and added coverage for tenth-draw eligibility and deferral when no pair is available.
+   * Updated widget tests to select a visual pair and check the revised die progress and button text.
+
+### Conclusion
+
+The change set adds pair-aware dolmen card selection and a visual connection flow, with supporting assets, localization, documentation, and tests.
 ## 2026/11/26 - internacionalizacao/implementecao-01
 
 This change adds generated English and Portuguese localizations to the Malfurion companion app. It moves interface and card instructions into translation catalogs while retaining the manual language selector and Brazilian Portuguese default. The diff also adds potion assets, reorganizes reference manuals, and updates widget coverage.

@@ -30,3 +30,5 @@ flutter:
 
   assets:
     - assets/potions/
+    - assets/dolmens/
+    - assets/tablets/

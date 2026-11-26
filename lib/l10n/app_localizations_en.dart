@@ -23,7 +23,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setDolmens => 'Set dolmens';
 
   @override
-  String get placeNextDie => 'Place next die';
+  String get placeNextDie => 'Place die';
 
   @override
   String get nextCard => 'Next card';
@@ -41,10 +41,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dolmenInstructions =>
-      'Identify the dolmen pair and choose how many dice still need to be placed along the path.';
+      'Choose the dolmen pair and how many dice still need to be placed.';
 
   @override
-  String get dolmenPair => 'Dolmen pair (color or name)';
+  String get dolmenPair => 'Dolmen pair';
 
   @override
   String get requiredDice => 'Dice needed';
@@ -59,7 +59,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get targetLabel => 'Target';
 
   @override
-  String get chosenDolmens => 'Chosen dolmens';
+  String get chosenDolmens => 'Dolmens';
+
+  @override
+  String get connectingDolmens => 'Connecting the two dolmens';
 
   @override
   String get waitingForDolmens =>
@@ -78,8 +81,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tieBreakLabel => 'Tie break';
 
   @override
-  String dolmenProgress(String pair, int placed, int required) {
-    return '$pair • $placed/$required';
+  String dolmenProgress(int placed, int required) {
+    return '$placed/$required';
   }
 
   @override
@@ -237,4 +240,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cardStandingStoneTieBreak =>
       'Target tie: cheapest path, then empty shrine, then player’s choice.';
+
+  @override
+  String get dolmenPink => 'Pink';
+
+  @override
+  String get dolmenOrange => 'Orange';
+
+  @override
+  String get dolmenBlue => 'Blue';
+
+  @override
+  String get dolmenGreen => 'Green';
+
+  @override
+  String get dolmenBrown => 'Brown';
+
+  @override
+  String get dolmenBlack => 'Black';
+
+  @override
+  String get playerConnectedDolmens => 'Connected';
 }

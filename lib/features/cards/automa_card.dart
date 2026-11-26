@@ -17,13 +17,33 @@ class AutomaDeck {
   final List<AutomaCard> _remaining = [];
 
   int get remaining => _remaining.length;
-  int get drawnInCycle => AutomaCard.values.length - remaining;
+  int draws = 0;
+  int _dolmenDraws = 0;
 
-  AutomaCard draw() {
-    if (_remaining.isEmpty) {
-      _remaining.addAll(AutomaCard.values);
-      _remaining.shuffle(random);
+  bool canDrawDolmens({required bool hasAvailablePairs}) =>
+      hasAvailablePairs && (draws >= 9 || _dolmenDraws < 2);
+
+  bool needsShuffle({bool hasAvailablePairs = true}) => !_remaining.any(
+    (card) =>
+        card != AutomaCard.connectDolmens ||
+        canDrawDolmens(hasAvailablePairs: hasAvailablePairs),
+  );
+
+  AutomaCard draw({bool hasAvailablePairs = true}) {
+    if (needsShuffle(hasAvailablePairs: hasAvailablePairs)) {
+      final nextCycle =
+          AutomaCard.values.where((card) => !_remaining.contains(card)).toList()
+            ..shuffle(random);
+      _remaining.insertAll(0, nextCycle);
     }
-    return _remaining.removeLast();
+    final index = _remaining.lastIndexWhere(
+      (card) =>
+          card != AutomaCard.connectDolmens ||
+          canDrawDolmens(hasAvailablePairs: hasAvailablePairs),
+    );
+    final card = _remaining.removeAt(index);
+    draws++;
+    if (card == AutomaCard.connectDolmens) _dolmenDraws++;
+    return card;
   }
 }
