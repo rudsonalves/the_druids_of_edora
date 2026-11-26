@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026/11/26 - internacionalizacao/implementecao-01
+
+This change adds generated English and Portuguese localizations to the Malfurion companion app. It moves interface and card instructions into translation catalogs while retaining the manual language selector and Brazilian Portuguese default. The diff also adds potion assets, reorganizes reference manuals, and updates widget coverage.
+
+1. **Localization configuration and catalogs**
+
+   * Added `l10n.yaml`, English and Portuguese ARB catalogs, and generated `AppLocalizations` classes.
+   * Enabled Flutter localization generation, added `intl` as a direct dependency, and excluded generated localization files from analysis.
+
+2. **App setup and dice flow**
+
+   * Registered the localization delegate and supported locales in `lib/app/edora_app.dart`.
+   * Migrated setup instructions, color names, navigation labels, dice messages, and die accessibility labels to localized strings.
+
+3. **Card and dolmen flow**
+
+   * Moved the seven card descriptions from `automa_card.dart` into the catalogs and added `automa_card_localization.dart` to resolve them by card identity.
+   * Localized card controls, available-dice counts, dolmen setup fields, and progress text. Removed boolean language parameters and changed the die section to use an explicit display flag instead of comparing translated titles.
+
+4. **Assets, documentation, and tests**
+
+   * Added 18 potion images under `assets/potions/`, registered that asset directory, and added `docs/images/potions.png`.
+   * Moved three reference PDFs into `docs/manuals/` and added an internationalization task checklist.
+   * Extended the English widget test through the card screen and updated the package version to `0.1.0+1`.
+
+### Conclusion
+
+The app now draws its setup, dice, and card text from generated English and Portuguese localizations, including parameterized messages and accessibility labels. The change set also supplies potion assets and organizes the supporting documentation.
 ## 2026/11/26 - initial/start_project
 
 This change establishes the Flutter companion app for the Malfurion automa in *The Druids of Edora*. It adds Android and iOS projects, the setup, dice, and card flows, and the tooling and documentation for development.

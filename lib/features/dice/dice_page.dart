@@ -1,3 +1,5 @@
+import '../../l10n/app_localizations.dart';
+
 import 'dart:async';
 import 'dart:math';
 
@@ -25,10 +27,6 @@ class _DicePageState extends State<DicePage> {
   List<int> dice = const [];
   bool isRolling = true;
   int frame = 0;
-
-  bool get isPortuguese => Localizations.localeOf(context).languageCode == 'pt';
-
-  String label(String pt, String en) => isPortuguese ? pt : en;
 
   @override
   void initState() {
@@ -60,27 +58,19 @@ class _DicePageState extends State<DicePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(label('Dados do Malfurion', 'Malfurion dice')),
-      ),
+      appBar: AppBar(title: Text(l10n.malfurionDice)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
             Text(
-              label('Dados do Malfurion', 'Malfurion dice'),
+              l10n.malfurionDice,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
-            Text(
-              isRolling
-                  ? label('Rolando os 13 dados…', 'Rolling 13 dice…')
-                  : label(
-                      '13 dados ordenados do menor para o maior.',
-                      '13 dice sorted from lowest to highest.',
-                    ),
-            ),
+            Text(isRolling ? l10n.rollingDice : l10n.sortedDice),
             const SizedBox(height: 24),
             LayoutBuilder(
               builder: (context, constraints) {
@@ -101,20 +91,13 @@ class _DicePageState extends State<DicePage> {
                       value: dice[index],
                       color: widget.color.value,
                       index: index + 1,
-                      isPortuguese: isPortuguese,
                     ),
                   ),
                 );
               },
             ),
             const SizedBox(height: 20),
-            if (!isRolling)
-              Text(
-                label(
-                  'Estes dados serão usados automaticamente pelas cartas durante a partida.',
-                  'These dice will be used automatically by the cards during the game.',
-                ),
-              ),
+            if (!isRolling) Text(l10n.automaticDice),
           ],
         ),
       ),
@@ -133,9 +116,7 @@ class _DicePageState extends State<DicePage> {
                   ),
                 ),
                 icon: const Icon(Icons.arrow_forward),
-                label: Text(
-                  label('Continuar para as cartas', 'Continue to cards'),
-                ),
+                label: Text(l10n.continueToCards),
               ),
             ),
     );

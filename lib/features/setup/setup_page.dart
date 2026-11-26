@@ -1,3 +1,5 @@
+import '../../l10n/app_localizations.dart';
+
 import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
@@ -23,15 +25,13 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   AutomataColor? selectedColor;
 
-  bool get isPortuguese => Localizations.localeOf(context).languageCode == 'pt';
-
-  String label(String pt, String en) => isPortuguese ? pt : en;
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
 
   String colorName(AutomataColor color) => switch (color) {
-    AutomataColor.purple => label('Roxo', 'Purple'),
-    AutomataColor.yellow => label('Amarelo', 'Yellow'),
-    AutomataColor.mint => label('Verde-água', 'Mint'),
-    AutomataColor.red => label('Vermelho', 'Red'),
+    AutomataColor.purple => l10n.purple,
+    AutomataColor.yellow => l10n.yellow,
+    AutomataColor.mint => l10n.mint,
+    AutomataColor.red => l10n.red,
   };
 
   @override
@@ -42,7 +42,7 @@ class _SetupPageState extends State<SetupPage> {
         title: const Text('The Druids of Edora'),
         actions: [
           PopupMenuButton<Locale>(
-            tooltip: label('Idioma', 'Language'),
+            tooltip: l10n.language,
             icon: const Icon(Icons.language),
             onSelected: widget.onLocaleChanged,
             itemBuilder: (context) => const [
@@ -60,22 +60,14 @@ class _SetupPageState extends State<SetupPage> {
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
           children: [
             Text(
-              label('Prepare o Malfurion', 'Prepare Malfurion'),
+              l10n.prepareMalfurion,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
-            Text(
-              label(
-                'Autômato não oficial • preparação inicial',
-                'Unofficial automa • initial setup',
-              ),
-            ),
+            Text(l10n.unofficialSetup),
             const SizedBox(height: 24),
             Text(
-              label(
-                '1. Escolha a cor do autômato',
-                '1. Choose the automa color',
-              ),
+              l10n.chooseColor,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -99,38 +91,14 @@ class _SetupPageState extends State<SetupPage> {
             ),
             const SizedBox(height: 28),
             Text(
-              label('2. Prepare os componentes', '2. Prepare the components'),
+              l10n.prepareComponents,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
-            SetupInstruction(
-              number: 1,
-              text: label(
-                'Prepare o jogo para 2, 3 ou 4 jogadores conforme a quantidade de Malfurions.',
-                'Set up the game for 2, 3, or 4 players according to the number of Malfurions.',
-              ),
-            ),
-            SetupInstruction(
-              number: 2,
-              text: label(
-                'Separe os 13 dados, o druida, o marcador de conhecimento, 6 pedras eretas e 6 pedras rúnicas da cor escolhida.',
-                'Take all 13 dice, the druid pawn, knowledge marker, 6 standing stones, and 6 runestones in the chosen color.',
-              ),
-            ),
-            SetupInstruction(
-              number: 3,
-              text: label(
-                'Malfurion não usa provisões, tabuleiro individual, tábuas, amuleto ou poções.',
-                'Malfurion uses no provisions, player board, tablets, amulet, or potions.',
-              ),
-            ),
-            SetupInstruction(
-              number: 4,
-              text: label(
-                'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para Malfurion.',
-                'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.',
-              ),
-            ),
+            SetupInstruction(number: 1, text: l10n.playerCount),
+            SetupInstruction(number: 2, text: l10n.setupPieces),
+            SetupInstruction(number: 3, text: l10n.unusedPieces),
+            SetupInstruction(number: 4, text: l10n.startingShrine),
           ],
         ),
       ),
@@ -146,7 +114,7 @@ class _SetupPageState extends State<SetupPage> {
                   ),
                 ),
           icon: const Icon(Icons.arrow_forward),
-          label: Text(label('Continuar para os dados', 'Continue to dice')),
+          label: Text(l10n.continueToDice),
         ),
       ),
     );

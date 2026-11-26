@@ -1,3 +1,5 @@
+import '../../../l10n/app_localizations.dart';
+
 import 'package:material_ui/material_ui.dart';
 
 class DolmenSetup {
@@ -8,13 +10,8 @@ class DolmenSetup {
 }
 
 class DolmenSetupDialog extends StatefulWidget {
-  const DolmenSetupDialog({
-    super.key,
-    required this.isPortuguese,
-    required this.maxDice,
-  });
+  const DolmenSetupDialog({super.key, required this.maxDice});
 
-  final bool isPortuguese;
   final int maxDice;
 
   @override
@@ -25,8 +22,6 @@ class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
   final TextEditingController pairController = TextEditingController();
   int? requiredDice;
 
-  String label(String pt, String en) => widget.isPortuguese ? pt : en;
-
   @override
   void dispose() {
     pairController.dispose();
@@ -35,34 +30,27 @@ class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text(label('Conectar 2 dolmens', 'Connect 2 dolmens')),
+      title: Text(l10n.connectDolmensTitle),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label(
-                'Identifique o par de dolmens e informe quantos dados ainda precisam ser colocados no caminho.',
-                'Identify the dolmen pair and choose how many dice still need to be placed along the path.',
-              ),
-            ),
+            Text(l10n.dolmenInstructions),
             const SizedBox(height: 16),
             TextField(
               key: const Key('dolmen-pair'),
               controller: pairController,
               onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
-                labelText: label(
-                  'Par de dolmens (cor ou nome)',
-                  'Dolmen pair (color or name)',
-                ),
+                labelText: l10n.dolmenPair,
                 border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
-            Text(label('Dados necessários', 'Dice needed')),
+            Text(l10n.requiredDice),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -82,7 +70,7 @@ class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(label('Cancelar', 'Cancel')),
+          child: Text(l10n.cancel),
         ),
         FilledButton(
           onPressed: pairController.text.trim().isEmpty || requiredDice == null
@@ -93,7 +81,7 @@ class _DolmenSetupDialogState extends State<DolmenSetupDialog> {
                     requiredDice: requiredDice!,
                   ),
                 ),
-          child: Text(label('Confirmar', 'Confirm')),
+          child: Text(l10n.confirm),
         ),
       ],
     );

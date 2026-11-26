@@ -1,0 +1,536 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_en.dart';
+import 'app_localizations_pt.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'l10n/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('pt'),
+  ];
+
+  /// No description provided for @malfurionCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Malfurion cards'**
+  String get malfurionCards;
+
+  /// No description provided for @reshuffleDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'The deck will be shuffled again on the next draw.'**
+  String get reshuffleDeck;
+
+  /// No description provided for @drawCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw card'**
+  String get drawCard;
+
+  /// No description provided for @setDolmens.
+  ///
+  /// In en, this message translates to:
+  /// **'Set dolmens'**
+  String get setDolmens;
+
+  /// No description provided for @placeNextDie.
+  ///
+  /// In en, this message translates to:
+  /// **'Place next die'**
+  String get placeNextDie;
+
+  /// No description provided for @nextCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Next card'**
+  String get nextCard;
+
+  /// No description provided for @availableDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Available dice: {count}'**
+  String availableDice(int count);
+
+  /// No description provided for @allDiceUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'All dice have been used.'**
+  String get allDiceUsed;
+
+  /// No description provided for @connectDolmensTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect 2 dolmens'**
+  String get connectDolmensTitle;
+
+  /// No description provided for @dolmenInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Identify the dolmen pair and choose how many dice still need to be placed along the path.'**
+  String get dolmenInstructions;
+
+  /// No description provided for @dolmenPair.
+  ///
+  /// In en, this message translates to:
+  /// **'Dolmen pair (color or name)'**
+  String get dolmenPair;
+
+  /// No description provided for @requiredDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Dice needed'**
+  String get requiredDice;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @targetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get targetLabel;
+
+  /// No description provided for @chosenDolmens.
+  ///
+  /// In en, this message translates to:
+  /// **'Chosen dolmens'**
+  String get chosenDolmens;
+
+  /// No description provided for @waitingForDolmens.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the pair and die count to be set.'**
+  String get waitingForDolmens;
+
+  /// No description provided for @movementLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Movement'**
+  String get movementLabel;
+
+  /// No description provided for @dieLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Die'**
+  String get dieLabel;
+
+  /// No description provided for @actionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Action'**
+  String get actionLabel;
+
+  /// No description provided for @tieBreakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie break'**
+  String get tieBreakLabel;
+
+  /// No description provided for @dolmenProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{pair} • {placed}/{required}'**
+  String dolmenProgress(String pair, int placed, int required);
+
+  /// No description provided for @purple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get purple;
+
+  /// No description provided for @yellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get yellow;
+
+  /// No description provided for @mint.
+  ///
+  /// In en, this message translates to:
+  /// **'Mint'**
+  String get mint;
+
+  /// No description provided for @red.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get red;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @prepareMalfurion.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare Malfurion'**
+  String get prepareMalfurion;
+
+  /// No description provided for @unofficialSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Unofficial automa • initial setup'**
+  String get unofficialSetup;
+
+  /// No description provided for @chooseColor.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Choose the automa color'**
+  String get chooseColor;
+
+  /// No description provided for @prepareComponents.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Prepare the components'**
+  String get prepareComponents;
+
+  /// No description provided for @playerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up the game for 2, 3, or 4 players according to the number of Malfurions.'**
+  String get playerCount;
+
+  /// No description provided for @setupPieces.
+  ///
+  /// In en, this message translates to:
+  /// **'Take all 13 dice, the druid pawn, knowledge marker, 6 standing stones, and 6 runestones in the chosen color.'**
+  String get setupPieces;
+
+  /// No description provided for @unusedPieces.
+  ///
+  /// In en, this message translates to:
+  /// **'Malfurion uses no provisions, player board, tablets, amulet, or potions.'**
+  String get unusedPieces;
+
+  /// No description provided for @startingShrine.
+  ///
+  /// In en, this message translates to:
+  /// **'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.'**
+  String get startingShrine;
+
+  /// No description provided for @continueToDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to dice'**
+  String get continueToDice;
+
+  /// No description provided for @dieSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Die {index}: {value}'**
+  String dieSemantics(int index, int value);
+
+  /// No description provided for @malfurionDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Malfurion dice'**
+  String get malfurionDice;
+
+  /// No description provided for @rollingDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Rolling 13 dice…'**
+  String get rollingDice;
+
+  /// No description provided for @sortedDice.
+  ///
+  /// In en, this message translates to:
+  /// **'13 dice sorted from lowest to highest.'**
+  String get sortedDice;
+
+  /// No description provided for @automaticDice.
+  ///
+  /// In en, this message translates to:
+  /// **'These dice will be used automatically by the cards during the game.'**
+  String get automaticDice;
+
+  /// No description provided for @continueToCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to cards'**
+  String get continueToCards;
+
+  /// No description provided for @cardCompetitionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Competition'**
+  String get cardCompetitionTitle;
+
+  /// No description provided for @cardSurroundFireTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Surround a fire'**
+  String get cardSurroundFireTitle;
+
+  /// No description provided for @cardStandingStoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing stone or runestone'**
+  String get cardStandingStoneTitle;
+
+  /// No description provided for @cardSickleAmuletTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sickle or amulet'**
+  String get cardSickleAmuletTitle;
+
+  /// No description provided for @cardTabletMistletoeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tablet or mistletoe'**
+  String get cardTabletMistletoeTitle;
+
+  /// No description provided for @cardKnowledgeProvisionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge or provisions'**
+  String get cardKnowledgeProvisionTitle;
+
+  /// No description provided for @cardCompetitionTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'The nearest shrine with a die weaker than Malfurion’s strongest die.'**
+  String get cardCompetitionTarget;
+
+  /// No description provided for @cardConnectDolmensTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'If Malfurion is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.'**
+  String get cardConnectDolmensTarget;
+
+  /// No description provided for @cardSurroundFireTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'A fire needing just one more of Malfurion’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.'**
+  String get cardSurroundFireTarget;
+
+  /// No description provided for @cardStandingStoneTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'The nearest shrine with a standing stone or runestone action.'**
+  String get cardStandingStoneTarget;
+
+  /// No description provided for @cardSickleAmuletTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'The nearest shrine with a sickle or amulet action.'**
+  String get cardSickleAmuletTarget;
+
+  /// No description provided for @cardTabletMistletoeTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'The nearest shrine with a tablet or mistletoe action.'**
+  String get cardTabletMistletoeTarget;
+
+  /// No description provided for @cardKnowledgeProvisionTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'The nearest shrine with a knowledge or provision action.'**
+  String get cardKnowledgeProvisionTarget;
+
+  /// No description provided for @cardConnectDolmensMovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Each turn, move to one shrine along the path to the target dolmen. Keep this objective until it is complete.'**
+  String get cardConnectDolmensMovement;
+
+  /// No description provided for @cardCompetitionMovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 6 provisions away.'**
+  String get cardCompetitionMovement;
+
+  /// No description provided for @cardDefaultMovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 5 provisions away.'**
+  String get cardDefaultMovement;
+
+  /// No description provided for @cardCompetitionDie.
+  ///
+  /// In en, this message translates to:
+  /// **'Strongest die.'**
+  String get cardCompetitionDie;
+
+  /// No description provided for @cardKnowledgeProvisionDie.
+  ///
+  /// In en, this message translates to:
+  /// **'Weakest die.'**
+  String get cardKnowledgeProvisionDie;
+
+  /// No description provided for @cardDefaultDie.
+  ///
+  /// In en, this message translates to:
+  /// **'Most frequent value; on a tie, randomly choose among tied values.'**
+  String get cardDefaultDie;
+
+  /// No description provided for @cardStandingStoneAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing stone or runestone at the target shrine.'**
+  String get cardStandingStoneAction;
+
+  /// No description provided for @cardSickleAmuletAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sickle or amulet at the target shrine.'**
+  String get cardSickleAmuletAction;
+
+  /// No description provided for @cardTabletMistletoeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Tablet or mistletoe at the target shrine.'**
+  String get cardTabletMistletoeAction;
+
+  /// No description provided for @cardKnowledgeProvisionAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge or provisions at the target shrine.'**
+  String get cardKnowledgeProvisionAction;
+
+  /// No description provided for @cardDefaultAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Count action spaces clockwise from the top left by the chosen die value.'**
+  String get cardDefaultAction;
+
+  /// No description provided for @cardStandingStoneTieBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Target tie: cheapest path, then empty shrine, then player’s choice.'**
+  String get cardStandingStoneTieBreak;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['en', 'pt'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
+    case 'pt':
+      return AppLocalizationsPt();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}

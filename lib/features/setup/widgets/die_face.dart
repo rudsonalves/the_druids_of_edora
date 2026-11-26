@@ -1,3 +1,5 @@
+import '../../../l10n/app_localizations.dart';
+
 import 'package:material_ui/material_ui.dart';
 
 class DieFace extends StatelessWidget {
@@ -6,20 +8,19 @@ class DieFace extends StatelessWidget {
     required this.value,
     required this.color,
     required this.index,
-    required this.isPortuguese,
     this.size = 58,
   });
 
   final int value;
   final Color color;
   final int index;
-  final bool isPortuguese;
   final double size;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Semantics(
-      label: isPortuguese ? 'Dado $index: $value' : 'Die $index: $value',
+      label: l10n.dieSemantics(index, value),
       child: ExcludeSemantics(
         child: Container(
           width: size,

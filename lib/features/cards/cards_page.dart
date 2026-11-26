@@ -1,3 +1,5 @@
+import '../../l10n/app_localizations.dart';
+
 import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
@@ -34,10 +36,6 @@ class _CardsPageState extends State<CardsPage> {
   DolmenSetup? dolmenSetup;
   int placedDolmenDice = 0;
 
-  bool get isPortuguese => Localizations.localeOf(context).languageCode == 'pt';
-
-  String label(String pt, String en) => isPortuguese ? pt : en;
-
   @override
   void dispose() {
     scrollController.dispose();
@@ -46,11 +44,10 @@ class _CardsPageState extends State<CardsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final card = currentCard;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(label('Cartas do Malfurion', 'Malfurion cards')),
-      ),
+      appBar: AppBar(title: Text(l10n.malfurionCards)),
       body: SafeArea(
         child: ListView(
           controller: scrollController,
@@ -73,7 +70,6 @@ class _CardsPageState extends State<CardsPage> {
                   card: card,
                   selectedDice: List.unmodifiable(selectedDice),
                   dieColor: widget.color.value,
-                  isPortuguese: isPortuguese,
                   dolmenSetup: dolmenSetup,
                   placedDolmenDice: placedDolmenDice,
                 ),
@@ -83,12 +79,7 @@ class _CardsPageState extends State<CardsPage> {
                 (card != AutomaCard.connectDolmens ||
                     placedDolmenDice == dolmenSetup?.requiredDice)) ...[
               const SizedBox(height: 10),
-              Text(
-                label(
-                  'Na próxima solicitação, o baralho será embaralhado novamente.',
-                  'The deck will be shuffled again on the next draw.',
-                ),
-              ),
+              Text(l10n.reshuffleDeck),
             ],
           ],
         ),
@@ -106,31 +97,22 @@ class _CardsPageState extends State<CardsPage> {
                 icon: const Icon(Icons.style),
                 label: Text(
                   card == null
-                      ? label('Sortear carta', 'Draw card')
+                      ? l10n.drawCard
                       : card == AutomaCard.connectDolmens && dolmenSetup == null
-                      ? label('Definir dolmens', 'Set dolmens')
+                      ? l10n.setDolmens
                       : card == AutomaCard.connectDolmens &&
                             placedDolmenDice < dolmenSetup!.requiredDice
-                      ? label('Colocar próximo dado', 'Place next die')
-                      : label('Próxima carta', 'Next card'),
+                      ? l10n.placeNextDie
+                      : l10n.nextCard,
                 ),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              label(
-                'Dados disponíveis: ${availableDice.length}',
-                'Available dice: ${availableDice.length}',
-              ),
+              l10n.availableDice(availableDice.length),
               style: Theme.of(context).textTheme.titleSmall,
             ),
-            if (availableDice.isEmpty)
-              Text(
-                label(
-                  'Todos os dados foram usados.',
-                  'All dice have been used.',
-                ),
-              ),
+            if (availableDice.isEmpty) Text(l10n.allDiceUsed),
             const SizedBox(height: 6),
             SizedBox(
               height: 40,
@@ -143,7 +125,6 @@ class _CardsPageState extends State<CardsPage> {
                   value: availableDice[index],
                   color: widget.color.value,
                   index: index + 1,
-                  isPortuguese: isPortuguese,
                   size: 36,
                 ),
               ),
@@ -187,10 +168,8 @@ class _CardsPageState extends State<CardsPage> {
   Future<void> configureDolmens() async {
     final setup = await showDialog<DolmenSetup>(
       context: context,
-      builder: (context) => DolmenSetupDialog(
-        isPortuguese: isPortuguese,
-        maxDice: availableDice.length.clamp(1, 4),
-      ),
+      builder: (context) =>
+          DolmenSetupDialog(maxDice: availableDice.length.clamp(1, 4)),
     );
     if (!mounted || setup == null) return;
 

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:material_ui/material_ui.dart';
 
 import '../features/setup/setup_page.dart';
+import '../l10n/app_localizations.dart';
 
 class EdoraApp extends StatefulWidget {
   const EdoraApp({super.key, this.random});
@@ -22,8 +23,11 @@ class _EdoraAppState extends State<EdoraApp> {
       title: 'The Druids of Edora',
       debugShowCheckedModeBanner: false,
       locale: selectedLocale ?? const Locale('pt', 'BR'),
-      supportedLocales: const [Locale('pt', 'BR'), Locale('en')],
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
+      ],
       theme: ThemeData(
         colorScheme:
             ColorScheme.fromSeed(

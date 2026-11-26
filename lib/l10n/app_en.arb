@@ -1,0 +1,99 @@
+{
+  "malfurionCards": "Malfurion cards",
+  "reshuffleDeck": "The deck will be shuffled again on the next draw.",
+  "drawCard": "Draw card",
+  "setDolmens": "Set dolmens",
+  "placeNextDie": "Place next die",
+  "nextCard": "Next card",
+  "availableDice": "Available dice: {count}",
+  "@availableDice": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allDiceUsed": "All dice have been used.",
+  "connectDolmensTitle": "Connect 2 dolmens",
+  "dolmenInstructions": "Identify the dolmen pair and choose how many dice still need to be placed along the path.",
+  "dolmenPair": "Dolmen pair (color or name)",
+  "requiredDice": "Dice needed",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "targetLabel": "Target",
+  "chosenDolmens": "Chosen dolmens",
+  "waitingForDolmens": "Waiting for the pair and die count to be set.",
+  "movementLabel": "Movement",
+  "dieLabel": "Die",
+  "actionLabel": "Action",
+  "tieBreakLabel": "Tie break",
+  "dolmenProgress": "{pair} • {placed}/{required}",
+  "@dolmenProgress": {
+    "placeholders": {
+      "pair": {
+        "type": "String"
+      },
+      "placed": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "purple": "Purple",
+  "yellow": "Yellow",
+  "mint": "Mint",
+  "red": "Red",
+  "language": "Language",
+  "prepareMalfurion": "Prepare Malfurion",
+  "unofficialSetup": "Unofficial automa • initial setup",
+  "chooseColor": "1. Choose the automa color",
+  "prepareComponents": "2. Prepare the components",
+  "playerCount": "Set up the game for 2, 3, or 4 players according to the number of Malfurions.",
+  "setupPieces": "Take all 13 dice, the druid pawn, knowledge marker, 6 standing stones, and 6 runestones in the chosen color.",
+  "unusedPieces": "Malfurion uses no provisions, player board, tablets, amulet, or potions.",
+  "startingShrine": "You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.",
+  "continueToDice": "Continue to dice",
+  "dieSemantics": "Die {index}: {value}",
+  "@dieSemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "malfurionDice": "Malfurion dice",
+  "rollingDice": "Rolling 13 dice…",
+  "sortedDice": "13 dice sorted from lowest to highest.",
+  "automaticDice": "These dice will be used automatically by the cards during the game.",
+  "continueToCards": "Continue to cards",
+  "cardCompetitionTitle": "Competition",
+  "cardSurroundFireTitle": "Surround a fire",
+  "cardStandingStoneTitle": "Standing stone or runestone",
+  "cardSickleAmuletTitle": "Sickle or amulet",
+  "cardTabletMistletoeTitle": "Tablet or mistletoe",
+  "cardKnowledgeProvisionTitle": "Knowledge or provisions",
+  "cardCompetitionTarget": "The nearest shrine with a die weaker than Malfurion’s strongest die.",
+  "cardConnectDolmensTarget": "If Malfurion is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.",
+  "cardSurroundFireTarget": "A fire needing just one more of Malfurion’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.",
+  "cardStandingStoneTarget": "The nearest shrine with a standing stone or runestone action.",
+  "cardSickleAmuletTarget": "The nearest shrine with a sickle or amulet action.",
+  "cardTabletMistletoeTarget": "The nearest shrine with a tablet or mistletoe action.",
+  "cardKnowledgeProvisionTarget": "The nearest shrine with a knowledge or provision action.",
+  "cardConnectDolmensMovement": "Each turn, move to one shrine along the path to the target dolmen. Keep this objective until it is complete.",
+  "cardCompetitionMovement": "Up to 6 provisions away.",
+  "cardDefaultMovement": "Up to 5 provisions away.",
+  "cardCompetitionDie": "Strongest die.",
+  "cardKnowledgeProvisionDie": "Weakest die.",
+  "cardDefaultDie": "Most frequent value; on a tie, randomly choose among tied values.",
+  "cardStandingStoneAction": "Standing stone or runestone at the target shrine.",
+  "cardSickleAmuletAction": "Sickle or amulet at the target shrine.",
+  "cardTabletMistletoeAction": "Tablet or mistletoe at the target shrine.",
+  "cardKnowledgeProvisionAction": "Knowledge or provisions at the target shrine.",
+  "cardDefaultAction": "Count action spaces clockwise from the top left by the chosen die value.",
+  "cardStandingStoneTieBreak": "Target tie: cheapest path, then empty shrine, then player’s choice."
+}

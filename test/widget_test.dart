@@ -64,7 +64,7 @@ void main() {
     expect(values.every((value) => value >= 1 && value <= 6), isTrue);
   });
 
-  testWidgets('supports English on both pages', (tester) async {
+  testWidgets('supports English from setup through the cards', (tester) async {
     await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
     await tester.tap(find.byIcon(Icons.language));
     await tester.pumpAndSettle();
@@ -79,6 +79,12 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(find.text('13 dice sorted from lowest to highest.'), findsOneWidget);
+    await tester.tap(find.text('Continue to cards'));
+    await tester.pumpAndSettle();
+    expect(find.text('Available dice: 13'), findsOneWidget);
+    await tester.tap(find.text('Draw card'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AutomaInstructionCard), findsOneWidget);
   });
 
   testWidgets('draws seven cards and keeps the dice in a bottom row', (

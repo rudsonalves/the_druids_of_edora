@@ -1,7 +1,10 @@
+import '../../../l10n/app_localizations.dart';
+
 import 'package:material_ui/material_ui.dart';
 
 import '../../setup/widgets/die_face.dart';
 import '../automa_card.dart';
+import '../automa_card_localization.dart';
 import 'dolmen_setup_dialog.dart';
 
 class AutomaInstructionCard extends StatelessWidget {
@@ -10,7 +13,6 @@ class AutomaInstructionCard extends StatelessWidget {
     required this.card,
     required this.selectedDice,
     required this.dieColor,
-    required this.isPortuguese,
     required this.dolmenSetup,
     required this.placedDolmenDice,
   });
@@ -18,12 +20,12 @@ class AutomaInstructionCard extends StatelessWidget {
   final AutomaCard card;
   final List<int> selectedDice;
   final Color dieColor;
-  final bool isPortuguese;
   final DolmenSetup? dolmenSetup;
   final int placedDolmenDice;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     return Card(
       color: const Color(0xFF214537),
@@ -46,7 +48,7 @@ class AutomaInstructionCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    card.title(isPortuguese),
+                    card.title(l10n),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.headlineSmall,
@@ -54,26 +56,23 @@ class AutomaInstructionCard extends StatelessWidget {
                 ),
               ],
             ),
-            _CardSection(
-              title: isPortuguese ? 'Alvo' : 'Target',
-              body: card.target(isPortuguese),
-            ),
+            _CardSection(title: l10n.targetLabel, body: card.target(l10n)),
             if (card == AutomaCard.connectDolmens)
               _CardSection(
-                title: isPortuguese ? 'Dolmens escolhidos' : 'Chosen dolmens',
+                title: l10n.chosenDolmens,
                 body: dolmenSetup == null
-                    ? (isPortuguese
-                          ? 'Aguardando a definição do par e da quantidade de dados.'
-                          : 'Waiting for the pair and die count to be set.')
-                    : '${dolmenSetup!.pair} • $placedDolmenDice/${dolmenSetup!.requiredDice}',
+                    ? l10n.waitingForDolmens
+                    : l10n.dolmenProgress(
+                        dolmenSetup!.pair,
+                        placedDolmenDice,
+                        dolmenSetup!.requiredDice,
+                      ),
               ),
+            _CardSection(title: l10n.movementLabel, body: card.movement(l10n)),
             _CardSection(
-              title: isPortuguese ? 'Movimento' : 'Movement',
-              body: card.movement(isPortuguese),
-            ),
-            _CardSection(
-              title: isPortuguese ? 'Dado' : 'Die',
-              body: card.die(isPortuguese),
+              title: l10n.dieLabel,
+              showBody: false,
+              body: card.die(l10n),
               child: selectedDice.isEmpty
                   ? null
                   : Wrap(
@@ -90,21 +89,14 @@ class AutomaInstructionCard extends StatelessWidget {
                             value: selectedDice[index],
                             color: dieColor,
                             index: index + 1,
-                            isPortuguese: isPortuguese,
                             size: 48,
                           ),
                       ],
                     ),
             ),
-            _CardSection(
-              title: isPortuguese ? 'Ação' : 'Action',
-              body: card.action(isPortuguese),
-            ),
-            if (card.tieBreak(isPortuguese) case final String tieBreak)
-              _CardSection(
-                title: isPortuguese ? 'Desempate' : 'Tie break',
-                body: tieBreak,
-              ),
+            _CardSection(title: l10n.actionLabel, body: card.action(l10n)),
+            if (card.tieBreak(l10n) case final String tieBreak)
+              _CardSection(title: l10n.tieBreakLabel, body: tieBreak),
           ],
         ),
       ),
@@ -113,16 +105,20 @@ class AutomaInstructionCard extends StatelessWidget {
 }
 
 class _CardSection extends StatelessWidget {
-  const _CardSection({required this.title, required this.body, this.child});
+  const _CardSection({
+    required this.title,
+    required this.body,
+    this.child,
+    this.showBody = true,
+  });
 
   final String title;
   final String body;
   final Widget? child;
+  final bool showBody;
 
   @override
   Widget build(BuildContext context) {
-    final bool isDice = title == 'Dice' || title == 'Dado';
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -134,7 +130,7 @@ class _CardSection extends StatelessWidget {
                 ?.copyWith(color: Theme.of(context).colorScheme.primary),
           ),
           const SizedBox(height: 4),
-          if (!isDice) Text(body),
+          if (showBody) Text(body),
           if (child != null) ...[const SizedBox(height: 10), child!],
         ],
       ),
