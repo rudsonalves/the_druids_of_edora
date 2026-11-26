@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, debugDefaultTargetPlatformOverride;
+import 'package:flutter/services.dart' show SystemChannels;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:the_druids_of_edora/app/edora_app.dart';
@@ -106,7 +109,7 @@ void main() {
     await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Prepare o Malfurion'), findsOneWidget);
+    expect(find.text('Prepare o Autômata'), findsOneWidget);
     expect(find.byType(DieFace), findsNothing);
     expect(
       tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
@@ -150,7 +153,7 @@ void main() {
     );
     await tester.tap(restart);
     await tester.pumpAndSettle();
-    expect(find.text('Selecione a cor de Malfurion'), findsOneWidget);
+    expect(find.text('Selecione a cor do Autômata'), findsOneWidget);
     expect(find.byType(DieFace), findsNothing);
   });
 
@@ -162,7 +165,7 @@ void main() {
     await tester.tap(find.text('English'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Choose Malfurion’s color'), findsOneWidget);
+    expect(find.text('Choose Automata’s color'), findsOneWidget);
     await tester.tap(find.text('Purple'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Druid form'));
@@ -205,11 +208,11 @@ void main() {
     expect(find.byKey(const Key('dice-strip')), findsOneWidget);
     expect(tester.widget<DieFace>(find.byType(DieFace).first).size, 36);
     expect(find.text('Dados disponíveis: 13'), findsOneWidget);
-    expect(find.text('Malfurion'), findsOneWidget);
+    expect(find.text('Autômata'), findsOneWidget);
     expect(find.byType(BackButton), findsNothing);
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
-    expect(find.text('Malfurion'), findsOneWidget);
+    expect(find.text('Autômata'), findsOneWidget);
     await tester.tap(find.byTooltip('Pedras'));
     await tester.pumpAndSettle();
     final stoneButtons = tester.widgetList<IconButton>(
@@ -252,9 +255,46 @@ void main() {
     }
     expect(find.text('Dados disponíveis: 0'), findsOneWidget);
     expect(find.text('Todos os dados foram usados.'), findsOneWidget);
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    final platformCalls = <String>[];
+    final messenger = tester.binding.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      platformCalls.add(call.method);
+      return null;
+    });
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+    );
     await tester.tap(find.text('Encerrar partida'));
     await tester.pumpAndSettle();
-    expect(find.text('Selecione a cor de Malfurion'), findsOneWidget);
+    expect(find.text('Resumo da partida'), findsOneWidget);
+    expect(find.text('Dados consumidos'), findsOneWidget);
+    expect(find.text('13/13'), findsOneWidget);
+    await tester.tap(find.text('Sair do app'));
+    await tester.pumpAndSettle();
+    expect(
+      platformCalls.where((method) => method == 'SystemNavigator.pop'),
+      hasLength(1),
+    );
+
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    await tester.tap(find.text('Ver resumo'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Fechar resumo'));
+    await tester.pumpAndSettle();
+    expect(
+      platformCalls.where((method) => method == 'SystemNavigator.pop'),
+      hasLength(1),
+    );
+    expect(find.text('Resumo da partida'), findsNothing);
+    expect(find.text('Autômata'), findsOneWidget);
+    await tester.tap(find.text('Ver resumo'));
+    await tester.pumpAndSettle();
+    expect(find.text('13/13'), findsOneWidget);
+    await tester.tap(find.text('Reiniciar'));
+    await tester.pumpAndSettle();
+    expect(find.text('Selecione a cor do Autômata'), findsOneWidget);
     expect(find.byTooltip('Voltar'), findsNothing);
   });
 

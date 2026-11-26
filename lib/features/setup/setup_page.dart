@@ -62,7 +62,7 @@ class _SetupPageState extends State<SetupPage> {
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
           children: [
             Text(
-              l10n.prepareMalfurion,
+              l10n.prepareAutomata,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
@@ -303,14 +303,23 @@ class _SetupPageState extends State<SetupPage> {
             content: Text(strings.bearFormDifficulty),
             actionsAlignment: .spaceBetween,
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, AutomaForm.druid),
-                child: Text(strings.druidForm),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, AutomaForm.bear),
-                child: Text(strings.bearForm),
-              ),
+              for (final form in AutomaForm.values)
+                TextButton(
+                  onPressed: () => Navigator.pop(context, form),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 6,
+                    children: [
+                      AutomaFormBadge(form: form),
+                      Text(
+                        form == AutomaForm.druid
+                            ? strings.druidForm
+                            : strings.bearForm,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         );

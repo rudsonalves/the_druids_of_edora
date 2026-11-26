@@ -1,5 +1,51 @@
 # Changelog
 
+## 2026/11/26 - ajustes/cartas-04
+
+This change updates the Automata game flow, supply rules, and card presentation. It adds launch artwork, an end-of-game summary, and Android release bundle signing support.
+
+1. **Makefile, README.md, and android/app/build.gradle.kts**
+
+   * Added `make build-aab` with an upload key configuration check and a signed release app bundle build.
+   * Replaced debug signing for Android release builds with a signing configuration loaded from `android/key.properties`.
+   * Documented the upload key properties, build command, output path, and version source.
+
+2. **Android and iOS launch resources, assets/icons, and docs/images**
+
+   * Added launch artwork and a matching background color for Android and iOS splash screens, including Android 12 styles.
+   * Added Druid and Bear form icons, a Play Store icon, and a Play Store feature graphic.
+
+3. **lib/app**
+
+   * Added an animated `LaunchIntro` before setup, with an immediate transition when animations are disabled.
+   * Updated `EdoraApp` to show setup after the intro completes.
+
+4. **lib/features/cards**
+
+   * Changed tablet selection to consume only the selected copy; potion selection continues to consume the selected item and earlier items.
+   * Advanced potion draws through available cost tiers and added a fallback to all remaining potions.
+   * Reconciled supply queues after inventory adjustments and added counts for unavailable items and placed amulet gems.
+   * Added a game summary with dice, dolmen, supply, sickle, knowledge, and amulet totals. The summary supports restart, Android app exit, and closing on other platforms.
+
+5. **lib/features/cards/widgets**
+
+   * Updated card sections to reflect resolved actions and rearranged movement and die content.
+   * Displayed placed stone counts and updated supply selection visuals to show which items will be consumed.
+
+6. **lib/features/setup and lib/l10n**
+
+   * Replaced the drawn form badges with image assets and added them to the form selection dialog.
+   * Renamed Malfurion references to Automata in English and Portuguese, revised action and supply instructions, and added game summary labels.
+   * Updated the generated localization classes to match the translation files.
+
+7. **pubspec.yaml and test**
+
+   * Updated the app description to refer to the solo Automata.
+   * Revised supply tests for tablet consumption and potion tier fallback, and expanded widget coverage for the game summary and platform exit behavior.
+
+### Conclusion
+
+The app now presents a branded launch sequence, applies the revised supply rules, and shows a reviewable summary when play ends. The change also prepares Android release bundles for upload key signing.
 ## 2026/11/26 - ajustes/cartas-03
 
 This change updates the app’s displayed name and refines the setup screen. It adds a restart action, replaces the setup chips with a compact summary, and updates localization and widget coverage for the new UI.

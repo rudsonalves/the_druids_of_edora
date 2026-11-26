@@ -32,6 +32,7 @@ class AutomaInstructionCard extends StatelessWidget {
     this.onProvisions,
     this.knowledgeChoice,
     this.onShrineAction,
+    this.actionResolved = false,
     this.dieActions = const {},
   });
 
@@ -54,6 +55,7 @@ class AutomaInstructionCard extends StatelessWidget {
   final VoidCallback? onProvisions;
   final KnowledgeProvisionChoice? knowledgeChoice;
   final VoidCallback? onShrineAction;
+  final bool actionResolved;
   final Map<int, ShrineActionOutcome> dieActions;
 
   @override
@@ -77,38 +79,103 @@ class AutomaInstructionCard extends StatelessWidget {
       _ => const <String>[],
     };
     final theme = Theme.of(context);
-    final actionSection = _CardSection(
-      title: l10n.actionLabel,
-      body: card.action(l10n),
-      child: onShrineAction != null
-          ? IconButton.outlined(
-              tooltip: l10n.executeShrineAction,
-              onPressed: onShrineAction,
-              icon: Image.asset(
-                'assets/actions/any-action.png',
-                width: 48,
-                height: 48,
-                excludeFromSemantics: true,
+    final actionContent = onShrineAction != null
+        ? IconButton.outlined(
+            tooltip: l10n.executeShrineAction,
+            onPressed: onShrineAction,
+            icon: Image.asset(
+              'assets/actions/any-action.png',
+              width: 48,
+              height: 48,
+              excludeFromSemantics: true,
+            ),
+          )
+        : card == AutomaCard.sickleAmulet
+        ? _buildSickleAmulet(l10n)
+        : card == AutomaCard.knowledgeProvision
+        ? _buildKnowledgeProvision(l10n)
+        : supplyActions.isNotEmpty
+        ? _buildSupplyActions(l10n, supplyActions, actionIcons)
+        : actionIcons.isEmpty
+        ? null
+        : Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final icon in actionIcons)
+                Image.asset(
+                  'assets/actions/$icon.png',
+                  width: 48,
+                  height: 48,
+                  excludeFromSemantics: true,
+                ),
+            ],
+          );
+    final movementSection = _CardSection(
+      title: l10n.movementLabel,
+      body: card.movement(l10n),
+      showBody: distance == null,
+      child: distance == null
+          ? null
+          : Tooltip(
+              message: card.movement(l10n),
+              child: ExcludeSemantics(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 6,
+                  children: [
+                    if (l10n.localeName.startsWith('pt'))
+                      Text(l10n.movementMaximum),
+                    Stack(
+                      alignment: const Alignment(0, 0.35),
+                      children: [
+                        Image.asset(
+                          'assets/icons/bag.png',
+                          width: 48,
+                          height: 48,
+                        ),
+                        Text(
+                          '$distance',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (!l10n.localeName.startsWith('pt'))
+                      Text(l10n.movementMaximum),
+                  ],
+                ),
               ),
-            )
-          : card == AutomaCard.sickleAmulet
-          ? _buildSickleAmulet(l10n)
-          : card == AutomaCard.knowledgeProvision
-          ? _buildKnowledgeProvision(l10n)
-          : supplyActions.isNotEmpty
-          ? _buildSupplyActions(l10n, supplyActions, actionIcons)
-          : actionIcons.isEmpty
+            ),
+    );
+    final dieSection = _CardSection(
+      title: l10n.dieLabel,
+      showBody: false,
+      body: card.die(l10n),
+      child: selectedDice.isEmpty
           ? null
           : Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                for (final icon in actionIcons)
-                  Image.asset(
-                    'assets/actions/$icon.png',
-                    width: 48,
-                    height: 48,
-                    excludeFromSemantics: true,
+                for (var index = 0; index < selectedDice.length; index++)
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 4,
+                    children: [
+                      DieFace(
+                        key: Key('selected-die-$index'),
+                        value: selectedDice[index],
+                        color: dieColor,
+                        index: index + 1,
+                        size: 48,
+                      ),
+                      if (dieActions[index] case final outcome?)
+                        _buildShrineOutcome(l10n, outcome),
+                    ],
                   ),
               ],
             ),
@@ -175,80 +242,33 @@ class AutomaInstructionCard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            _CardSection(
-              title: l10n.movementLabel,
-              body: card.movement(l10n),
-              showBody: distance == null,
-              child: distance == null
-                  ? null
-                  : Tooltip(
-                      message: card.movement(l10n),
-                      child: ExcludeSemantics(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          spacing: 6,
-                          children: [
-                            if (l10n.localeName.startsWith('pt'))
-                              Text(l10n.movementMaximum),
-                            Stack(
-                              alignment: const Alignment(0, 0.35),
-                              children: [
-                                Image.asset(
-                                  'assets/icons/bag.png',
-                                  width: 48,
-                                  height: 48,
-                                ),
-                                Text(
-                                  '$distance',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (!l10n.localeName.startsWith('pt'))
-                              Text(l10n.movementMaximum),
-                          ],
-                        ),
-                      ),
-                    ),
-            ),
-            _CardSection(
-              title: l10n.dieLabel,
-              showBody: false,
-              body: card.die(l10n),
-              child: selectedDice.isEmpty
-                  ? null
-                  : Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        for (
-                          var index = 0;
-                          index < selectedDice.length;
-                          index++
-                        )
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            spacing: 4,
-                            children: [
-                              DieFace(
-                                key: Key('selected-die-$index'),
-                                value: selectedDice[index],
-                                color: dieColor,
-                                index: index + 1,
-                                size: 48,
-                              ),
-                              if (dieActions[index] case final outcome?)
-                                _buildShrineOutcome(l10n, outcome),
-                            ],
-                          ),
-                      ],
-                    ),
-            ),
-            actionSection,
+            if (card == AutomaCard.connectDolmens) ...[
+              movementSection,
+              dieSection,
+            ] else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12,
+                children: [
+                  Expanded(flex: 2, child: movementSection),
+                  Expanded(flex: 3, child: dieSection),
+                ],
+              ),
+            if (card.usesShrineAction
+                ? onShrineAction != null
+                : !actionResolved)
+              _CardSection(
+                title: l10n.actionLabel,
+                body: card.action(l10n),
+                child: actionContent,
+              )
+            else if (!card.usesShrineAction &&
+                actionContent != null &&
+                (supplySelection != null ||
+                    usedSickle ||
+                    placedGem != null ||
+                    knowledgeChoice != null))
+              actionContent,
           ],
         ),
       ),
@@ -265,22 +285,19 @@ class AutomaInstructionCard extends StatelessWidget {
     final detail = value == null
         ? null
         : switch (action) {
-            ShrineAction.knowledge => l10n.knowledgeProgress(
-              value,
-              maxKnowledge,
-            ),
+            ShrineAction.knowledge => '$value/$maxKnowledge',
             ShrineAction.sickle => l10n.sickleProgress(value),
             ShrineAction.amulet => SickleAmulet.slotName(value),
             ShrineAction.standingStone ||
-            ShrineAction.runestone => l10n.stonesAvailable(value),
+            ShrineAction.runestone => l10n.stonesPlaced(value),
             _ => null,
           };
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
           spacing: 4,
           children: [
             Image.asset(
@@ -424,7 +441,13 @@ class AutomaInstructionCard extends StatelessWidget {
             semanticLabel: supplyActionLabel(l10n, selection.action),
           ),
           if (selection.action.isStone)
-            Text(l10n.stonesAvailable(stoneCount?.call(selection.action) ?? 0))
+            Text(
+              l10n.stonesPlaced(
+                ActionSupply.stoneCapacity -
+                    (stoneCount?.call(selection.action) ??
+                        ActionSupply.stoneCapacity),
+              ),
+            )
           else
             Image.asset(
               supplyAsset(selection.action, selection.item),

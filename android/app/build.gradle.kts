@@ -1,8 +1,20 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+
+val uploadKeyFile = rootProject.file("key.properties")
+val uploadKey = Properties()
+if (uploadKeyFile.isFile) {
+    uploadKeyFile.inputStream().use { uploadKey.load(it) }
+}
+
+fun uploadKeyProperty(name: String): String =
+    uploadKey.getProperty(name)?.takeIf { it.isNotBlank() }
+        ?: error("Preencha '$name' em android/key.properties.")
 
 android {
     namespace = "br.dev.rralves.the_druids_of_edora"
@@ -29,11 +41,20 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (uploadKeyFile.isFile) {
+            create("release") {
+                storeFile = rootProject.file(uploadKeyProperty("storeFile"))
+                storePassword = uploadKeyProperty("storePassword")
+                keyAlias = uploadKeyProperty("keyAlias")
+                keyPassword = uploadKeyProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 }

@@ -1,5 +1,6 @@
 {
-  "malfurionCards": "Malfurion cards",
+  "automataName": "Automata",
+  "automataCards": "Automata’s cards",
   "reshuffleDeck": "The deck will be shuffled again on the next draw.",
   "drawCard": "Draw card",
   "setDolmens": "Set dolmens",
@@ -45,14 +46,14 @@
   "mint": "Mint",
   "red": "Red",
   "language": "Language",
-  "prepareMalfurion": "Prepare Malfurion",
+  "prepareAutomata": "Prepare Automata",
   "unofficialSetup": "Unofficial automa • initial setup",
   "chooseColor": "1. Choose the automa color",
   "prepareComponents": "2. Prepare the components",
-  "playerCount": "Set up the game for 2, 3, or 4 players according to the number of Malfurions.",
+  "playerCount": "Set up the game for 2, 3, or 4 players according to the number of automated opponents.",
   "setupPieces": "Take all 13 dice, the druid pawn, knowledge marker, 6 standing stones, and 6 runestones in the chosen color.",
-  "unusedPieces": "Malfurion uses no provisions, player board, tablets, amulet, or potions.",
-  "startingShrine": "You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.",
+  "unusedPieces": "Automata uses no provisions, player board, tablets, amulet, or potions.",
+  "startingShrine": "You play last: choose your starting shrine first. Then randomly choose a starting shrine for Automata.",
   "restartSetup": "Restart",
   "rollDice": "Roll dice",
   "dieSemantics": "Die {index}: {value}",
@@ -66,7 +67,7 @@
       }
     }
   },
-  "malfurionDice": "Malfurion dice",
+  "automataDice": "Automata’s dice",
   "rollingDice": "Rolling 13 dice…",
   "sortedDice": "13 dice sorted from lowest to highest.",
   "automaticDice": "These dice will be used automatically by the cards during the game.",
@@ -77,9 +78,9 @@
   "cardSickleAmuletTitle": "Sickle or amulet",
   "cardTabletMistletoeTitle": "Tablet or mistletoe",
   "cardKnowledgeProvisionTitle": "Knowledge or provisions",
-  "cardCompetitionTarget": "The nearest shrine with a die weaker than Malfurion’s strongest die.",
-  "cardConnectDolmensTarget": "If Malfurion is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.",
-  "cardSurroundFireTarget": "A fire needing just one more of Malfurion’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.",
+  "cardCompetitionTarget": "The nearest shrine with a die weaker than Automata’s strongest die.",
+  "cardConnectDolmensTarget": "If Automata is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.",
+  "cardSurroundFireTarget": "A fire needing just one more of Automata’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.",
   "cardStandingStoneTarget": "The nearest shrine with a standing stone or runestone action.",
   "cardSickleAmuletTarget": "The nearest shrine with a sickle or amulet action.",
   "cardTabletMistletoeTarget": "The nearest shrine with a tablet or mistletoe action.",
@@ -93,7 +94,7 @@
   "cardSickleAmuletAction": "Sickle or amulet at the target shrine.",
   "chooseShrineAction": "Choose the least expensive path. Then prefer an empty shrine. If more than one option remains, the player chooses.",
   "cardKnowledgeProvisionAction": "Knowledge or provisions at the target shrine.",
-  "cardDefaultAction": "Count action spaces clockwise from the top left by the chosen die value.",
+  "cardDefaultAction": "Select the available actions",
   "cardStandingStoneTieBreak": "Target tie: cheapest path, then empty shrine, then player’s choice.",
   "dolmenPink": "Pink",
   "dolmenOrange": "Orange",
@@ -102,7 +103,7 @@
   "dolmenBrown": "Brown",
   "dolmenBlack": "Black",
   "playerConnectedDolmens": "Connected",
-  "chooseAutomaForm": "Malfurion’s form",
+  "chooseAutomaForm": "Automata’s form",
   "druidForm": "Druid form",
   "bearForm": "Bear form",
   "automaFormHint": "The form determines which actions appear more often in the 10-card deck.",
@@ -110,8 +111,8 @@
   "chooseTablet": "Choose a tablet",
   "choosePotion": "Choose a potion",
   "noSupplyAvailable": "No items available for this action.",
-  "tabletQueueHelp": "Select the first available tablet in the displayed order. Confirming removes one copy of the selected tablet and one copy of each earlier tablet. Each tablet starts with two copies.",
-  "potionQueueHelp": "Select the first available potion in the displayed order. Confirming removes the selected potion and all earlier ones from future draws.",
+  "tabletQueueHelp": "In the displayed order, select the first tablet available on the board. Confirming removes one copy of the selected tablet only.",
+  "potionQueueHelp": "Select the first available potion in the displayed order. When you confirm, the selected potion and all earlier ones will be marked as used.",
   "tabletOption": "Tablet {id}",
   "potionOption": "Cost {cost} potion, variant {variant}",
   "@tabletOption": {
@@ -133,8 +134,8 @@
   },
   "chooseStandingStone": "Erect a standing stone",
   "chooseRunestone": "Erect a runestone",
-  "stonesAvailable": "{count}/6",
-  "@stonesAvailable": {
+  "stonesPlaced": "{count}/6",
+  "@stonesPlaced": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -169,7 +170,7 @@
       }
     }
   },
-  "setupColorTitle": "Choose Malfurion’s color",
+  "setupColorTitle": "Choose Automata’s color",
   "bearFormDifficulty": "Bear form is the more difficult option.",
   "chooseProvisions": "Provisions",
   "advanceKnowledge": "Advance knowledge",
@@ -207,5 +208,18 @@
     }
   },
   "setupPlayersShort": "{count} pl.",
-  "@setupPlayersShort": {"placeholders": {"count": {"type": "int"}}}
+  "@setupPlayersShort": {"placeholders": {"count": {"type": "int"}}},
+  "gameSummaryTitle": "Game summary",
+  "viewGameSummary": "View summary",
+  "summaryDiceUsed": "Dice used",
+  "summaryDolmenPairs": "Dolmen pairs connected",
+  "summaryTabletsRemoved": "Tablets removed",
+  "summaryPotionsRemoved": "Potions removed",
+  "summaryStandingStones": "Standing stones placed",
+  "summaryRunestones": "Runestones placed",
+  "summarySickle": "Sickle",
+  "summaryKnowledge": "Knowledge",
+  "summaryAmulet": "Amulet",
+  "exitApp": "Exit app",
+  "closeGameSummary": "Close summary"
 }

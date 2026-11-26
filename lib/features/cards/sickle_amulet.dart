@@ -5,6 +5,7 @@ class SickleAmulet {
 
   int sickle = 0;
   bool get atLimit => sickle >= maxSickle;
+  int get gemsPlaced => _occupied.length;
   bool occupied(int slot) => _occupied.contains(slot);
   bool get secondPositionFull => occupied(2) && occupied(3);
 

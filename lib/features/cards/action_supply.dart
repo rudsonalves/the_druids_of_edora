@@ -10,9 +10,13 @@ enum SupplyAction {
 }
 
 class ActionSupply {
+  static const stoneCapacity = 6;
   final _tablets = List.generate(15, (_) => [true, true]);
   final _usedPotions = <int>{};
-  final _stones = {SupplyAction.standingStone: 6, SupplyAction.runestone: 6};
+  final _stones = {
+    SupplyAction.standingStone: stoneCapacity,
+    SupplyAction.runestone: stoneCapacity,
+  };
 
   int stoneCount(SupplyAction action) => _stones[action] ?? 0;
 
@@ -28,7 +32,7 @@ class ActionSupply {
   int capacity(SupplyAction action) => switch (action) {
     SupplyAction.tablet => 2,
     SupplyAction.potion => 1,
-    SupplyAction.standingStone || SupplyAction.runestone => 6,
+    SupplyAction.standingStone || SupplyAction.runestone => stoneCapacity,
   };
 
   int count(SupplyAction action, int item) => switch (action) {
@@ -36,6 +40,9 @@ class ActionSupply {
     SupplyAction.potion => _usedPotions.contains(item) ? 0 : 1,
     SupplyAction.standingStone || SupplyAction.runestone => stoneCount(action),
   };
+
+  int unavailableCount(SupplyAction action) => itemIds(action)
+      .fold(0, (total, item) => total + capacity(action) - count(action, item));
 
   bool tabletCopyAvailable(int item, int copy) => _tablets[item - 1][copy];
 
@@ -71,20 +78,33 @@ class ActionSupply {
   }
 
   List<int> availableItems(SupplyAction action, int turn) {
+    final available = itemIds(action)
+        .where((item) => count(action, item) > 0)
+        .toList();
+    if (action != SupplyAction.potion) return available;
+
     final firstCost = ((turn.clamp(1, 13) - 1) ~/ 4).clamp(0, 2) * 2 + 1;
-    return [
-      for (final item in itemIds(action))
-        if (count(action, item) > 0 &&
-            (action != SupplyAction.potion ||
-                (item ~/ 10 >= firstCost && item ~/ 10 <= firstCost + 1)))
-          item,
-    ];
+    for (var cost = firstCost; cost <= 5; cost += 2) {
+      final tier = available
+          .where((item) => item ~/ 10 >= cost && item ~/ 10 <= cost + 1)
+          .toList();
+      if (tier.isNotEmpty) return tier;
+    }
+    return available;
   }
 
   List<int> draw(SupplyAction action, int turn, Random random) =>
       availableItems(action, turn)..shuffle(random);
 
-  void consumeThrough(SupplyAction action, List<int> queue, int selectedIndex) {
+  void consumeSelection(
+    SupplyAction action,
+    List<int> queue,
+    int selectedIndex,
+  ) {
+    if (action != SupplyAction.potion) {
+      adjust(action, queue[selectedIndex], -1);
+      return;
+    }
     for (final item in queue.take(selectedIndex + 1)) {
       adjust(action, item, -1);
     }

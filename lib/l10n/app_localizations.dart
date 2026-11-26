@@ -98,11 +98,17 @@ abstract class AppLocalizations {
     Locale('pt'),
   ];
 
-  /// No description provided for @malfurionCards.
+  /// No description provided for @automataName.
   ///
   /// In en, this message translates to:
-  /// **'Malfurion cards'**
-  String get malfurionCards;
+  /// **'Automata'**
+  String get automataName;
+
+  /// No description provided for @automataCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Automata’s cards'**
+  String get automataCards;
 
   /// No description provided for @reshuffleDeck.
   ///
@@ -272,11 +278,11 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
-  /// No description provided for @prepareMalfurion.
+  /// No description provided for @prepareAutomata.
   ///
   /// In en, this message translates to:
-  /// **'Prepare Malfurion'**
-  String get prepareMalfurion;
+  /// **'Prepare Automata'**
+  String get prepareAutomata;
 
   /// No description provided for @unofficialSetup.
   ///
@@ -299,7 +305,7 @@ abstract class AppLocalizations {
   /// No description provided for @playerCount.
   ///
   /// In en, this message translates to:
-  /// **'Set up the game for 2, 3, or 4 players according to the number of Malfurions.'**
+  /// **'Set up the game for 2, 3, or 4 players according to the number of automated opponents.'**
   String get playerCount;
 
   /// No description provided for @setupPieces.
@@ -311,13 +317,13 @@ abstract class AppLocalizations {
   /// No description provided for @unusedPieces.
   ///
   /// In en, this message translates to:
-  /// **'Malfurion uses no provisions, player board, tablets, amulet, or potions.'**
+  /// **'Automata uses no provisions, player board, tablets, amulet, or potions.'**
   String get unusedPieces;
 
   /// No description provided for @startingShrine.
   ///
   /// In en, this message translates to:
-  /// **'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.'**
+  /// **'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Automata.'**
   String get startingShrine;
 
   /// No description provided for @restartSetup.
@@ -338,11 +344,11 @@ abstract class AppLocalizations {
   /// **'Die {index}: {value}'**
   String dieSemantics(int index, int value);
 
-  /// No description provided for @malfurionDice.
+  /// No description provided for @automataDice.
   ///
   /// In en, this message translates to:
-  /// **'Malfurion dice'**
-  String get malfurionDice;
+  /// **'Automata’s dice'**
+  String get automataDice;
 
   /// No description provided for @rollingDice.
   ///
@@ -407,19 +413,19 @@ abstract class AppLocalizations {
   /// No description provided for @cardCompetitionTarget.
   ///
   /// In en, this message translates to:
-  /// **'The nearest shrine with a die weaker than Malfurion’s strongest die.'**
+  /// **'The nearest shrine with a die weaker than Automata’s strongest die.'**
   String get cardCompetitionTarget;
 
   /// No description provided for @cardConnectDolmensTarget.
   ///
   /// In en, this message translates to:
-  /// **'If Malfurion is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.'**
+  /// **'If Automata is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.'**
   String get cardConnectDolmensTarget;
 
   /// No description provided for @cardSurroundFireTarget.
   ///
   /// In en, this message translates to:
-  /// **'A fire needing just one more of Malfurion’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.'**
+  /// **'A fire needing just one more of Automata’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.'**
   String get cardSurroundFireTarget;
 
   /// No description provided for @cardStandingStoneTarget.
@@ -503,7 +509,7 @@ abstract class AppLocalizations {
   /// No description provided for @cardDefaultAction.
   ///
   /// In en, this message translates to:
-  /// **'Count action spaces clockwise from the top left by the chosen die value.'**
+  /// **'Select the available actions'**
   String get cardDefaultAction;
 
   /// No description provided for @cardStandingStoneTieBreak.
@@ -557,7 +563,7 @@ abstract class AppLocalizations {
   /// No description provided for @chooseAutomaForm.
   ///
   /// In en, this message translates to:
-  /// **'Malfurion’s form'**
+  /// **'Automata’s form'**
   String get chooseAutomaForm;
 
   /// No description provided for @druidForm.
@@ -605,13 +611,13 @@ abstract class AppLocalizations {
   /// No description provided for @tabletQueueHelp.
   ///
   /// In en, this message translates to:
-  /// **'Select the first available tablet in the displayed order. Confirming removes one copy of the selected tablet and one copy of each earlier tablet. Each tablet starts with two copies.'**
+  /// **'In the displayed order, select the first tablet available on the board. Confirming removes one copy of the selected tablet only.'**
   String get tabletQueueHelp;
 
   /// No description provided for @potionQueueHelp.
   ///
   /// In en, this message translates to:
-  /// **'Select the first available potion in the displayed order. Confirming removes the selected potion and all earlier ones from future draws.'**
+  /// **'Select the first available potion in the displayed order. When you confirm, the selected potion and all earlier ones will be marked as used.'**
   String get potionQueueHelp;
 
   /// No description provided for @tabletOption.
@@ -638,11 +644,11 @@ abstract class AppLocalizations {
   /// **'Erect a runestone'**
   String get chooseRunestone;
 
-  /// No description provided for @stonesAvailable.
+  /// No description provided for @stonesPlaced.
   ///
   /// In en, this message translates to:
   /// **'{count}/6'**
-  String stonesAvailable(int count);
+  String stonesPlaced(int count);
 
   /// No description provided for @tabletInventory.
   ///
@@ -731,7 +737,7 @@ abstract class AppLocalizations {
   /// No description provided for @setupColorTitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose Malfurion’s color'**
+  /// **'Choose Automata’s color'**
   String get setupColorTitle;
 
   /// No description provided for @bearFormDifficulty.
@@ -811,6 +817,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} pl.'**
   String setupPlayersShort(int count);
+
+  /// No description provided for @gameSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Game summary'**
+  String get gameSummaryTitle;
+
+  /// No description provided for @viewGameSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'View summary'**
+  String get viewGameSummary;
+
+  /// No description provided for @summaryDiceUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dice used'**
+  String get summaryDiceUsed;
+
+  /// No description provided for @summaryDolmenPairs.
+  ///
+  /// In en, this message translates to:
+  /// **'Dolmen pairs connected'**
+  String get summaryDolmenPairs;
+
+  /// No description provided for @summaryTabletsRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Tablets removed'**
+  String get summaryTabletsRemoved;
+
+  /// No description provided for @summaryPotionsRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Potions removed'**
+  String get summaryPotionsRemoved;
+
+  /// No description provided for @summaryStandingStones.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing stones placed'**
+  String get summaryStandingStones;
+
+  /// No description provided for @summaryRunestones.
+  ///
+  /// In en, this message translates to:
+  /// **'Runestones placed'**
+  String get summaryRunestones;
+
+  /// No description provided for @summarySickle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sickle'**
+  String get summarySickle;
+
+  /// No description provided for @summaryKnowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge'**
+  String get summaryKnowledge;
+
+  /// No description provided for @summaryAmulet.
+  ///
+  /// In en, this message translates to:
+  /// **'Amulet'**
+  String get summaryAmulet;
+
+  /// No description provided for @exitApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit app'**
+  String get exitApp;
+
+  /// No description provided for @closeGameSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Close summary'**
+  String get closeGameSummary;
 }
 
 class _AppLocalizationsDelegate

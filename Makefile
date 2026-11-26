@@ -8,7 +8,7 @@ RELEASE_FLAGS ?=
 DEVICE ?=
 ARGS ?=
 
-.PHONY: help get format format-check analyze test check run devices build-apk status gitlog release
+.PHONY: help get format format-check analyze test check run devices build-apk build-aab status gitlog release
 
 help: ## Exibe os comandos disponíveis
 	@awk 'BEGIN {FS = ":.*##"; printf "\nComandos:\n"} /^[a-zA-Z0-9_.-]+:.*##/ { printf "  %-16s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -38,6 +38,10 @@ run: ## Executa o app (DEVICE=id opcional; ARGS="..." opcional)
 
 build-apk: ## Gera um APK de depuração
 	@$(FLUTTER) build apk --debug
+
+build-aab: ## Gera o AAB de release assinado para o Google Play
+	@test -s android/key.properties || { echo "Configure android/key.properties com a chave de upload antes de gerar o AAB." >&2; exit 2; }
+	@$(FLUTTER) build appbundle --release
 
 status: ## Exibe o estado do repositório
 	@git status --short

@@ -10,7 +10,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get malfurionCards => 'Malfurion cards';
+  String get automataName => 'Automata';
+
+  @override
+  String get automataCards => 'Automata’s cards';
 
   @override
   String get reshuffleDeck =>
@@ -104,7 +107,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get prepareMalfurion => 'Prepare Malfurion';
+  String get prepareAutomata => 'Prepare Automata';
 
   @override
   String get unofficialSetup => 'Unofficial automa • initial setup';
@@ -117,7 +120,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playerCount =>
-      'Set up the game for 2, 3, or 4 players according to the number of Malfurions.';
+      'Set up the game for 2, 3, or 4 players according to the number of automated opponents.';
 
   @override
   String get setupPieces =>
@@ -125,11 +128,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unusedPieces =>
-      'Malfurion uses no provisions, player board, tablets, amulet, or potions.';
+      'Automata uses no provisions, player board, tablets, amulet, or potions.';
 
   @override
   String get startingShrine =>
-      'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Malfurion.';
+      'You play last: choose your starting shrine first. Then randomly choose a starting shrine for Automata.';
 
   @override
   String get restartSetup => 'Restart';
@@ -143,7 +146,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get malfurionDice => 'Malfurion dice';
+  String get automataDice => 'Automata’s dice';
 
   @override
   String get rollingDice => 'Rolling 13 dice…';
@@ -178,15 +181,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cardCompetitionTarget =>
-      'The nearest shrine with a die weaker than Malfurion’s strongest die.';
+      'The nearest shrine with a die weaker than Automata’s strongest die.';
 
   @override
   String get cardConnectDolmensTarget =>
-      'If Malfurion is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.';
+      'If Automata is connected to a dolmen and fewer than 5 shrines remain to reach its matching dolmen, target that dolmen. Otherwise, draw another card.';
 
   @override
   String get cardSurroundFireTarget =>
-      'A fire needing just one more of Malfurion’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.';
+      'A fire needing just one more of Automata’s shrines, reachable for 6 provisions or less. Otherwise, draw another card.';
 
   @override
   String get cardStandingStoneTarget =>
@@ -236,8 +239,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Knowledge or provisions at the target shrine.';
 
   @override
-  String get cardDefaultAction =>
-      'Count action spaces clockwise from the top left by the chosen die value.';
+  String get cardDefaultAction => 'Select the available actions';
 
   @override
   String get cardStandingStoneTieBreak =>
@@ -265,7 +267,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playerConnectedDolmens => 'Connected';
 
   @override
-  String get chooseAutomaForm => 'Malfurion’s form';
+  String get chooseAutomaForm => 'Automata’s form';
 
   @override
   String get druidForm => 'Druid form';
@@ -291,11 +293,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabletQueueHelp =>
-      'Select the first available tablet in the displayed order. Confirming removes one copy of the selected tablet and one copy of each earlier tablet. Each tablet starts with two copies.';
+      'In the displayed order, select the first tablet available on the board. Confirming removes one copy of the selected tablet only.';
 
   @override
   String get potionQueueHelp =>
-      'Select the first available potion in the displayed order. Confirming removes the selected potion and all earlier ones from future draws.';
+      'Select the first available potion in the displayed order. When you confirm, the selected potion and all earlier ones will be marked as used.';
 
   @override
   String tabletOption(int id) {
@@ -314,7 +316,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseRunestone => 'Erect a runestone';
 
   @override
-  String stonesAvailable(int count) {
+  String stonesPlaced(int count) {
     return '$count/6';
   }
 
@@ -366,7 +368,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sickleLimitHelp => 'The sickle has reached 13. Choose the amulet.';
 
   @override
-  String get setupColorTitle => 'Choose Malfurion’s color';
+  String get setupColorTitle => 'Choose Automata’s color';
 
   @override
   String get bearFormDifficulty => 'Bear form is the more difficult option.';
@@ -421,4 +423,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String setupPlayersShort(int count) {
     return '$count pl.';
   }
+
+  @override
+  String get gameSummaryTitle => 'Game summary';
+
+  @override
+  String get viewGameSummary => 'View summary';
+
+  @override
+  String get summaryDiceUsed => 'Dice used';
+
+  @override
+  String get summaryDolmenPairs => 'Dolmen pairs connected';
+
+  @override
+  String get summaryTabletsRemoved => 'Tablets removed';
+
+  @override
+  String get summaryPotionsRemoved => 'Potions removed';
+
+  @override
+  String get summaryStandingStones => 'Standing stones placed';
+
+  @override
+  String get summaryRunestones => 'Runestones placed';
+
+  @override
+  String get summarySickle => 'Sickle';
+
+  @override
+  String get summaryKnowledge => 'Knowledge';
+
+  @override
+  String get summaryAmulet => 'Amulet';
+
+  @override
+  String get exitApp => 'Exit app';
+
+  @override
+  String get closeGameSummary => 'Close summary';
 }

@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../features/setup/setup_page.dart';
 import '../l10n/app_localizations.dart';
+import 'launch_intro.dart';
 
 class EdoraApp extends StatefulWidget {
   const EdoraApp({super.key, this.random});
@@ -16,6 +17,7 @@ class EdoraApp extends StatefulWidget {
 
 class _EdoraAppState extends State<EdoraApp> {
   Locale? selectedLocale;
+  bool showIntro = true;
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +44,13 @@ class _EdoraAppState extends State<EdoraApp> {
         scaffoldBackgroundColor: const Color(0xFF102B28),
         useMaterial3: true,
       ),
-      home: SetupPage(
-        random: widget.random ?? Random(),
-        onLocaleChanged: (locale) => setState(() => selectedLocale = locale),
-      ),
+      home: showIntro
+          ? LaunchIntro(onFinished: () => setState(() => showIntro = false))
+          : SetupPage(
+              random: widget.random ?? Random(),
+              onLocaleChanged: (locale) =>
+                  setState(() => selectedLocale = locale),
+            ),
     );
   }
 }

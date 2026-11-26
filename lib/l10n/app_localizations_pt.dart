@@ -10,7 +10,10 @@ class AppLocalizationsPt extends AppLocalizations {
   AppLocalizationsPt([String locale = 'pt']) : super(locale);
 
   @override
-  String get malfurionCards => 'Cartas do Malfurion';
+  String get automataName => 'Autômata';
+
+  @override
+  String get automataCards => 'Cartas do Autômata';
 
   @override
   String get reshuffleDeck =>
@@ -104,7 +107,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get language => 'Idioma';
 
   @override
-  String get prepareMalfurion => 'Prepare o Malfurion';
+  String get prepareAutomata => 'Prepare o Autômata';
 
   @override
   String get unofficialSetup => 'Autômato não oficial • preparação inicial';
@@ -117,7 +120,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get playerCount =>
-      'Prepare o jogo para 2, 3 ou 4 jogadores conforme a quantidade de Malfurions.';
+      'Prepare o jogo para 2, 3 ou 4 jogadores conforme a quantidade de adversários automatizados.';
 
   @override
   String get setupPieces =>
@@ -125,11 +128,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get unusedPieces =>
-      'Malfurion não usa provisões, tabuleiro individual, tábuas, amuleto ou poções.';
+      'O Autômata não usa provisões, tabuleiro individual, tábuas, amuleto ou poções.';
 
   @override
   String get startingShrine =>
-      'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para Malfurion.';
+      'Você joga por último: escolha seu santuário inicial primeiro. Depois, escolha aleatoriamente um santuário inicial para o Autômata.';
 
   @override
   String get restartSetup => 'Reiniciar';
@@ -143,7 +146,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get malfurionDice => 'Dados do Malfurion';
+  String get automataDice => 'Dados do Autômata';
 
   @override
   String get rollingDice => 'Rolando os 13 dados…';
@@ -178,15 +181,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cardCompetitionTarget =>
-      'O santuário mais próximo com um dado menor que o dado mais forte de Malfurion.';
+      'O santuário mais próximo com um dado menor que o dado mais forte do Autômata.';
 
   @override
   String get cardConnectDolmensTarget =>
-      'Se Malfurion já estiver conectado a um dolmen e faltarem menos de 5 santuários para chegar ao dolmen da mesma cor, esse é o alvo. Caso contrário, solicite outra carta.';
+      'Se o Autômata já estiver conectado a um dolmen e faltarem menos de 5 santuários para chegar ao dolmen da mesma cor, esse é o alvo. Caso contrário, solicite outra carta.';
 
   @override
   String get cardSurroundFireTarget =>
-      'Uma fogueira que precise de apenas mais um santuário de Malfurion e que possa ser alcançada por até 6 provisões. Caso contrário, solicite outra carta.';
+      'Uma fogueira que precise de apenas mais um santuário do Autômata e que possa ser alcançada por até 6 provisões. Caso contrário, solicite outra carta.';
 
   @override
   String get cardStandingStoneTarget =>
@@ -236,8 +239,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Conhecimento ou provisões do santuário alvo.';
 
   @override
-  String get cardDefaultAction =>
-      'Conte as ações a partir da superior esquerda, no sentido horário, pelo valor do dado escolhido.';
+  String get cardDefaultAction => 'Selecione as ações possíveis';
 
   @override
   String get cardStandingStoneTieBreak =>
@@ -265,7 +267,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get playerConnectedDolmens => 'Já conectado';
 
   @override
-  String get chooseAutomaForm => 'Forma de Malfurion';
+  String get chooseAutomaForm => 'Forma do Autômata';
 
   @override
   String get druidForm => 'Forma Druida';
@@ -291,11 +293,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get tabletQueueHelp =>
-      'Selecione a primeira tábua disponível na ordem exibida. Ao confirmar, descontamos uma cópia da tábua escolhida e uma de cada tábua anterior. Cada tábua começa com duas cópias.';
+      'Na ordem exibida, selecione a primeira tábua disponível no tabuleiro. Ao confirmar, o app desconta uma cópia apenas da tábua escolhida.';
 
   @override
   String get potionQueueHelp =>
-      'Selecione a primeira poção disponível na ordem exibida. Ao confirmar, a poção escolhida e todas as anteriores saem dos próximos sorteios.';
+      'Selecione a primeira poção disponível na ordem exibida. Ao confirmar, a poção escolhida e todas as anteriores serão consideradas usadas.';
 
   @override
   String tabletOption(int id) {
@@ -314,7 +316,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get chooseRunestone => 'Erguer pedra rúnica';
 
   @override
-  String stonesAvailable(int count) {
+  String stonesPlaced(int count) {
     return '$count/6';
   }
 
@@ -366,7 +368,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sickleLimitHelp => 'A foice chegou a 13. Escolha o amuleto.';
 
   @override
-  String get setupColorTitle => 'Selecione a cor de Malfurion';
+  String get setupColorTitle => 'Selecione a cor do Autômata';
 
   @override
   String get bearFormDifficulty => 'A Forma Urso é a mais difícil.';
@@ -421,4 +423,43 @@ class AppLocalizationsPt extends AppLocalizations {
   String setupPlayersShort(int count) {
     return '$count jgs';
   }
+
+  @override
+  String get gameSummaryTitle => 'Resumo da partida';
+
+  @override
+  String get viewGameSummary => 'Ver resumo';
+
+  @override
+  String get summaryDiceUsed => 'Dados consumidos';
+
+  @override
+  String get summaryDolmenPairs => 'Pares de dolmens conectados';
+
+  @override
+  String get summaryTabletsRemoved => 'Tábuas removidas';
+
+  @override
+  String get summaryPotionsRemoved => 'Poções removidas';
+
+  @override
+  String get summaryStandingStones => 'Menires colocados';
+
+  @override
+  String get summaryRunestones => 'Pedras rúnicas colocadas';
+
+  @override
+  String get summarySickle => 'Foice';
+
+  @override
+  String get summaryKnowledge => 'Conhecimento';
+
+  @override
+  String get summaryAmulet => 'Amuleto';
+
+  @override
+  String get exitApp => 'Sair do app';
+
+  @override
+  String get closeGameSummary => 'Fechar resumo';
 }

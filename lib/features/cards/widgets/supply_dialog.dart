@@ -22,6 +22,14 @@ class SupplyDialog extends StatefulWidget {
 class _SupplyDialogState extends State<SupplyDialog> {
   int? selectedIndex;
 
+  bool willBeConsumed(int index) {
+    final selected = selectedIndex;
+    if (selected == null) return false;
+    return widget.action == SupplyAction.potion
+        ? index <= selected
+        : index == selected;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -34,7 +42,9 @@ class _SupplyDialogState extends State<SupplyDialog> {
           children: [
             Image.asset(supplyAsset(action, 1), height: 64),
             const SizedBox(height: 12),
-            Text(l10n.stonesAvailable(widget.stoneCount)),
+            Text(
+              l10n.stonesPlaced(ActionSupply.stoneCapacity - widget.stoneCount),
+            ),
           ],
         ),
         actions: [
@@ -71,22 +81,24 @@ class _SupplyDialogState extends State<SupplyDialog> {
               if (widget.queue.isNotEmpty) const SizedBox(height: 12),
               for (final (index, item) in widget.queue.indexed)
                 ListTile(
-                  selected: selectedIndex == index,
+                  selected: willBeConsumed(index),
                   leading: Text('${index + 1}.'),
                   title: Align(
                     alignment: Alignment.centerLeft,
-                    child: Image.asset(
-                      supplyAsset(widget.action, item),
-                      height: 48,
-                      semanticLabel: tablets
-                          ? l10n.tabletOption(item)
-                          : l10n.potionOption(item ~/ 10, item % 10),
+                    child: Opacity(
+                      opacity: willBeConsumed(index) ? 0.3 : 1,
+                      child: Image.asset(
+                        supplyAsset(widget.action, item),
+                        height: 48,
+                        semanticLabel: tablets
+                            ? l10n.tabletOption(item)
+                            : l10n.potionOption(item ~/ 10, item % 10),
+                      ),
                     ),
                   ),
-                  trailing: selectedIndex == index
-                      ? const Icon(Icons.check_circle)
-                      : const Icon(Icons.radio_button_unchecked),
-                  onTap: () => setState(() => selectedIndex = index),
+                  onTap: () => setState(() {
+                    selectedIndex = selectedIndex == index ? null : index;
+                  }),
                 ),
             ],
           ),

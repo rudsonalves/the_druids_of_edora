@@ -2,6 +2,9 @@ import '../../l10n/app_localizations.dart';
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
+import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:material_ui/material_ui.dart';
 
 import '../setup/automata_color.dart';
@@ -45,6 +48,7 @@ class _CardsPageState extends State<CardsPage> {
   AutomaCard? executingShrineCard;
   ShrineAction? shrineAction;
   bool actionUnavailable = false;
+  bool gameFinished = false;
   final dieActions = <int, ShrineActionOutcome>{};
   bool pendingShrineAction = false;
   AutomaCard? get actionCard => executingShrineCard ?? currentCard;
@@ -113,7 +117,7 @@ class _CardsPageState extends State<CardsPage> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Malfurion'),
+          title: Text(l10n.automataName),
           actions: [
             inventoryButton(
               SupplyAction.tablet,
@@ -152,6 +156,7 @@ class _CardsPageState extends State<CardsPage> {
                   child: AutomaInstructionCard(
                     key: ValueKey('${card.name}-${deck.draws}'),
                     card: card,
+                    actionResolved: !awaitingCardAction,
                     onShrineAction: pendingShrineAction
                         ? resolveShrineAction
                         : null,
@@ -203,13 +208,13 @@ class _CardsPageState extends State<CardsPage> {
                       onPressed: awaitingCardAction
                           ? null
                           : availableDice.isEmpty
-                          ? () =>
-                                Navigator.of(context)
-                                    .pushNamedAndRemoveUntil('/', (_) => false)
+                          ? showGameSummary
                           : drawCard,
                       child: Text(
                         availableDice.isEmpty
-                            ? l10n.finishGame
+                            ? (gameFinished
+                                  ? l10n.viewGameSummary
+                                  : l10n.finishGame)
                             : card == null
                             ? l10n.drawCard
                             : card == AutomaCard.connectDolmens &&
@@ -272,38 +277,128 @@ class _CardsPageState extends State<CardsPage> {
     );
   }
 
+  Future<void> showGameSummary() async {
+    if (awaitingCardAction || availableDice.isNotEmpty) return;
+    if (!gameFinished) setState(() => gameFinished = true);
+
+    final canExitApp =
+        !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+    final restart = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        final strings = AppLocalizations.of(context)!;
+        final rows = [
+          (
+            strings.summaryDiceUsed,
+            '${widget.dice.length - availableDice.length}/${widget.dice.length}',
+          ),
+          (strings.summaryDolmenPairs, '${connectedPairs.length}'),
+          (
+            strings.summaryTabletsRemoved,
+            '${supply.unavailableCount(SupplyAction.tablet)}',
+          ),
+          (
+            strings.summaryPotionsRemoved,
+            '${supply.unavailableCount(SupplyAction.potion)}',
+          ),
+          (
+            strings.summaryStandingStones,
+            strings.stonesPlaced(
+              supply.unavailableCount(SupplyAction.standingStone),
+            ),
+          ),
+          (
+            strings.summaryRunestones,
+            strings.stonesPlaced(
+              supply.unavailableCount(SupplyAction.runestone),
+            ),
+          ),
+          (
+            strings.summarySickle,
+            '${sickleAmulet.sickle}/${SickleAmulet.maxSickle}',
+          ),
+          (
+            strings.summaryKnowledge,
+            '$knowledge/${AutomaInstructionCard.maxKnowledge}',
+          ),
+          (strings.summaryAmulet, '${sickleAmulet.gemsPlaced}/6'),
+        ];
+        return AlertDialog(
+          title: Text(strings.gameSummaryTitle),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 8,
+              children: [
+                for (final (label, value) in rows)
+                  Row(
+                    spacing: 12,
+                    children: [
+                      Expanded(child: Text(label)),
+                      Text(
+                        value,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(
+                canExitApp ? strings.exitApp : strings.closeGameSummary,
+              ),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(strings.restartSetup),
+            ),
+          ],
+        );
+      },
+    );
+    if (!mounted) return;
+    if (restart == true) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (_) => false);
+    } else if (restart == false && canExitApp) {
+      await SystemNavigator.pop();
+    }
+  }
+
   Widget inventoryButton(SupplyAction category, String label, String icon) {
     return IconButton(
       tooltip: label,
       icon: Image.asset('assets/actions/$icon.png', width: 28, height: 28),
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (_) => SupplyInventoryDialog(
-          category: category,
-          supply: supply,
-          onAdjust: (action, item, change, {tabletCopy}) {
-            setState(() {
-              final previous = supply.count(action, item);
-              if (tabletCopy == null) {
-                supply.adjust(action, item, change);
-              } else {
-                supply.toggleTabletCopy(item, tabletCopy);
-              }
-              final queue = supplyQueues[action];
-              if (queue == null) return;
-              final current = supply.count(action, item);
-              if (current == 0) {
-                queue.remove(item);
-              } else if (previous == 0) {
-                final turn = widget.dice.length - availableDice.length;
-                if (supply.draw(action, turn, widget.random).contains(item)) {
-                  queue.add(item);
-                }
-              }
-            });
-          },
-        ),
-      ),
+      onPressed: gameFinished
+          ? null
+          : () => showDialog<void>(
+              context: context,
+              builder: (_) => SupplyInventoryDialog(
+                category: category,
+                supply: supply,
+                onAdjust: (action, item, change, {tabletCopy}) {
+                  setState(() {
+                    if (tabletCopy == null) {
+                      supply.adjust(action, item, change);
+                    } else {
+                      supply.toggleTabletCopy(item, tabletCopy);
+                    }
+                    final queue = supplyQueues[action];
+                    if (queue == null) return;
+                    final turn = widget.dice.length - availableDice.length;
+                    final eligible = supply
+                        .availableItems(action, turn)
+                        .toSet();
+                    queue.removeWhere((item) => !eligible.remove(item));
+                    if (eligible.isNotEmpty) {
+                      queue.addAll(eligible.toList()..shuffle(widget.random));
+                    }
+                  });
+                },
+              ),
+            ),
     );
   }
 
@@ -408,7 +503,7 @@ class _CardsPageState extends State<CardsPage> {
     if (!mounted || selected == null) return;
 
     setState(() {
-      supply.consumeThrough(action, queue, selected);
+      supply.consumeSelection(action, queue, selected);
       supplySelection = (action: action, item: queue[selected]);
     });
   }
@@ -522,8 +617,8 @@ class _CardsPageState extends State<CardsPage> {
             ShrineAction.knowledge => knowledge,
             ShrineAction.sickle => sickleAmulet.sickle,
             ShrineAction.amulet => placedGem,
-            ShrineAction.standingStone ||
-            ShrineAction.runestone => supply.stoneCount(resolved.supply!),
+            ShrineAction.standingStone || ShrineAction.runestone =>
+              ActionSupply.stoneCapacity - supply.stoneCount(resolved.supply!),
             _ => null,
           },
         );

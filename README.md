@@ -4,6 +4,19 @@
 
 Use `make help` para consultar os comandos disponíveis. `make check` verifica a formatação, executa `flutter analyze` e roda os testes. `make run` inicia o app; use `DEVICE=<id>` para escolher um dispositivo.
 
+## AAB para o Google Play
+
+Configure `android/key.properties` com a chave de upload do aplicativo. O arquivo é ignorado pelo Git. Use um caminho absoluto para o arquivo da chave ou um caminho relativo ao diretório `android/`.
+
+```properties
+storeFile=/caminho/para/upload.jks
+storePassword=SENHA_DO_ARQUIVO
+keyAlias=ALIAS_DA_CHAVE
+keyPassword=SENHA_DA_CHAVE
+```
+
+Execute `make build-aab` para gerar o bundle de release assinado em `build/app/outputs/bundle/release/app-release.aab`. O nome e o código da versão vêm do campo `version` do `pubspec.yaml`.
+
 ## Release
 
 O alvo `make release BRANCH=codex/minha-alteracao` chama `/Users/rudsonalves/.bin/release`. O script executa as verificações, gera a entrada do `CHANGELOG.md` a partir das alterações, pede revisão interativa do texto, cria a branch de release quando necessário, faz o commit e envia a branch para `origin`.
