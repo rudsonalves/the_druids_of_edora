@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026/11/26 - ajustes/cartas-06
+
+This change prevents the Automa deck from drawing `surroundFire` during its first seven draws. It updates draw eligibility and opening deck order, adds test coverage, and increments the build version.
+
+1. **lib/features/cards/automa_card.dart**
+
+   * Added a shared eligibility check for `connectDolmens` and `surroundFire`, used by both shuffle detection and card selection.
+   * Arranged the initial deck so its first seven draws exclude `surroundFire`.
+
+2. **test/automa_deck_test.dart**
+
+   * Added an assertion that the first seven draws exclude `surroundFire` while retaining checks that both cycles contain the expected cards.
+
+3. **pubspec.yaml**
+
+   * Incremented the build version from `0.8.0+1` to `0.8.0+2`.
+
+### Conclusion
+
+The deck now enforces the seven-draw opening restriction for `surroundFire`, with test coverage for the opening sequence and full deck cycles.
 ## 2026/11/26 - ajustes/cartas-04
 
 This change updates the Automata game flow, supply rules, and card presentation. It adds launch artwork, an end-of-game summary, and Android release bundle signing support.

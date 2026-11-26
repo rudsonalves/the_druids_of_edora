@@ -36,6 +36,7 @@ enum AutomaForm {
 }
 
 class AutomaDeck {
+  static const _openingDrawsWithoutFire = 7;
   AutomaDeck(this.random, {required AutomaForm form})
     : _cards = [...AutomaCard.values, ...form.extraCards];
 
@@ -51,20 +52,23 @@ class AutomaDeck {
   bool canDrawDolmens({required bool hasAvailablePairs}) =>
       hasAvailablePairs && (draws >= 9 || _dolmenDraws < 2);
 
-  bool needsShuffle({bool hasAvailablePairs = true}) => !_remaining.any(
-    (card) =>
-        card != AutomaCard.connectDolmens ||
-        canDrawDolmens(hasAvailablePairs: hasAvailablePairs),
-  );
+  bool _canDraw(AutomaCard card, bool hasAvailablePairs) => switch (card) {
+    AutomaCard.connectDolmens => canDrawDolmens(
+      hasAvailablePairs: hasAvailablePairs,
+    ),
+    AutomaCard.surroundFire => draws >= _openingDrawsWithoutFire,
+    _ => true,
+  };
+
+  bool needsShuffle({bool hasAvailablePairs = true}) =>
+      !_remaining.any((card) => _canDraw(card, hasAvailablePairs));
 
   AutomaCard draw({bool hasAvailablePairs = true}) {
     if (needsShuffle(hasAvailablePairs: hasAvailablePairs)) {
       _refill();
     }
     final index = _remaining.lastIndexWhere(
-      (card) =>
-          card != AutomaCard.connectDolmens ||
-          canDrawDolmens(hasAvailablePairs: hasAvailablePairs),
+      (card) => _canDraw(card, hasAvailablePairs),
     );
     final card = _remaining.removeAt(index);
     draws++;
@@ -78,6 +82,17 @@ class AutomaDeck {
       nextCycle.remove(deferred);
     }
     nextCycle.shuffle(random);
+    if (draws == 0) {
+      final opening = <AutomaCard>[];
+      for (var i = 0; i < _openingDrawsWithoutFire; i++) {
+        final index = nextCycle.lastIndexWhere(
+          (card) => card != AutomaCard.surroundFire,
+        );
+        opening.add(nextCycle.removeAt(index));
+      }
+      nextCycle.shuffle(random);
+      nextCycle.addAll(opening.reversed);
+    }
     _remaining.insertAll(0, nextCycle);
   }
 }

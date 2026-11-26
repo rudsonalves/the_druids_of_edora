@@ -19,7 +19,9 @@ void main() {
               AutomaCard.knowledgeProvision,
             ];
       final expected = [...AutomaCard.values, ...extra];
-      expect(List.generate(10, (_) => deck.draw()), unorderedEquals(expected));
+      final firstCycle = List.generate(10, (_) => deck.draw());
+      expect(firstCycle.take(7), isNot(contains(AutomaCard.surroundFire)));
+      expect(firstCycle, unorderedEquals(expected));
       expect(deck.remaining, 0);
       expect(List.generate(10, (_) => deck.draw()), unorderedEquals(expected));
     });
