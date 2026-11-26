@@ -1,18 +1,13 @@
 # the_druids_of_edora
 
-A new Flutter project.
+## Desenvolvimento
 
-## Getting Started
+Use `make help` para consultar os comandos disponíveis. `make check` verifica a formatação, executa `flutter analyze` e roda os testes. `make run` inicia o app; use `DEVICE=<id>` para escolher um dispositivo.
 
-This project is a starting point for a Flutter application.
+## Release
 
-A few resources to get you started if this is your first Flutter project:
+O alvo `make release BRANCH=codex/minha-alteracao` chama `/Users/rudsonalves/.bin/release`. O script executa as verificações, gera a entrada do `CHANGELOG.md` a partir das alterações, pede revisão interativa do texto, cria a branch de release quando necessário, faz o commit e envia a branch para `origin`.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Execute-o em um terminal interativo. A branch informada deve ser nova ou a branch atual de uma release interrompida; `main` não é aceita. Para pular apenas os testes, use `make release BRANCH=codex/minha-alteracao RELEASE_FLAGS=--skip-tests`. O diretório temporário `.commit/` é ignorado pelo Git. O script também requer `codex`, `less`, `git` e o editor configurado em `RELEASE_EDITOR` (por padrão, `vim`).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 # the_druids_of_edora
