@@ -131,5 +131,15 @@
   "summaryKnowledge": "Conhecimento",
   "summaryAmulet": "Amuleto",
   "exitApp": "Sair do app",
-  "closeGameSummary": "Fechar resumo"
+  "closeGameSummary": "Fechar resumo",
+  "aboutTitle": "Sobre",
+  "aboutVersion": "Versão {version}",
+  "aboutDescription": "Assistente não oficial para partidas solo de Druids of Edora com o tabuleiro físico.",
+  "aboutAcknowledgments": "Agradecimentos",
+  "aboutCreatorCredit": "Obrigado a Julien (jujuandco), da comunidade BoardGameGeek, por criar Malfurion, o autômato que serviu de base para este app. Esta adaptação acrescenta ajustes às regras e automatiza partes da partida.",
+  "aboutBggProfile": "Perfil no BoardGameGeek",
+  "aboutOriginalSolo": "Modo solo original",
+  "aboutLicense": "Código-fonte e licença GPL v3",
+  "aboutPrivacyPolicy": "Política de Privacidade",
+  "aboutLinkError": "Não foi possível abrir o link."
 }

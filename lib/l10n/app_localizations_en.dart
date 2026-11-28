@@ -462,4 +462,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get closeGameSummary => 'Close summary';
+
+  @override
+  String get aboutTitle => 'About';
+
+  @override
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get aboutDescription =>
+      'An unofficial companion for solo sessions of Druids of Edora with the physical board game.';
+
+  @override
+  String get aboutAcknowledgments => 'Acknowledgments';
+
+  @override
+  String get aboutCreatorCredit =>
+      'Thanks to Julien (jujuandco) from the BoardGameGeek community for creating Malfurion, the original automa behind this app. This adaptation adjusts some rules and automates parts of play.';
+
+  @override
+  String get aboutBggProfile => 'BoardGameGeek profile';
+
+  @override
+  String get aboutOriginalSolo => 'Original solo mode';
+
+  @override
+  String get aboutLicense => 'Source code and GPL v3 license';
+
+  @override
+  String get aboutPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get aboutLinkError => 'Could not open the link.';
 }

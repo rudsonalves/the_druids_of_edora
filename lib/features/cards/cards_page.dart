@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:material_ui/material_ui.dart';
 
+import '../../app/widgets/forest_surface.dart';
+
 import '../setup/automata_color.dart';
 import '../setup/widgets/die_face.dart';
 import 'action_supply.dart';
@@ -136,63 +138,66 @@ class _CardsPageState extends State<CardsPage> {
             ),
           ],
         ),
-        body: SafeArea(
-          child: ListView(
-            controller: scrollController,
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-            children: [
-              if (card == null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 56),
-                  child: Icon(
-                    Icons.style_outlined,
-                    size: 94,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                )
-              else
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 220),
-                  child: AutomaInstructionCard(
-                    key: ValueKey('${card.name}-${deck.draws}'),
-                    card: card,
-                    actionResolved: !awaitingCardAction,
-                    onShrineAction: pendingShrineAction
-                        ? resolveShrineAction
-                        : null,
-                    dieActions: Map.unmodifiable(dieActions),
-                    onSupplyAction: chooseSupply,
-                    sickle: sickleAmulet.sickle,
-                    usedSickle: usedSickle,
-                    placedGem: placedGem,
-                    onSickle: sickleAmulet.atLimit ? null : advanceSickle,
-                    onAmulet: chooseAmulet,
-                    knowledge: knowledge,
-                    knowledgeChoice: knowledgeChoice,
-                    onKnowledge: () => chooseKnowledgeProvision(
-                      KnowledgeProvisionChoice.knowledge,
+        body: ForestSurface(
+          showPanel: false,
+          child: SafeArea(
+            child: ListView(
+              controller: scrollController,
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+              children: [
+                if (card == null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 56),
+                    child: Icon(
+                      Icons.style_outlined,
+                      size: 94,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    onProvisions: () => chooseKnowledgeProvision(
-                      KnowledgeProvisionChoice.provisions,
+                  )
+                else
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 220),
+                    child: AutomaInstructionCard(
+                      key: ValueKey('${card.name}-${deck.draws}'),
+                      card: card,
+                      actionResolved: !awaitingCardAction,
+                      onShrineAction: pendingShrineAction
+                          ? resolveShrineAction
+                          : null,
+                      dieActions: Map.unmodifiable(dieActions),
+                      onSupplyAction: chooseSupply,
+                      sickle: sickleAmulet.sickle,
+                      usedSickle: usedSickle,
+                      placedGem: placedGem,
+                      onSickle: sickleAmulet.atLimit ? null : advanceSickle,
+                      onAmulet: chooseAmulet,
+                      knowledge: knowledge,
+                      knowledgeChoice: knowledgeChoice,
+                      onKnowledge: () => chooseKnowledgeProvision(
+                        KnowledgeProvisionChoice.knowledge,
+                      ),
+                      onProvisions: () => chooseKnowledgeProvision(
+                        KnowledgeProvisionChoice.provisions,
+                      ),
+                      supplySelection: supplySelection,
+                      stoneCount: supply.stoneCount,
+                      selectedDice: List.unmodifiable(selectedDice),
+                      dieColor: widget.color.value,
+                      dolmenSetup: dolmenSetup,
+                      placedDolmenDice: placedDolmenDice,
                     ),
-                    supplySelection: supplySelection,
-                    stoneCount: supply.stoneCount,
-                    selectedDice: List.unmodifiable(selectedDice),
-                    dieColor: widget.color.value,
-                    dolmenSetup: dolmenSetup,
-                    placedDolmenDice: placedDolmenDice,
                   ),
-                ),
-              if (card != null &&
-                  deck.needsShuffle(
-                    hasAvailablePairs: availablePairs.isNotEmpty,
-                  ) &&
-                  (card != AutomaCard.connectDolmens ||
-                      dolmenSetup != null && !connectionActive)) ...[
-                const SizedBox(height: 10),
-                Text(l10n.reshuffleDeck),
+                if (card != null &&
+                    deck.needsShuffle(
+                      hasAvailablePairs: availablePairs.isNotEmpty,
+                    ) &&
+                    (card != AutomaCard.connectDolmens ||
+                        dolmenSetup != null && !connectionActive)) ...[
+                  const SizedBox(height: 10),
+                  Text(l10n.reshuffleDeck),
+                ],
               ],
-            ],
+            ),
           ),
         ),
         bottomNavigationBar: SafeArea(

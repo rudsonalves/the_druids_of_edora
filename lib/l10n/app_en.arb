@@ -221,5 +221,22 @@
   "summaryKnowledge": "Knowledge",
   "summaryAmulet": "Amulet",
   "exitApp": "Exit app",
-  "closeGameSummary": "Close summary"
+  "closeGameSummary": "Close summary",
+  "aboutTitle": "About",
+  "aboutVersion": "Version {version}",
+  "aboutDescription": "An unofficial companion for solo sessions of Druids of Edora with the physical board game.",
+  "aboutAcknowledgments": "Acknowledgments",
+  "aboutCreatorCredit": "Thanks to Julien (jujuandco) from the BoardGameGeek community for creating Malfurion, the original automa behind this app. This adaptation adjusts some rules and automates parts of play.",
+  "aboutBggProfile": "BoardGameGeek profile",
+  "aboutOriginalSolo": "Original solo mode",
+  "aboutLicense": "Source code and GPL v3 license",
+  "aboutPrivacyPolicy": "Privacy Policy",
+  "aboutLinkError": "Could not open the link.",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  }
 }

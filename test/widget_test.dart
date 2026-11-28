@@ -126,6 +126,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byTooltip('Forma Druida'), findsOneWidget);
     expect(find.text('2 jgs'), findsOneWidget);
+    await tester.tap(find.byTooltip('Sobre'));
+    await tester.pumpAndSettle();
+    expect(find.text('Agradecimentos'), findsOneWidget);
+    expect(find.textContaining('Julien (jujuandco)'), findsOneWidget);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Rolar dados'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 250));
@@ -182,6 +188,96 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Available dice: 13'), findsOneWidget);
     await tester.tap(find.text('Draw card'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AutomaInstructionCard), findsWidgets);
+  });
+
+  testWidgets('supports Spanish from setup through the cards', (tester) async {
+    await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.language));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Español'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Elige el color del Autómata'), findsOneWidget);
+    await tester.tap(find.text('Morado'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Forma de druida'));
+    await tester.pumpAndSettle();
+    expect(find.text('Número de jugadores'), findsOneWidget);
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tirar dados'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.text('13 dados ordenados de menor a mayor.'), findsOneWidget);
+    await tester.tap(find.text('Iniciar la partida'));
+    await tester.pumpAndSettle();
+    expect(find.text('Dados disponibles: 13'), findsOneWidget);
+    expect(find.text('Autómata'), findsOneWidget);
+    await tester.tap(find.text('Robar carta'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AutomaInstructionCard), findsWidgets);
+  });
+
+  testWidgets('supports German from setup through the cards', (tester) async {
+    await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.language));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Deutsch'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Wähle die Farbe des Automa'), findsOneWidget);
+    await tester.tap(find.text('Violett'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Druidenform'));
+    await tester.pumpAndSettle();
+    expect(find.text('Anzahl der Spieler'), findsOneWidget);
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Würfeln'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.text('13 Würfel, aufsteigend sortiert.'), findsOneWidget);
+    await tester.tap(find.text('Partie starten'));
+    await tester.pumpAndSettle();
+    expect(find.text('Verfügbare Würfel: 13'), findsOneWidget);
+    expect(find.text('Automa'), findsOneWidget);
+    await tester.tap(find.text('Karte ziehen'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AutomaInstructionCard), findsWidgets);
+  });
+
+  testWidgets('supports French from setup through the cards', (tester) async {
+    await tester.pumpWidget(EdoraApp(random: SequenceRandom()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.language));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Français'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Choisis la couleur de l’Automate'), findsOneWidget);
+    await tester.tap(find.text('Violet'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Forme de druide'));
+    await tester.pumpAndSettle();
+    expect(find.text('Nombre de joueurs'), findsOneWidget);
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Lancer les dés'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.text('13 dés triés par ordre croissant.'), findsOneWidget);
+    await tester.tap(find.text('Commencer la partie'));
+    await tester.pumpAndSettle();
+    expect(find.text('Dés disponibles : 13'), findsOneWidget);
+    expect(find.text('Automate'), findsOneWidget);
+    await tester.tap(find.text('Tirer une carte'));
     await tester.pumpAndSettle();
     expect(find.byType(AutomaInstructionCard), findsWidgets);
   });

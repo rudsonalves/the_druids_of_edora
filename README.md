@@ -24,3 +24,9 @@ O alvo `make release BRANCH=codex/minha-alteracao` chama `/Users/rudsonalves/.bi
 Execute-o em um terminal interativo. A branch informada deve ser nova ou a branch atual de uma release interrompida; `main` não é aceita. Para pular apenas os testes, use `make release BRANCH=codex/minha-alteracao RELEASE_FLAGS=--skip-tests`. O diretório temporário `.commit/` é ignorado pelo Git. O script também requer `codex`, `less`, `git` e o editor configurado em `RELEASE_EDITOR` (por padrão, `vim`).
 
 # the_druids_of_edora
+
+## Licença
+
+O código original deste projeto é licenciado sob a GNU General Public License, versão 3 (GPL-3.0-only). Consulte o texto integral em [LICENSE](LICENSE).
+
+Manuais, imagens e outros materiais de terceiros mantêm os direitos e termos de seus respectivos titulares. As dependências mantêm suas próprias licenças.

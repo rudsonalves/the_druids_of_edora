@@ -1,5 +1,41 @@
 # Changelog
 
+## 2026/11/28 - art/adjustments-01
+
+This change adds a forest themed interface, an About page, and German, Spanish, and French translations. It also adds project licensing information and updates the app version to 1.0.0+3.
+
+1. **LICENSE and README.md**
+
+   * Added the GNU General Public License version 3 text and documented the license for original project code.
+   * Clarified that third party materials and dependencies retain their own rights and licenses.
+
+2. **assets/backgrounds and lib/app/widgets/forest_surface.dart**
+
+   * Added a forest floor background and reusable tinted, blurred glass surfaces.
+   * Applied them to the setup and card screens, including the automa instruction card.
+
+3. **lib/app/about_page.dart and lib/features/setup/setup_page.dart**
+
+   * Added an About page showing the app version, acknowledgments, and links to the creator’s profile, original solo mode, source code, and privacy policy.
+   * Added navigation from the setup screen and an error message when a link cannot be opened.
+
+4. **lib/l10n and lib/features/cards/widgets/automa_instruction_card.dart**
+
+   * Added German, Spanish, and French translations and registered all three locales in the localization delegate and language menu.
+   * Added About page strings across the supported locales and adjusted movement label placement according to the active language.
+
+5. **pubspec.yaml and pubspec.lock**
+
+   * Updated the version to 1.0.0+3, registered the background asset, and added `package_info_plus` and `url_launcher` with their resolved dependencies.
+
+6. **test/widget_test.dart**
+
+   * Added coverage for About page navigation and acknowledgments.
+   * Added setup to card flow tests for Spanish, German, and French.
+
+### Conclusion
+
+The app now offers a forest themed interface, an About page, and five supported languages. The change set also includes GPL v3 license documentation and widget coverage for the new navigation and locales.
 ## 2026/11/26 - ajustes/cartas-06
 
 This change prevents the Automa deck from drawing `surroundFire` during its first seven draws. It updates draw eligibility and opening deck order, adds test coverage, and increments the build version.

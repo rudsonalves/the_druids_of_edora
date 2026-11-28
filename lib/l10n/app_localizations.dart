@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
 import 'app_localizations_pt.dart';
 
 // ignore_for_file: type=lint
@@ -94,7 +97,10 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('de'),
     Locale('en'),
+    Locale('es'),
+    Locale('fr'),
     Locale('pt'),
   ];
 
@@ -895,6 +901,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close summary'**
   String get closeGameSummary;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String aboutVersion(String version);
+
+  /// No description provided for @aboutDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'An unofficial companion for solo sessions of Druids of Edora with the physical board game.'**
+  String get aboutDescription;
+
+  /// No description provided for @aboutAcknowledgments.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledgments'**
+  String get aboutAcknowledgments;
+
+  /// No description provided for @aboutCreatorCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks to Julien (jujuandco) from the BoardGameGeek community for creating Malfurion, the original automa behind this app. This adaptation adjusts some rules and automates parts of play.'**
+  String get aboutCreatorCredit;
+
+  /// No description provided for @aboutBggProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'BoardGameGeek profile'**
+  String get aboutBggProfile;
+
+  /// No description provided for @aboutOriginalSolo.
+  ///
+  /// In en, this message translates to:
+  /// **'Original solo mode'**
+  String get aboutOriginalSolo;
+
+  /// No description provided for @aboutLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code and GPL v3 license'**
+  String get aboutLicense;
+
+  /// No description provided for @aboutPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get aboutPrivacyPolicy;
+
+  /// No description provided for @aboutLinkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link.'**
+  String get aboutLinkError;
 }
 
 class _AppLocalizationsDelegate
@@ -908,7 +974,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'pt'].contains(locale.languageCode);
+      <String>['de', 'en', 'es', 'fr', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -917,8 +983,14 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
     case 'pt':
       return AppLocalizationsPt();
   }
