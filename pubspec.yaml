@@ -2,7 +2,7 @@ name: the_druids_of_edora
 description: "Companion app for the solo Automata in The Druids of Edora."
 publish_to: 'none'
 
-version: 1.0.0+3
+version: 1.0.0+5
 
 environment:
   sdk: ^3.14.0

@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026/11/28 - art/adjustments-02
+
+This change adjusts how remaining dice and shrine outcomes appear on the cards page. It also updates the app version and the widget tests for the revised display.
+
+1. **lib/features/cards/cards_page.dart**
+
+   * Replaced the scrolling dice strip with a centered row that sizes dice to fit the available width.
+   * Moved the available-dice count into a semantics label and kept the all-dice-used message for an empty strip.
+
+2. **lib/features/cards/widgets/automa_instruction_card.dart**
+
+   * Displayed sickle progress as a value out of the maximum sickle count.
+   * Applied smaller text to outcome details on the connect-dolmens card.
+
+3. **pubspec.yaml**
+
+   * Updated the app version from `1.0.0+3` to `1.0.0+5`.
+
+4. **test/widget_test.dart**
+
+   * Updated locale and action-flow checks to count the rendered remaining dice.
+   * Added checks that the dice stay aligned and resize as the available width and dice count change.
+
+### Conclusion
+
+The dice display now fits the page width, and shrine outcome details use the updated formatting. Widget tests cover the resulting display behavior.
 ## 2026/11/28 - art/adjustments-01
 
 This change adds a forest themed interface, an About page, and German, Spanish, and French translations. It also adds project licensing information and updates the app version to 1.0.0+3.

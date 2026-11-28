@@ -173,7 +173,7 @@ class AutomaInstructionCard extends StatelessWidget {
                         size: 48,
                       ),
                       if (dieActions[index] case final outcome?)
-                        _buildShrineOutcome(l10n, outcome),
+                        _buildShrineOutcome(context, l10n, outcome),
                     ],
                   ),
               ],
@@ -276,6 +276,7 @@ class AutomaInstructionCard extends StatelessWidget {
   }
 
   Widget _buildShrineOutcome(
+    BuildContext context,
     AppLocalizations l10n,
     ShrineActionOutcome outcome,
   ) {
@@ -286,7 +287,7 @@ class AutomaInstructionCard extends StatelessWidget {
         ? null
         : switch (action) {
             ShrineAction.knowledge => '$value/$maxKnowledge',
-            ShrineAction.sickle => l10n.sickleProgress(value),
+            ShrineAction.sickle => '$value/${SickleAmulet.maxSickle}',
             ShrineAction.amulet => SickleAmulet.slotName(value),
             ShrineAction.standingStone ||
             ShrineAction.runestone => l10n.stonesPlaced(value),
@@ -318,7 +319,13 @@ class AutomaInstructionCard extends StatelessWidget {
               ),
           ],
         ),
-        if (detail != null) Text(detail),
+        if (detail != null)
+          Text(
+            detail,
+            style: card == AutomaCard.connectDolmens
+                ? Theme.of(context).textTheme.bodySmall
+                : null,
+          ),
       ],
     );
   }

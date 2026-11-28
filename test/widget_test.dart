@@ -24,6 +24,11 @@ class SequenceRandom implements Random {
 }
 
 void main() {
+  final remainingDice = find.descendant(
+    of: find.byKey(const Key('dice-strip')),
+    matching: find.byType(DieFace),
+  );
+
   Future<void> resolveAction(WidgetTester tester) async {
     final execute = find.byWidgetPredicate(
       (widget) => widget is IconButton && widget.tooltip == 'Executar ação',
@@ -186,7 +191,7 @@ void main() {
     expect(find.text('13 dice sorted from lowest to highest.'), findsOneWidget);
     await tester.tap(find.text('Start game'));
     await tester.pumpAndSettle();
-    expect(find.text('Available dice: 13'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(13));
     await tester.tap(find.text('Draw card'));
     await tester.pumpAndSettle();
     expect(find.byType(AutomaInstructionCard), findsWidgets);
@@ -215,7 +220,7 @@ void main() {
     expect(find.text('13 dados ordenados de menor a mayor.'), findsOneWidget);
     await tester.tap(find.text('Iniciar la partida'));
     await tester.pumpAndSettle();
-    expect(find.text('Dados disponibles: 13'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(13));
     expect(find.text('Autómata'), findsOneWidget);
     await tester.tap(find.text('Robar carta'));
     await tester.pumpAndSettle();
@@ -245,7 +250,7 @@ void main() {
     expect(find.text('13 Würfel, aufsteigend sortiert.'), findsOneWidget);
     await tester.tap(find.text('Partie starten'));
     await tester.pumpAndSettle();
-    expect(find.text('Verfügbare Würfel: 13'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(13));
     expect(find.text('Automa'), findsOneWidget);
     await tester.tap(find.text('Karte ziehen'));
     await tester.pumpAndSettle();
@@ -275,7 +280,7 @@ void main() {
     expect(find.text('13 dés triés par ordre croissant.'), findsOneWidget);
     await tester.tap(find.text('Commencer la partie'));
     await tester.pumpAndSettle();
-    expect(find.text('Dés disponibles : 13'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(13));
     expect(find.text('Automate'), findsOneWidget);
     await tester.tap(find.text('Tirer une carte'));
     await tester.pumpAndSettle();
@@ -302,8 +307,17 @@ void main() {
 
     expect(find.text('Sortear carta'), findsOneWidget);
     expect(find.byKey(const Key('dice-strip')), findsOneWidget);
-    expect(tester.widget<DieFace>(find.byType(DieFace).first).size, 36);
-    expect(find.text('Dados disponíveis: 13'), findsOneWidget);
+    await tester.binding.setSurfaceSize(const Size(390, 720));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpAndSettle();
+    final initialSize = tester.widget<DieFace>(remainingDice.first).size;
+    expect(initialSize, lessThan(36));
+    expect(
+      tester.getCenter(remainingDice.first).dy,
+      tester.getCenter(remainingDice.last).dy,
+    );
+    expect(find.text('Dados disponíveis: 13'), findsNothing);
+    expect(remainingDice, findsNWidgets(13));
     expect(find.text('Autômato'), findsOneWidget);
     expect(find.byType(BackButton), findsNothing);
     await tester.binding.handlePopRoute();
@@ -328,20 +342,27 @@ void main() {
     await resolveAction(tester);
     expect(find.byType(AutomaInstructionCard), findsOneWidget);
     expect(find.byKey(const Key('selected-die-0')), findsOneWidget);
-    expect(find.text('Dados disponíveis: 12'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(12));
+    expect(
+      tester.widget<DieFace>(remainingDice.first).size,
+      greaterThan(initialSize),
+    );
+    await tester.binding.setSurfaceSize(null);
+    await tester.pumpAndSettle();
     for (var number = 2; number <= 10; number++) {
       await tester.tap(find.text('Próxima carta'));
       await tester.pumpAndSettle();
       await completeDolmenDialog(tester, 1);
       await resolveAction(tester);
     }
-    expect(find.text('Dados disponíveis: 3'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(3));
+    expect(tester.widget<DieFace>(remainingDice.first).size, 36);
 
     await tester.tap(find.text('Próxima carta'));
     await tester.pumpAndSettle();
     await completeDolmenDialog(tester, 1);
     await resolveAction(tester);
-    expect(find.text('Dados disponíveis: 2'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(2));
 
     for (var number = 12; number <= 13; number++) {
       await tester.tap(find.text('Próxima carta'));
@@ -349,7 +370,7 @@ void main() {
       await completeDolmenDialog(tester, 1);
       await resolveAction(tester);
     }
-    expect(find.text('Dados disponíveis: 0'), findsOneWidget);
+    expect(remainingDice, findsNWidgets(0));
     expect(find.text('Todos os dados foram usados.'), findsOneWidget);
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     addTearDown(() => debugDefaultTargetPlatformOverride = null);

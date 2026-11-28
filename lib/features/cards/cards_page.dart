@@ -254,27 +254,38 @@ class _CardsPageState extends State<CardsPage> {
                   child: Text(l10n.noAuxiliaryAction),
                 ),
               const SizedBox(height: 8),
-              Text(
-                l10n.availableDice(availableDice.length),
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              if (availableDice.isEmpty) Text(l10n.allDiceUsed),
-              const SizedBox(height: 6),
-              SizedBox(
-                height: 40,
-                child: ListView.separated(
-                  key: const Key('dice-strip'),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: availableDice.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 5),
-                  itemBuilder: (context, index) => DieFace(
-                    value: availableDice[index],
-                    color: widget.color.value,
-                    index: index + 1,
-                    size: 36,
-                  ),
+              if (availableDice.isEmpty)
+                Text(l10n.allDiceUsed)
+              else
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    const spacing = 4.0;
+                    const maxDieSize = 36.0;
+                    final count = availableDice.length;
+                    final size = min(
+                      maxDieSize,
+                      max(0.0, constraints.maxWidth - spacing * (count - 1)) /
+                          count,
+                    );
+                    return Semantics(
+                      label: l10n.availableDice(count),
+                      child: Row(
+                        key: const Key('dice-strip'),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: spacing,
+                        children: [
+                          for (final (index, value) in availableDice.indexed)
+                            DieFace(
+                              value: value,
+                              color: widget.color.value,
+                              index: index + 1,
+                              size: size,
+                            ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ),
             ],
           ),
         ),
