@@ -1,5 +1,46 @@
 # Changelog
 
+## 2026/11/28 - art/adjustments-03
+
+This change adds a visual medallion and gem placement flow to the automa cards screen. It also adjusts opening deck restrictions and updates the related assets, localization, and tests.
+
+1. **assets/gems, assets/images, and pubspec.yaml**
+
+   * Added six gem images and four medallion images.
+   * Registered the new assets with Flutter.
+
+2. **lib/features/cards/automa_card.dart**
+
+   * Prevented competition cards from appearing in the first five draws.
+   * Applied opening draw restrictions when arranging the first deck cycle, while retaining the surround fire restriction for the first seven draws.
+
+3. **lib/features/cards/sickle_amulet.dart**
+
+   * Replaced occupied slot tracking with distinct gem assignments.
+   * Added left-to-right placement within each row and medallion completion tracking.
+
+4. **lib/features/cards/cards_page.dart and lib/features/cards/widgets/amulet_dialog.dart**
+
+   * Added a read-only medallion view from the cards screen.
+   * Replaced slot buttons with tappable medallion rows that display drawn gems.
+   * Disabled amulet actions when the medallion is complete and retained the sickle choice when position II is full.
+
+5. **lib/features/setup/automata_color.dart and lib/features/cards/widgets/automa_instruction_card.dart**
+
+   * Mapped automa colors to medallion assets.
+   * Added completion guidance to the sickle and amulet instruction.
+
+6. **lib/l10n**
+
+   * Updated row placement instructions and added a medallion completion message in English, German, Spanish, French, and Portuguese, including generated localization classes.
+
+7. **test/automa_deck_test.dart, test/sickle_amulet_test.dart, and test/widget_test.dart**
+
+   * Added coverage for opening draw restrictions, distinct gem placement, medallion row interaction, and the read-only medallion view.
+
+### Conclusion
+
+The automa flow now displays color-specific medallions, places distinct gems by row, and recognizes a completed medallion. Opening draws also follow the updated card restrictions.
 ## 2026/11/28 - art/adjustments-02
 
 This change adjusts how remaining dice and shrine outcomes appear on the cards page. It also updates the app version and the widget tests for the revised display.

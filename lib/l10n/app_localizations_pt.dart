@@ -354,7 +354,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get amuletSlotHelp =>
-      'Selecione um espaço livre na posição ao alcance.';
+      'Toque na linha ao alcance. A gema sorteada ocupa o primeiro espaço livre da esquerda.';
+
+  @override
+  String get amuletComplete => 'Medalhão completo';
 
   @override
   String get amuletUseSickle => 'Posição II ocupada: usar a foice';

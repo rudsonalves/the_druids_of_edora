@@ -36,4 +36,9 @@ flutter:
     - assets/tablets/
     - assets/actions/
     - assets/icons/
+    - assets/gems/
+    - assets/images/medallion.png
+    - assets/images/medallion-purple.png
+    - assets/images/medallion-mint.png
+    - assets/images/medallion-red.png
     - assets/backgrounds/forest-floor.png

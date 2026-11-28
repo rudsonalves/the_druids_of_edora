@@ -8,4 +8,8 @@ enum AutomataColor {
 
   const AutomataColor(this.value);
   final Color value;
+
+  String get medallionAsset => this == yellow
+      ? 'assets/images/medallion.png'
+      : 'assets/images/medallion-$name.png';
 }

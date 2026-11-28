@@ -354,7 +354,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get amuletSlotHelp =>
-      'Select an empty slot in the position you can reach.';
+      'Tap the row you can reach. The drawn gem goes in the first empty slot from the left.';
+
+  @override
+  String get amuletComplete => 'Medallion complete';
 
   @override
   String get amuletUseSickle => 'Position II is full: use the sickle';

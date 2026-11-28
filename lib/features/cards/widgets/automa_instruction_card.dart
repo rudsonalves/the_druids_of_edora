@@ -408,7 +408,13 @@ class AutomaInstructionCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(sickleProgress),
-        Text(onSickle == null ? l10n.sickleLimitHelp : l10n.chooseSupplyAction),
+        Text(
+          onAmulet == null
+              ? l10n.amuletComplete
+              : onSickle == null
+              ? l10n.sickleLimitHelp
+              : l10n.chooseSupplyAction,
+        ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,

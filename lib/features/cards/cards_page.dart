@@ -100,6 +100,8 @@ class _CardsPageState extends State<CardsPage> {
       AutomaCard.standingStone =>
         supply.stoneCount(SupplyAction.standingStone) > 0 ||
             supply.stoneCount(SupplyAction.runestone) > 0,
+      AutomaCard.sickleAmulet =>
+        !sickleAmulet.atLimit || !sickleAmulet.amuletComplete,
       _ => true,
     };
   }
@@ -136,6 +138,20 @@ class _CardsPageState extends State<CardsPage> {
               l10n.stoneInventory,
               'erect-standing-stone',
             ),
+            IconButton(
+              tooltip: l10n.summaryAmulet,
+              icon: Image.asset(
+                'assets/actions/add-gem-to-amulet.png',
+                width: 28,
+                height: 28,
+                excludeFromSemantics: true,
+              ),
+              onPressed: () => showDialog<void>(
+                context: context,
+                builder: (_) =>
+                    AmuletDialog(progress: sickleAmulet, color: widget.color),
+              ),
+            ),
           ],
         ),
         body: ForestSurface(
@@ -170,7 +186,9 @@ class _CardsPageState extends State<CardsPage> {
                       usedSickle: usedSickle,
                       placedGem: placedGem,
                       onSickle: sickleAmulet.atLimit ? null : advanceSickle,
-                      onAmulet: chooseAmulet,
+                      onAmulet: sickleAmulet.amuletComplete
+                          ? null
+                          : chooseAmulet,
                       knowledge: knowledge,
                       knowledgeChoice: knowledgeChoice,
                       onKnowledge: () => chooseKnowledgeProvision(
@@ -478,22 +496,27 @@ class _CardsPageState extends State<CardsPage> {
   }
 
   Future<void> chooseAmulet() async {
-    if (usedSickle || placedGem != null) return;
-    final slot = await showDialog<int>(
-      context: context,
-      builder: (_) => AmuletDialog(progress: sickleAmulet),
-    );
-    if (!mounted || actionCard != AutomaCard.sickleAmulet || slot == null) {
+    if (usedSickle ||
+        placedGem != null ||
+        sickleAmulet.amuletComplete ||
+        actionCard != AutomaCard.sickleAmulet) {
       return;
     }
-    if (slot == -1) {
-      advanceSickle();
-    } else {
-      setState(() {
-        sickleAmulet.addGem(slot);
-        placedGem = slot;
-      });
-    }
+    final useSickle = await showDialog<bool>(
+      context: context,
+      builder: (_) => AmuletDialog(
+        progress: sickleAmulet,
+        color: widget.color,
+        onChooseRow: (row) {
+          if (!mounted || placedGem != null) return false;
+          final slot = sickleAmulet.drawGemForRow(row, widget.random);
+          if (slot == null) return false;
+          setState(() => placedGem = slot);
+          return true;
+        },
+      ),
+    );
+    if (mounted && useSickle == true) advanceSickle();
   }
 
   Future<void> chooseSupply(SupplyAction action) async {
@@ -581,6 +604,7 @@ class _CardsPageState extends State<CardsPage> {
     return switch (action) {
       ShrineAction.knowledge => knowledge < AutomaInstructionCard.maxKnowledge,
       ShrineAction.sickle => !sickleAmulet.atLimit,
+      ShrineAction.amulet => !sickleAmulet.amuletComplete,
       _ => true,
     };
   }

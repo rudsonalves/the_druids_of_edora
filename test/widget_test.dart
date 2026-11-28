@@ -323,6 +323,12 @@ void main() {
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
     expect(find.text('Autômato'), findsOneWidget);
+    await tester.tap(find.byTooltip('Amuleto'));
+    await tester.pumpAndSettle();
+    expect(find.text('Amuleto'), findsOneWidget);
+    expect(find.byKey(const ValueKey('amulet-row-0')), findsNothing);
+    await tester.tap(find.text('Fechar'));
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Pedras'));
     await tester.pumpAndSettle();
     final stoneButtons = tester.widgetList<IconButton>(

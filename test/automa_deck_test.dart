@@ -20,6 +20,7 @@ void main() {
             ];
       final expected = [...AutomaCard.values, ...extra];
       final firstCycle = List.generate(10, (_) => deck.draw());
+      expect(firstCycle.take(5), isNot(contains(AutomaCard.competition)));
       expect(firstCycle.take(7), isNot(contains(AutomaCard.surroundFire)));
       expect(firstCycle, unorderedEquals(expected));
       expect(deck.remaining, 0);

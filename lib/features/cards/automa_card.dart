@@ -36,6 +36,7 @@ enum AutomaForm {
 }
 
 class AutomaDeck {
+  static const _openingDrawsWithoutCompetition = 5;
   static const _openingDrawsWithoutFire = 7;
   AutomaDeck(this.random, {required AutomaForm form})
     : _cards = [...AutomaCard.values, ...form.extraCards];
@@ -52,13 +53,16 @@ class AutomaDeck {
   bool canDrawDolmens({required bool hasAvailablePairs}) =>
       hasAvailablePairs && (draws >= 9 || _dolmenDraws < 2);
 
-  bool _canDraw(AutomaCard card, bool hasAvailablePairs) => switch (card) {
-    AutomaCard.connectDolmens => canDrawDolmens(
-      hasAvailablePairs: hasAvailablePairs,
-    ),
-    AutomaCard.surroundFire => draws >= _openingDrawsWithoutFire,
+  bool _allowedAt(AutomaCard card, int previousDraws) => switch (card) {
+    AutomaCard.competition => previousDraws >= _openingDrawsWithoutCompetition,
+    AutomaCard.surroundFire => previousDraws >= _openingDrawsWithoutFire,
     _ => true,
   };
+
+  bool _canDraw(AutomaCard card, bool hasAvailablePairs) =>
+      _allowedAt(card, draws) &&
+      (card != AutomaCard.connectDolmens ||
+          canDrawDolmens(hasAvailablePairs: hasAvailablePairs));
 
   bool needsShuffle({bool hasAvailablePairs = true}) =>
       !_remaining.any((card) => _canDraw(card, hasAvailablePairs));
@@ -85,9 +89,7 @@ class AutomaDeck {
     if (draws == 0) {
       final opening = <AutomaCard>[];
       for (var i = 0; i < _openingDrawsWithoutFire; i++) {
-        final index = nextCycle.lastIndexWhere(
-          (card) => card != AutomaCard.surroundFire,
-        );
+        final index = nextCycle.lastIndexWhere((card) => _allowedAt(card, i));
         opening.add(nextCycle.removeAt(index));
       }
       nextCycle.shuffle(random);

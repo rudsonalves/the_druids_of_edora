@@ -719,8 +719,14 @@ abstract class AppLocalizations {
   /// No description provided for @amuletSlotHelp.
   ///
   /// In en, this message translates to:
-  /// **'Select an empty slot in the position you can reach.'**
+  /// **'Tap the row you can reach. The drawn gem goes in the first empty slot from the left.'**
   String get amuletSlotHelp;
+
+  /// No description provided for @amuletComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Medallion complete'**
+  String get amuletComplete;
 
   /// No description provided for @amuletUseSickle.
   ///

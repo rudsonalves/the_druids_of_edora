@@ -355,7 +355,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get amuletSlotHelp =>
-      'Choisis un emplacement libre à la position accessible.';
+      'Touche la rangée accessible. La gemme tirée occupe le premier emplacement libre en partant de la gauche.';
+
+  @override
+  String get amuletComplete => 'Médaillon complet';
 
   @override
   String get amuletUseSickle => 'Position II occupée : utiliser la faucille';

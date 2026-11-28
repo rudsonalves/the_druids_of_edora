@@ -356,7 +356,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get amuletSlotHelp =>
-      'Wähle ein freies Feld an der erreichbaren Position.';
+      'Tippe auf die erreichbare Reihe. Der ausgeloste Edelstein kommt von links in das erste freie Feld.';
+
+  @override
+  String get amuletComplete => 'Medaillon vollständig';
 
   @override
   String get amuletUseSickle => 'Position II ist belegt: Sichel verwenden';
