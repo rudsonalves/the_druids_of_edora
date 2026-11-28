@@ -3,6 +3,10 @@ import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
 
+import '../../app/widgets/forest_surface.dart';
+
+import '../../app/about_page.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../cards/automa_card.dart';
 import '../cards/cards_page.dart';
@@ -55,107 +59,120 @@ class _SetupPageState extends State<SetupPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Druids of Edora'),
-        actions: [if (form != null) languageMenu(l10n)],
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-          children: [
-            Text(
-              l10n.prepareAutomata,
-              style: Theme.of(context).textTheme.headlineMedium,
+        actions: [
+          if (form != null) ...[
+            languageMenu(l10n),
+            IconButton(
+              tooltip: l10n.aboutTitle,
+              icon: const Icon(Icons.info_outline),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const AboutPage()),
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(l10n.unofficialSetup),
-            if (color != null && form != null && players != null) ...[
-              const SizedBox(height: 16),
-              Row(
-                spacing: 12,
-                children: [
-                  Tooltip(
-                    message: colorName(color),
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: color.value,
-                        borderRadius: BorderRadius.circular(8),
+          ],
+        ],
+      ),
+      body: ForestSurface(
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+            children: [
+              Text(
+                l10n.prepareAutomata,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(l10n.unofficialSetup),
+              if (color != null && form != null && players != null) ...[
+                const SizedBox(height: 16),
+                Row(
+                  spacing: 12,
+                  children: [
+                    Tooltip(
+                      message: colorName(color),
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: color.value,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
-                  ),
-                  Tooltip(
-                    message: form == AutomaForm.druid
-                        ? l10n.druidForm
-                        : l10n.bearForm,
-                    child: AutomaFormBadge(form: form),
-                  ),
-                  Semantics(
-                    label: l10n.setupPlayersSummary(players),
-                    excludeSemantics: true,
-                    child: Text(l10n.setupPlayersShort(players)),
-                  ),
-                ],
-              ),
-              if (dice.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Text(isRolling ? l10n.rollingDice : l10n.sortedDice),
-                const SizedBox(height: 8),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    const spacing = 4.0;
-                    const columns = 7;
-                    final size = min(
-                      42.0,
-                      (constraints.maxWidth - spacing * (columns - 1)) /
-                          columns,
-                    );
-                    return Column(
-                      key: const Key('dice-grid'),
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: spacing,
-                      children: [
-                        for (
-                          var start = 0;
-                          start < dice.length;
-                          start += columns
-                        )
-                          Row(
-                            spacing: spacing,
-                            children: [
-                              for (
-                                var index = start;
-                                index < min(start + columns, dice.length);
-                                index++
-                              )
-                                DieFace(
-                                  value: dice[index],
-                                  color: color.value,
-                                  index: index + 1,
-                                  size: size,
-                                ),
-                            ],
-                          ),
-                      ],
-                    );
-                  },
+                    Tooltip(
+                      message: form == AutomaForm.druid
+                          ? l10n.druidForm
+                          : l10n.bearForm,
+                      child: AutomaFormBadge(form: form),
+                    ),
+                    Semantics(
+                      label: l10n.setupPlayersSummary(players),
+                      excludeSemantics: true,
+                      child: Text(l10n.setupPlayersShort(players)),
+                    ),
+                  ],
                 ),
-                if (!isRolling) ...[
+                if (dice.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Text(isRolling ? l10n.rollingDice : l10n.sortedDice),
                   const SizedBox(height: 8),
-                  Text(l10n.automaticDice),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      const spacing = 4.0;
+                      const columns = 7;
+                      final size = min(
+                        42.0,
+                        (constraints.maxWidth - spacing * (columns - 1)) /
+                            columns,
+                      );
+                      return Column(
+                        key: const Key('dice-grid'),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: spacing,
+                        children: [
+                          for (
+                            var start = 0;
+                            start < dice.length;
+                            start += columns
+                          )
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                for (
+                                  var index = start;
+                                  index < min(start + columns, dice.length);
+                                  index++
+                                )
+                                  DieFace(
+                                    value: dice[index],
+                                    color: color.value,
+                                    index: index + 1,
+                                    size: size,
+                                  ),
+                              ],
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                  if (!isRolling) ...[
+                    const SizedBox(height: 8),
+                    Text(l10n.automaticDice),
+                  ],
                 ],
+                const SizedBox(height: 24),
+                Text(
+                  l10n.prepareComponents,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 12),
+                SetupInstruction(number: 1, text: l10n.playerCount),
+                SetupInstruction(number: 2, text: l10n.setupPieces),
+                SetupInstruction(number: 3, text: l10n.unusedPieces),
+                SetupInstruction(number: 4, text: l10n.startingShrine),
               ],
-              const SizedBox(height: 24),
-              Text(
-                l10n.prepareComponents,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 12),
-              SetupInstruction(number: 1, text: l10n.playerCount),
-              SetupInstruction(number: 2, text: l10n.setupPieces),
-              SetupInstruction(number: 3, text: l10n.unusedPieces),
-              SetupInstruction(number: 4, text: l10n.startingShrine),
             ],
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
@@ -243,6 +260,9 @@ class _SetupPageState extends State<SetupPage> {
     itemBuilder: (_) => const [
       PopupMenuItem(value: Locale('pt', 'BR'), child: Text('Português (BR)')),
       PopupMenuItem(value: Locale('en'), child: Text('English')),
+      PopupMenuItem(value: Locale('es'), child: Text('Español')),
+      PopupMenuItem(value: Locale('de'), child: Text('Deutsch')),
+      PopupMenuItem(value: Locale('fr'), child: Text('Français')),
     ],
   );
 

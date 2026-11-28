@@ -462,4 +462,38 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get closeGameSummary => 'Fechar resumo';
+
+  @override
+  String get aboutTitle => 'Sobre';
+
+  @override
+  String aboutVersion(String version) {
+    return 'Versão $version';
+  }
+
+  @override
+  String get aboutDescription =>
+      'Assistente não oficial para partidas solo de Druids of Edora com o tabuleiro físico.';
+
+  @override
+  String get aboutAcknowledgments => 'Agradecimentos';
+
+  @override
+  String get aboutCreatorCredit =>
+      'Obrigado a Julien (jujuandco), da comunidade BoardGameGeek, por criar Malfurion, o autômato que serviu de base para este app. Esta adaptação acrescenta ajustes às regras e automatiza partes da partida.';
+
+  @override
+  String get aboutBggProfile => 'Perfil no BoardGameGeek';
+
+  @override
+  String get aboutOriginalSolo => 'Modo solo original';
+
+  @override
+  String get aboutLicense => 'Código-fonte e licença GPL v3';
+
+  @override
+  String get aboutPrivacyPolicy => 'Política de Privacidade';
+
+  @override
+  String get aboutLinkError => 'Não foi possível abrir o link.';
 }

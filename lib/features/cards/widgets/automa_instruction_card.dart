@@ -1,15 +1,15 @@
-import '../../../l10n/app_localizations.dart';
-
 import 'package:material_ui/material_ui.dart';
 
+import '../../../app/widgets/forest_surface.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../setup/widgets/die_face.dart';
 import '../action_supply.dart';
 import '../automa_card.dart';
 import '../automa_card_localization.dart';
 import '../sickle_amulet.dart';
 import 'dolmen_setup_dialog.dart';
-import 'supply_dialog.dart';
 import 'shrine_action_dialog.dart';
+import 'supply_dialog.dart';
 
 class AutomaInstructionCard extends StatelessWidget {
   const AutomaInstructionCard({
@@ -62,6 +62,7 @@ class AutomaInstructionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final distance = card.movementDistance;
+    final maximumFirst = Localizations.localeOf(context).languageCode != 'en';
     final supplyActions = switch (card) {
       AutomaCard.standingStone => [
         SupplyAction.standingStone,
@@ -124,8 +125,7 @@ class AutomaInstructionCard extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 6,
                   children: [
-                    if (l10n.localeName.startsWith('pt'))
-                      Text(l10n.movementMaximum),
+                    if (maximumFirst) Text(l10n.movementMaximum),
                     Stack(
                       alignment: const Alignment(0, 0.35),
                       children: [
@@ -144,8 +144,7 @@ class AutomaInstructionCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (!l10n.localeName.startsWith('pt'))
-                      Text(l10n.movementMaximum),
+                    if (!maximumFirst) Text(l10n.movementMaximum),
                   ],
                 ),
               ),
@@ -181,95 +180,96 @@ class AutomaInstructionCard extends StatelessWidget {
             ),
     );
     return Card(
-      color: const Color(0xFF214537),
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Color(0xFF9B814C)),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              spacing: 8,
-              children: [
-                Icon(
-                  Icons.auto_awesome,
-                  color: theme.colorScheme.primary,
-                  size: 30,
-                ),
-                Expanded(
-                  child: Text(
-                    card.title(l10n),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.headlineSmall,
-                  ),
-                ),
-              ],
-            ),
-            if (card != AutomaCard.connectDolmens)
-              _CardSection(title: l10n.targetLabel, body: card.target(l10n))
-            else if (dolmenSetup == null)
-              _CardSection(
-                title: l10n.chosenDolmens,
-                body: l10n.waitingForDolmens,
-              )
-            else ...[
-              if (placedDolmenDice < dolmenSetup!.requiredDice)
-                Text(
-                  l10n.connectingDolmens,
-                  style: theme.textTheme.titleMedium,
-                ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Image.asset(
-                  dolmenSetup!.pair.asset,
-                  height: 64,
-                  semanticLabel: dolmenSetup!.pair.label(l10n),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(l10n.chosenDolmens, style: theme.textTheme.titleMedium),
-              Text(
-                l10n.dolmenProgress(
-                  placedDolmenDice,
-                  dolmenSetup!.requiredDice,
-                ),
-                style: theme.textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 16),
-            ],
-            if (card == AutomaCard.connectDolmens) ...[
-              movementSection,
-              dieSection,
-            ] else
+      color: Colors.transparent,
+      elevation: 0,
+      child: ForestGlass(
+        radius: 18,
+        borderColor: const Color(0xFF9B814C),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
+                spacing: 8,
                 children: [
-                  Expanded(flex: 2, child: movementSection),
-                  Expanded(flex: 3, child: dieSection),
+                  Icon(
+                    Icons.auto_awesome,
+                    color: theme.colorScheme.primary,
+                    size: 30,
+                  ),
+                  Expanded(
+                    child: Text(
+                      card.title(l10n),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.headlineSmall,
+                    ),
+                  ),
                 ],
               ),
-            if (card.usesShrineAction
-                ? onShrineAction != null
-                : !actionResolved)
-              _CardSection(
-                title: l10n.actionLabel,
-                body: card.action(l10n),
-                child: actionContent,
-              )
-            else if (!card.usesShrineAction &&
-                actionContent != null &&
-                (supplySelection != null ||
-                    usedSickle ||
-                    placedGem != null ||
-                    knowledgeChoice != null))
-              actionContent,
-          ],
+              if (card != AutomaCard.connectDolmens)
+                _CardSection(title: l10n.targetLabel, body: card.target(l10n))
+              else if (dolmenSetup == null)
+                _CardSection(
+                  title: l10n.chosenDolmens,
+                  body: l10n.waitingForDolmens,
+                )
+              else ...[
+                if (placedDolmenDice < dolmenSetup!.requiredDice)
+                  Text(
+                    l10n.connectingDolmens,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    dolmenSetup!.pair.asset,
+                    height: 64,
+                    semanticLabel: dolmenSetup!.pair.label(l10n),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(l10n.chosenDolmens, style: theme.textTheme.titleMedium),
+                Text(
+                  l10n.dolmenProgress(
+                    placedDolmenDice,
+                    dolmenSetup!.requiredDice,
+                  ),
+                  style: theme.textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 16),
+              ],
+              if (card == AutomaCard.connectDolmens) ...[
+                movementSection,
+                dieSection,
+              ] else
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12,
+                  children: [
+                    Expanded(flex: 2, child: movementSection),
+                    Expanded(flex: 3, child: dieSection),
+                  ],
+                ),
+              if (card.usesShrineAction
+                  ? onShrineAction != null
+                  : !actionResolved)
+                _CardSection(
+                  title: l10n.actionLabel,
+                  body: card.action(l10n),
+                  child: actionContent,
+                )
+              else if (!card.usesShrineAction &&
+                  actionContent != null &&
+                  (supplySelection != null ||
+                      usedSickle ||
+                      placedGem != null ||
+                      knowledgeChoice != null))
+                actionContent,
+            ],
+          ),
         ),
       ),
     );
